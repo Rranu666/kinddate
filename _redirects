@@ -1,5 +1,7 @@
+/        /about.html   301
 /app     /app.html     200
 /admin   /admin.html   200
+/aria    /aria.html    200
 /login   /app.html     302
 /signup  /app.html     302
-/*       /index.html   404
+/*       /about.html   200
