@@ -1,0 +1,12 @@
+User-agent: *
+Allow: /
+Allow: /about.html
+Allow: /index.html
+Disallow: /admin.html
+Disallow: /app.html
+
+# Sitemap
+Sitemap: https://kinddate.netlify.app/sitemap.xml
+
+# Crawl delay
+Crawl-delay: 10

@@ -1,0 +1,1395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sign In — KindDate | AI Dating App for Serious Relationships</title>
+<meta name="description" content="Sign in or create your free KindDate account. Get 3 AI-curated matches per week with psychological compatibility explanations. The intentional dating app for USA & Canada." />
+<meta name="keywords" content="KindDate sign in, KindDate app, AI dating app login, create dating profile, intentional dating, serious relationship app" />
+<meta name="robots" content="noindex, nofollow" />
+<link rel="canonical" href="https://kinddate.netlify.app/app.html" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://kinddate.netlify.app/app.html" />
+<meta property="og:title" content="KindDate App — Sign In or Create Account" />
+<meta property="og:description" content="Join KindDate and meet people who genuinely get you. AI-curated matches, guided conversations, and a personal relationship concierge." />
+<meta property="og:image" content="https://kinddate.netlify.app/og-about.png" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="KindDate — Sign In" />
+<meta name="twitter:description" content="The AI dating app for intentional singles. 3 curated matches a week, zero swiping." />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💕</text></svg>">
+<link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💕</text></svg>">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "KindDate App",
+  "description": "Sign in to KindDate — the AI dating app for intentional singles",
+  "url": "https://kinddate.netlify.app/app.html",
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "KindDate",
+    "url": "https://kinddate.netlify.app"
+  }
+}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+:root{--bg:#FAF6F0;--bg2:#FFFFFF;--bg3:#F0E8DE;--surface:rgba(44,32,24,.04);--sh:rgba(44,32,24,.07);--border:rgba(44,32,24,.08);--bs:rgba(44,32,24,.14);--primary:#C8716A;--pl:#E8A89E;--pglow:rgba(200,113,106,.15);--gold:#C9A96E;--gl:#E8CFA0;--green:#7B9E87;--grad:linear-gradient(135deg,#C8716A,#E8A89E);--gradg:linear-gradient(135deg,#C9A96E,#E8CFA0);--grads:linear-gradient(135deg,rgba(200,113,106,.08),rgba(123,158,135,.08));--text:#2C2018;--tm:#8A7B6E;--ts:#B8A89A;--serif:'Playfair Display',serif;--sans:'Inter',sans-serif;--r1:8px;--r2:14px;--r3:20px;--r4:28px;--rf:9999px}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden;color-scheme:light}
+body{font-family:var(--sans);background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased}
+.hide{display:none!important}
+button{cursor:pointer;font-family:var(--sans);border:none;outline:none}
+input,textarea{font-family:var(--sans);outline:none}
+a{text-decoration:none;color:inherit}
+
+/* ── SCREENS ── */
+.screen{display:none;height:100vh;overflow-y:auto}
+.screen.active{display:flex}
+
+/* ── AUTH ── */
+#s-auth{align-items:stretch;background:var(--bg)}
+.auth-left{flex:1;background:var(--bg2);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 48px;position:relative;overflow:hidden}
+.auth-left-glow{position:absolute;top:-100px;right:-100px;width:400px;height:400px;background:radial-gradient(circle,rgba(232,64,108,.15),transparent 70%);pointer-events:none}
+.auth-left-glow2{position:absolute;bottom:-100px;left:-100px;width:300px;height:300px;background:radial-gradient(circle,rgba(168,85,247,.1),transparent 70%);pointer-events:none}
+.auth-brand{text-align:center;margin-bottom:48px;position:relative;z-index:1}
+.auth-logo{width:64px;height:64px;background:var(--grad);border-radius:20px;display:flex;align-items:center;justify-content:center;font-size:32px;margin:0 auto 16px}
+.auth-brand-name{font-family:var(--serif);font-size:32px;font-weight:700}
+.auth-brand-name span{background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.auth-tagline{font-size:15px;color:var(--tm);margin-top:6px}
+.auth-features{display:flex;flex-direction:column;gap:16px;position:relative;z-index:1;width:100%;max-width:300px}
+.auth-feat{display:flex;align-items:center;gap:12px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r2);padding:14px 16px}
+.auth-feat-ico{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.af1{background:rgba(34,197,94,.15);color:var(--green)}
+.af2{background:var(--grads);color:var(--pl)}
+.af3{background:rgba(212,168,83,.15);color:var(--gold)}
+.auth-feat-text{font-size:13px;font-weight:500}
+.auth-feat-sub{font-size:11px;color:var(--tm);margin-top:2px}
+.auth-right{flex:1;display:flex;align-items:center;justify-content:center;padding:48px 48px}
+.auth-box{width:100%;max-width:400px}
+.auth-tabs{display:flex;background:var(--surface);border:1px solid var(--border);border-radius:var(--r2);padding:4px;margin-bottom:32px}
+.auth-tab{flex:1;padding:10px;border:none;border-radius:10px;font-size:14px;font-weight:600;background:none;color:var(--tm);transition:all .2s;cursor:pointer}
+.auth-tab.active{background:var(--grad);color:#fff}
+.auth-form{display:flex;flex-direction:column;gap:16px}
+.auth-form.hide{display:none}
+.fgroup{display:flex;flex-direction:column;gap:6px}
+.flabel{font-size:13px;font-weight:500;color:var(--tm)}
+.finput{background:var(--surface);border:1px solid var(--border);border-radius:var(--r2);padding:12px 16px;color:var(--text);font-size:16px;transition:border .2s;width:100%;-webkit-appearance:none;appearance:none}
+.finput:focus{border-color:var(--primary)}
+.finput::placeholder{color:var(--ts)}
+.btn-full{width:100%;padding:13px;border-radius:var(--rf);font-size:15px;font-weight:600;background:var(--grad);color:#fff;border:none;cursor:pointer;transition:all .2s;box-shadow:0 4px 20px rgba(232,64,108,.3)}
+.btn-full:hover{transform:translateY(-1px);box-shadow:0 8px 30px rgba(232,64,108,.4)}
+.auth-or{display:flex;align-items:center;gap:12px;margin:4px 0}
+.auth-or-line{flex:1;height:1px;background:var(--border)}
+.auth-or-text{font-size:12px;color:var(--ts);font-weight:500}
+.btn-google{width:100%;padding:12px;border-radius:var(--rf);font-size:14px;font-weight:500;background:var(--surface);border:1px solid var(--bs);color:var(--text);display:flex;align-items:center;justify-content:center;gap:10px;cursor:pointer;transition:all .2s}
+.btn-google:hover{background:var(--sh);border-color:rgba(255,255,255,.25)}
+.auth-footer-text{text-align:center;font-size:13px;color:var(--tm);margin-top:8px}
+.auth-link{color:var(--pl);font-weight:600;cursor:pointer}
+.auth-link:hover{text-decoration:underline}
+
+/* ── ONBOARDING ── */
+#s-onboard{flex-direction:column;align-items:center;justify-content:center;background:var(--bg);padding:24px}
+.ob-wrap{width:100%;max-width:520px}
+.ob-progress{display:flex;gap:6px;margin-bottom:32px}
+.ob-step-bar{flex:1;height:3px;background:var(--border);border-radius:4px;overflow:hidden}
+.ob-step-bar.done{background:var(--grad)}
+.ob-step-bar .fill{height:100%;background:var(--grad);width:0;transition:width .5s}
+.ob-title{font-family:var(--serif);font-size:28px;font-weight:700;margin-bottom:8px}
+.ob-sub{font-size:15px;color:var(--tm);margin-bottom:28px}
+.ob-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r4);padding:32px}
+.ob-step{display:none}
+.ob-step.active{display:block}
+.phone-row{display:flex;gap:10px}
+.country-sel{background:var(--surface);border:1px solid var(--border);border-radius:var(--r2);padding:12px 14px;color:var(--text);font-size:14px;min-width:90px}
+.otp-row{display:flex;gap:10px;justify-content:center;margin-top:8px}
+.otp-box{width:52px;height:56px;background:var(--surface);border:2px solid var(--border);border-radius:var(--r2);text-align:center;font-size:22px;font-weight:700;color:var(--text);transition:border .2s}
+.otp-box:focus{border-color:var(--primary)}
+.ai-chat-ob{display:flex;flex-direction:column;gap:12px;max-height:260px;overflow-y:auto;margin-bottom:16px;padding-right:4px}
+.ai-chat-ob::-webkit-scrollbar{width:3px}
+.ai-chat-ob::-webkit-scrollbar-track{background:transparent}
+.ai-chat-ob::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
+.bmsg{max-width:90%;padding:11px 15px;border-radius:18px;font-size:14px;line-height:1.5}
+.bai{background:var(--surface);border:1px solid var(--border);border-radius:18px 18px 18px 4px;align-self:flex-start}
+.bme{background:var(--grad);border-radius:18px 18px 4px 18px;align-self:flex-end;color:#fff}
+.ob-inp-row{display:flex;gap:8px}
+.ob-inp{flex:1;background:var(--surface);border:1px solid var(--border);border-radius:var(--rf);padding:11px 16px;color:var(--text);font-size:16px;-webkit-appearance:none;appearance:none}
+.ob-inp::placeholder{color:var(--ts)}
+.ob-send{width:40px;height:40px;background:var(--grad);border:none;border-radius:50%;color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0}
+.photo-area{display:flex;flex-direction:column;align-items:center;gap:16px}
+.photo-circle{width:120px;height:120px;border-radius:50%;background:var(--grad);display:flex;align-items:center;justify-content:center;font-size:52px;cursor:pointer;border:3px dashed rgba(255,255,255,.2);transition:all .2s}
+.photo-circle:hover{opacity:.9;transform:scale(1.03)}
+.photo-hint{font-size:13px;color:var(--tm);text-align:center}
+.bio-area{background:var(--grads);border:1px solid rgba(232,64,108,.2);border-radius:var(--r2);padding:16px;margin-top:16px}
+.bio-label{font-size:12px;color:var(--pl);font-weight:600;margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.bio-text{font-size:14px;color:var(--tm);line-height:1.6}
+.pref-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.pref-opt{background:var(--surface);border:2px solid var(--border);border-radius:var(--r2);padding:14px;text-align:center;cursor:pointer;transition:all .2s;font-size:14px}
+.pref-opt:hover{border-color:var(--primary);background:var(--pglow)}
+.pref-opt.sel{border-color:var(--primary);background:var(--pglow);color:var(--pl)}
+.pref-emoji{font-size:24px;display:block;margin-bottom:6px}
+.ob-nav{display:flex;gap:12px;margin-top:20px}
+.btn-ob{flex:1;padding:13px;border-radius:var(--rf);font-size:15px;font-weight:600;cursor:pointer;transition:all .2s}
+.btn-ob-back{background:var(--surface);border:1px solid var(--border);color:var(--text)}
+.btn-ob-next{background:var(--grad);border:none;color:#fff;box-shadow:0 4px 20px rgba(232,64,108,.3)}
+.btn-ob-next:hover{transform:translateY(-1px)}
+
+/* ── MAIN APP LAYOUT ── */
+#s-app{flex-direction:row;background:var(--bg);height:100vh;overflow:hidden}
+.sidebar{width:240px;flex-shrink:0;background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;padding:20px 0}
+.sb-logo{display:flex;align-items:center;gap:10px;padding:0 20px 24px;border-bottom:1px solid var(--border);margin-bottom:12px}
+.sb-logo-i{width:36px;height:36px;background:var(--grad);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.sb-logo-t{font-family:var(--serif);font-size:18px;font-weight:700}
+.sb-logo-t span{background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.sb-nav{flex:1;display:flex;flex-direction:column;gap:2px;padding:0 12px}
+.sb-link{display:flex;align-items:center;gap:12px;padding:11px 14px;border-radius:var(--r2);color:var(--tm);font-size:14px;font-weight:500;cursor:pointer;transition:all .2s;position:relative}
+.sb-link:hover{background:var(--surface);color:var(--text)}
+.sb-link.active{background:var(--grads);color:var(--pl);border:1px solid rgba(232,64,108,.15)}
+.sb-link i{width:18px;text-align:center;font-size:16px}
+.sb-badge{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:var(--primary);color:#fff;font-size:10px;font-weight:700;padding:2px 7px;border-radius:var(--rf);min-width:18px;text-align:center}
+.sb-user{padding:16px 20px;border-top:1px solid var(--border);display:flex;align-items:center;gap:12px;cursor:pointer}
+.sb-user:hover{background:var(--surface)}
+.sb-av{width:38px;height:38px;border-radius:50%;background:var(--grad);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.sb-uname{font-size:14px;font-weight:600}
+.sb-uplan{font-size:11px;color:var(--gold)}
+.main-area{flex:1;display:flex;flex-direction:column;overflow:hidden}
+.main-header{padding:16px 28px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;background:var(--bg2)}
+.mh-title{font-size:20px;font-weight:700}
+.mh-sub{font-size:13px;color:var(--tm)}
+.mh-actions{display:flex;align-items:center;gap:12px}
+.icon-btn{width:38px;height:38px;background:var(--surface);border:1px solid var(--border);border-radius:10px;display:flex;align-items:center;justify-content:center;color:var(--tm);cursor:pointer;transition:all .2s}
+.icon-btn:hover{background:var(--sh);color:var(--text)}
+.main-content{flex:1;overflow-y:auto;padding:28px}
+.main-content::-webkit-scrollbar{width:4px}
+.main-content::-webkit-scrollbar-track{background:transparent}
+.main-content::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
+
+/* TAB VIEWS */
+.tab-view{display:none}
+.tab-view.active{display:block}
+
+/* DISCOVER */
+.discover-layout{display:grid;grid-template-columns:1fr 340px;gap:24px;height:calc(100vh - 130px)}
+.wm-col{display:flex;flex-direction:column;overflow-y:auto;padding-right:4px}
+.wm-top-bar{display:flex;align-items:center;justify-content:space-between;padding:0 0 18px;flex-shrink:0}
+.wm-week-lbl{font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--tm);font-weight:600}
+.wm-timer{font-size:12px;color:var(--tm);margin-top:3px}
+.wm-timer b{color:var(--primary)}
+.wm-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r3);padding:22px;margin-bottom:14px;transition:all .25s}
+.wm-card:hover{box-shadow:0 6px 28px rgba(44,32,24,.08);transform:translateY(-2px)}
+.wm-card-hdr{display:flex;align-items:center;gap:14px;margin-bottom:16px}
+.wm-av{width:56px;height:56px;border-radius:50%;background:var(--grad);display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0;box-shadow:0 4px 12px var(--pglow)}
+.wm-nm{font-size:16px;font-weight:700;color:var(--text)}
+.wm-mt{font-size:12px;color:var(--tm);margin-top:2px}
+.wm-trust-lbl{color:var(--green);font-weight:500}
+.wm-score{background:var(--grad);color:#fff;border-radius:var(--rf);padding:5px 12px;font-size:13px;font-weight:700;flex-shrink:0;box-shadow:0 3px 10px var(--pglow)}
+.wm-why{background:linear-gradient(135deg,rgba(200,113,106,.05),rgba(201,169,110,.05));border:1px solid rgba(200,113,106,.13);border-radius:12px;padding:13px 15px;margin-bottom:13px}
+.wm-why-lbl{font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--primary);font-weight:600;margin-bottom:5px;display:flex;align-items:center;gap:4px}
+.wm-why-txt{font-size:13px;color:var(--text);line-height:1.65;font-style:italic;opacity:.9}
+.wm-breakdown{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:13px}
+.wm-bd{text-align:center}
+.wm-bd-lbl{font-size:10px;color:var(--tm);margin-bottom:3px;text-transform:uppercase;letter-spacing:.05em}
+.wm-bd-bar{height:4px;background:var(--border);border-radius:var(--rf);overflow:hidden;margin-bottom:2px}
+.wm-bd-fill{height:100%;border-radius:var(--rf)}
+.bd-rose{background:var(--grad)}
+.bd-gold{background:var(--gradg)}
+.bd-sage{background:linear-gradient(90deg,#7B9E87,#A8C4A8)}
+.wm-bd-pct{font-size:11px;font-weight:600;color:var(--text)}
+.wm-tags{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:14px}
+.wm-tag{background:var(--surface);border:1px solid var(--border);border-radius:var(--rf);padding:3px 10px;font-size:12px;color:var(--tm)}
+.wm-actions{display:flex;gap:10px}
+.wm-btn-hi{flex:1;padding:11px 0;background:var(--grad);color:#fff;border:none;border-radius:var(--rf);font-size:14px;font-weight:600;cursor:pointer;transition:all .2s;box-shadow:0 4px 14px var(--pglow)}
+.wm-btn-hi:hover{opacity:.9;transform:translateY(-1px)}
+.wm-btn-more{padding:11px 18px;background:transparent;border:1px solid var(--border);border-radius:var(--rf);font-size:14px;color:var(--text);cursor:pointer;transition:all .2s}
+.wm-btn-more:hover{border-color:rgba(200,113,106,.35);color:var(--primary)}
+/* Reflection banner */
+.reflect-banner{background:linear-gradient(135deg,rgba(123,158,135,.08),rgba(201,169,110,.08));border:1px solid rgba(123,158,135,.2);border-radius:var(--r3);padding:16px 20px;display:flex;align-items:center;gap:14px;margin-bottom:14px}
+.reflect-icon{width:40px;height:40px;background:linear-gradient(135deg,#7B9E87,#A8C4A8);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.reflect-btn{margin-left:auto;padding:8px 16px;background:var(--green);color:#fff;border:none;border-radius:var(--rf);font-size:12px;font-weight:600;cursor:pointer;flex-shrink:0;transition:all .2s}
+.reflect-btn:hover{opacity:.9}
+.discover-sidebar{display:flex;flex-direction:column;gap:16px;overflow-y:auto}
+.ds-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r3);padding:20px}
+.ds-card-title{font-size:14px;font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.compat-bar{background:var(--border);border-radius:var(--rf);height:6px;overflow:hidden;margin-top:6px;margin-bottom:12px}
+.compat-fill{height:100%;background:var(--grad);border-radius:var(--rf)}
+.compat-label{display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px}
+.mini-match{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--border)}
+.mini-match:last-child{border-bottom:none}
+.mini-av{width:40px;height:40px;border-radius:50%;background:var(--grad);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.mini-name{font-size:14px;font-weight:600}
+.mini-dist{font-size:12px;color:var(--tm)}
+
+/* MATCHES */
+.matches-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px}
+.match-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r3);overflow:hidden;cursor:pointer;transition:all .3s}
+.match-card:hover{border-color:rgba(232,64,108,.3);transform:translateY(-3px)}
+.match-img{height:160px;background:linear-gradient(135deg,#1a1a2e,#2d1b69);display:flex;align-items:center;justify-content:center;font-size:64px;position:relative}
+.match-new{position:absolute;top:10px;right:10px;background:var(--primary);color:#fff;font-size:10px;font-weight:700;padding:3px 8px;border-radius:var(--rf)}
+.match-info{padding:14px}
+.match-name{font-size:15px;font-weight:700;margin-bottom:2px}
+.match-meta{font-size:12px;color:var(--tm);margin-bottom:10px}
+.match-msg-btn{width:100%;padding:8px;background:var(--grad);border:none;border-radius:var(--r1);color:#fff;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s}
+.match-msg-btn:hover{opacity:.9}
+
+/* MESSAGES */
+.messages-layout{display:grid;grid-template-columns:320px 1fr;gap:0;height:calc(100vh - 130px);border:1px solid var(--border);border-radius:var(--r3);overflow:hidden}
+.convo-list{background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column}
+.cl-search{padding:16px}
+.cl-search input{width:100%;background:var(--surface);border:1px solid var(--border);border-radius:var(--rf);padding:10px 16px;color:var(--text);font-size:13px}
+.cl-search input::placeholder{color:var(--ts)}
+.convo-items{flex:1;overflow-y:auto}
+.convo-item{display:flex;align-items:center;gap:12px;padding:14px 16px;cursor:pointer;transition:background .2s;border-left:3px solid transparent}
+.convo-item:hover{background:var(--surface)}
+.convo-item.active{background:var(--grads);border-left-color:var(--primary)}
+.ci-av{width:44px;height:44px;border-radius:50%;background:var(--grad);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;position:relative}
+.ci-online{position:absolute;bottom:1px;right:1px;width:11px;height:11px;background:var(--green);border-radius:50%;border:2px solid var(--bg2)}
+.ci-name{font-size:14px;font-weight:600;margin-bottom:2px}
+.ci-preview{font-size:12px;color:var(--tm);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:170px}
+.ci-time{font-size:11px;color:var(--ts);margin-left:auto;flex-shrink:0}
+.ci-unread{background:var(--primary);color:#fff;font-size:10px;font-weight:700;padding:2px 6px;border-radius:var(--rf);margin-left:auto;flex-shrink:0}
+.chat-area{display:flex;flex-direction:column;background:var(--bg)}
+.chat-header{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px;background:var(--bg2)}
+.chat-av{width:40px;height:40px;border-radius:50%;background:var(--grad);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.chat-name{font-size:15px;font-weight:700}
+.chat-status{font-size:12px;color:var(--green)}
+.chat-actions{margin-left:auto;display:flex;gap:8px}
+.chat-messages{flex:1;overflow-y:auto;padding:20px;display:flex;flex-direction:column;gap:12px}
+.chat-messages::-webkit-scrollbar{width:3px}
+.chat-messages::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
+.msg-row{display:flex;flex-direction:column;max-width:70%}
+.msg-row.me{align-self:flex-end;align-items:flex-end}
+.msg-row.them{align-self:flex-start;align-items:flex-start}
+.msg-bubble{padding:11px 16px;border-radius:18px;font-size:14px;line-height:1.5}
+.msg-row.me .msg-bubble{background:var(--grad);color:#fff;border-radius:18px 18px 4px 18px}
+.msg-row.them .msg-bubble{background:var(--bg2);border:1px solid var(--border);border-radius:18px 18px 18px 4px}
+.msg-time{font-size:11px;color:var(--ts);margin-top:4px;padding:0 4px}
+.chat-input-area{padding:16px 20px;border-top:1px solid var(--border);background:var(--bg2);display:flex;align-items:center;gap:10px}
+.chat-input{flex:1;background:var(--surface);border:1px solid var(--border);border-radius:var(--rf);padding:12px 18px;color:var(--text);font-size:14px;resize:none}
+.chat-send{width:44px;height:44px;background:var(--grad);border:none;border-radius:50%;color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;font-size:16px;transition:all .2s}
+.chat-send:hover{transform:scale(1.08)}
+.chat-attach{width:36px;height:36px;background:var(--surface);border:1px solid var(--border);border-radius:50%;color:var(--tm);display:flex;align-items:center;justify-content:center;cursor:pointer}
+.match-announce{background:var(--grads);border:1px solid rgba(232,64,108,.2);border-radius:var(--r2);padding:16px;text-align:center;margin:16px auto;max-width:260px}
+.ma-emoji{font-size:32px;margin-bottom:6px}
+.ma-text{font-size:14px;font-weight:600}
+.ma-sub{font-size:12px;color:var(--tm)}
+
+/* AI ASSISTANT */
+.ai-layout{display:grid;grid-template-columns:1fr 280px;gap:24px;height:calc(100vh - 130px)}
+.ai-chat-main{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r4);display:flex;flex-direction:column;overflow:hidden}
+.ai-chat-hdr{padding:20px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:14px;background:var(--grads)}
+.ai-hdr-av{width:48px;height:48px;background:var(--grad);border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:24px}
+.ai-hdr-name{font-size:16px;font-weight:700}
+.ai-hdr-st{font-size:12px;color:var(--green)}
+.ai-msgs{flex:1;overflow-y:auto;padding:20px;display:flex;flex-direction:column;gap:14px}
+.ai-msgs::-webkit-scrollbar{width:3px}
+.ai-msgs::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
+.ai-typing{display:flex;gap:5px;padding:14px 18px;background:var(--surface);border:1px solid var(--border);border-radius:18px 18px 18px 4px;align-self:flex-start}
+.ai-typing span{width:7px;height:7px;background:var(--tm);border-radius:50%;animation:bounce .9s infinite}
+.ai-typing span:nth-child(2){animation-delay:.15s}
+.ai-typing span:nth-child(3){animation-delay:.3s}
+@keyframes bounce{0%,80%,100%{transform:translateY(0)}40%{transform:translateY(-8px)}}
+.ai-inp-area{padding:16px 20px;border-top:1px solid var(--border);display:flex;gap:10px}
+.ai-inp{flex:1;background:var(--surface);border:1px solid var(--border);border-radius:var(--rf);padding:12px 18px;color:var(--text);font-size:14px}
+.ai-inp::placeholder{color:var(--ts)}
+.ai-send-btn{width:44px;height:44px;background:var(--grad);border:none;border-radius:50%;color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;transition:all .2s;flex-shrink:0}
+.ai-send-btn:hover{transform:scale(1.08)}
+.ai-sidebar{display:flex;flex-direction:column;gap:14px;overflow-y:auto}
+.ai-scard{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r3);padding:18px}
+.ai-scard-title{font-size:13px;font-weight:700;margin-bottom:12px;color:var(--pl)}
+.ai-chip{background:var(--surface);border:1px solid var(--border);border-radius:var(--rf);padding:8px 12px;font-size:12px;cursor:pointer;display:block;margin-bottom:6px;transition:all .2s}
+.ai-chip:hover{border-color:var(--primary);background:var(--pglow);color:var(--pl)}
+
+/* VENUES */
+.venues-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px}
+.venue-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r3);overflow:hidden;transition:all .3s;cursor:pointer}
+.venue-card:hover{border-color:rgba(212,168,83,.3);transform:translateY(-4px)}
+.vc-img{height:160px;display:flex;align-items:center;justify-content:center;font-size:64px;position:relative}
+.vc-tag{position:absolute;top:10px;left:10px;background:rgba(0,0,0,.7);backdrop-filter:blur(8px);border-radius:var(--rf);padding:3px 10px;font-size:11px;font-weight:600;color:var(--gl)}
+.vc-feat{position:absolute;top:10px;right:10px;background:var(--gradg);border-radius:var(--rf);padding:3px 10px;font-size:11px;font-weight:600;color:#000}
+.vc-body{padding:18px}
+.vc-name{font-size:16px;font-weight:700;margin-bottom:4px}
+.vc-loc{font-size:12px;color:var(--tm);display:flex;align-items:center;gap:4px;margin-bottom:8px}
+.vc-rat{font-size:13px;color:var(--gold);margin-bottom:12px}
+.vc-btn{width:100%;padding:10px;background:var(--grad);border:none;border-radius:var(--r1);color:#fff;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s}
+.vc-btn:hover{opacity:.9}
+.vc-offer{background:rgba(212,168,83,.1);border:1px solid rgba(212,168,83,.2);border-radius:var(--r1);padding:8px 12px;font-size:12px;color:var(--gl);margin-bottom:12px}
+
+/* PROFILE */
+.profile-layout{display:grid;grid-template-columns:300px 1fr;gap:24px}
+.profile-card-left{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r4);padding:28px;text-align:center}
+.prof-av{width:100px;height:100px;border-radius:50%;background:var(--grad);display:flex;align-items:center;justify-content:center;font-size:48px;margin:0 auto 16px;cursor:pointer;position:relative;border:3px solid rgba(232,64,108,.3)}
+.prof-av-edit{position:absolute;bottom:0;right:0;width:28px;height:28px;background:var(--primary);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;color:#fff}
+.prof-name{font-size:20px;font-weight:700;margin-bottom:4px}
+.prof-meta{font-size:13px;color:var(--tm);margin-bottom:16px}
+.prof-trust{background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.2);border-radius:var(--r2);padding:12px;margin-bottom:16px}
+.pt-score{font-size:28px;font-weight:800;color:var(--green);font-family:var(--serif)}
+.pt-label{font-size:12px;color:var(--tm)}
+.prof-plan{background:var(--grads);border:1px solid rgba(232,64,108,.2);border-radius:var(--r2);padding:12px;cursor:pointer;transition:all .2s}
+.prof-plan:hover{background:rgba(232,64,108,.15)}
+.pp-name{font-size:14px;font-weight:700;color:var(--pl)}
+.pp-hint{font-size:11px;color:var(--tm);margin-top:2px}
+.edit-form{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r4);padding:28px}
+.ef-section{margin-bottom:28px}
+.ef-section-title{font-size:16px;font-weight:700;margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px}
+.ef-section-title i{color:var(--pl);font-size:14px}
+.ef-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.ef-full{grid-column:1/-1}
+.ef-lbl{font-size:13px;font-weight:500;color:var(--tm);margin-bottom:6px;display:block}
+.ef-inp{width:100%;background:var(--surface);border:1px solid var(--border);border-radius:var(--r2);padding:11px 14px;color:var(--text);font-size:14px;transition:border .2s}
+.ef-inp:focus{border-color:var(--primary)}
+.ef-ta{resize:none;min-height:100px;line-height:1.6}
+.ef-sel{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%238892A4' d='M6 8L1 3h10z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center}
+.save-btn{background:var(--grad);border:none;color:#fff;padding:12px 32px;border-radius:var(--rf);font-size:15px;font-weight:600;cursor:pointer;transition:all .2s;box-shadow:0 4px 20px rgba(232,64,108,.3)}
+.save-btn:hover{transform:translateY(-1px)}
+.logout-btn{background:none;border:1px solid var(--border);color:var(--tm);padding:10px 24px;border-radius:var(--rf);font-size:14px;font-weight:500;cursor:pointer;transition:all .2s;margin-left:12px}
+.logout-btn:hover{border-color:var(--primary);color:var(--primary)}
+.tag-sel{display:flex;flex-wrap:wrap;gap:8px}
+.tag-opt{background:var(--surface);border:1px solid var(--border);border-radius:var(--rf);padding:6px 14px;font-size:13px;cursor:pointer;transition:all .2s}
+.tag-opt.on{background:var(--pglow);border-color:var(--primary);color:var(--pl)}
+
+/* MODAL */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);backdrop-filter:blur(8px);z-index:9999;align-items:center;justify-content:center}
+.modal-overlay.open{display:flex}
+.modal{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r4);padding:36px;max-width:480px;width:90%;position:relative;animation:modalIn .3s ease}
+@keyframes modalIn{from{opacity:0;transform:scale(.9) translateY(20px)}to{opacity:1;transform:scale(1) translateY(0)}}
+.modal-close{position:absolute;top:16px;right:16px;background:var(--surface);border:1px solid var(--border);border-radius:50%;width:32px;height:32px;color:var(--tm);cursor:pointer;display:flex;align-items:center;justify-content:center}
+.match-modal{text-align:center}
+.mm-emoji{font-size:60px;margin-bottom:12px}
+.mm-title{font-family:var(--serif);font-size:28px;font-weight:700;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:8px}
+.mm-sub{font-size:15px;color:var(--tm);margin-bottom:24px}
+.mm-profiles{display:flex;align-items:center;justify-content:center;gap:16px;margin-bottom:24px}
+.mm-av{width:80px;height:80px;border-radius:50%;background:var(--grad);display:flex;align-items:center;justify-content:center;font-size:36px;border:3px solid rgba(232,64,108,.3)}
+.mm-heart{font-size:28px}
+.mm-btns{display:flex;gap:10px}
+.mm-btn-chat{flex:1;padding:12px;background:var(--grad);border:none;border-radius:var(--rf);color:#fff;font-weight:600;cursor:pointer;font-size:14px}
+.mm-btn-later{flex:1;padding:12px;background:var(--surface);border:1px solid var(--border);border-radius:var(--rf);color:var(--text);font-weight:600;cursor:pointer;font-size:14px}
+
+/* UPGRADE MODAL */
+.upgrade-modal .um-plans{display:flex;flex-direction:column;gap:12px;margin:20px 0}
+.um-plan{background:var(--surface);border:1px solid var(--border);border-radius:var(--r2);padding:16px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;transition:all .2s}
+.um-plan:hover,.um-plan.sel{border-color:var(--primary);background:var(--pglow)}
+.um-plan-name{font-weight:700;font-size:15px}
+.um-plan-desc{font-size:12px;color:var(--tm);margin-top:2px}
+.um-plan-price{font-size:22px;font-weight:800;font-family:var(--serif);background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+
+/* NOTIFICATION TOAST */
+.toast{position:fixed;bottom:24px;right:24px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--r2);padding:14px 18px;font-size:14px;font-weight:500;box-shadow:0 8px 32px rgba(0,0,0,.4);z-index:99999;transform:translateY(100px);opacity:0;transition:all .3s;display:flex;align-items:center;gap:10px;max-width:300px}
+.toast.show{transform:translateY(0);opacity:1}
+.toast-icon{font-size:20px}
+
+/* BOTTOM NAV (mobile) */
+.bottom-nav{display:none;position:fixed;bottom:0;left:0;right:0;background:var(--bg2);border-top:1px solid var(--border);padding:8px 0 max(8px,env(safe-area-inset-bottom));z-index:100}
+.bn-inner{display:flex;justify-content:space-around}
+.bn-link{display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 12px;cursor:pointer;color:var(--ts);transition:color .2s;position:relative}
+.bn-link.active{color:var(--primary)}
+.bn-link i{font-size:20px}
+.bn-link span{font-size:10px;font-weight:500}
+.bn-badge{position:absolute;top:4px;right:8px;width:8px;height:8px;background:var(--primary);border-radius:50%;border:2px solid var(--bg2)}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  .sidebar{display:none}
+  .bottom-nav{display:block}
+  .main-area{padding-bottom:70px}
+  .discover-layout{grid-template-columns:1fr;height:auto}
+  .discover-sidebar{display:none}
+  .messages-layout{grid-template-columns:1fr}
+  .convo-list{display:none}
+  .convo-list.show{display:flex;position:fixed;inset:0;z-index:50;width:300px}
+  .ai-layout{grid-template-columns:1fr}
+  .ai-sidebar{display:none}
+  .profile-layout{grid-template-columns:1fr}
+  .ef-grid{grid-template-columns:1fr}
+  .auth-left{display:none}
+  .auth-right{padding:28px 20px}
+  .main-content{padding:16px}
+  .profile-card{width:90%;max-width:320px}
+}
+@media(max-width:480px){
+  .auth-right{padding:20px 16px}
+  .auth-box{max-width:100%}
+  .auth-tabs{margin-bottom:20px}
+  .btn-full,.btn-google{padding:14px;font-size:15px;min-height:48px}
+  .finput{padding:13px 14px;font-size:16px}/* 16px prevents iOS zoom */
+  .ob-wrap{padding:0 4px}
+  .ob-card{padding:20px 16px}
+  .ob-title{font-size:22px}
+  .bottom-nav{padding:8px 0 max(8px,env(safe-area-inset-bottom))}
+  .bn-item{min-height:48px;min-width:48px}
+  .modal{width:calc(100% - 24px);margin:12px;max-width:100%}
+  .match-card-big{width:calc(100vw - 32px);max-width:340px}
+  .main-content{padding:12px}
+  .section-head{padding:12px 0}
+  .stats-mini{grid-template-columns:1fr 1fr}
+}
+@media(max-width:375px){
+  .auth-right{padding:16px 14px}
+  .finput{font-size:16px}
+  .btn-full{font-size:14px}
+  .ob-title{font-size:20px}
+}
+</style>
+</head>
+<body>
+
+<!-- ══ AUTH SCREEN ══ -->
+<div id="s-auth" class="screen active">
+  <div class="auth-left">
+    <div class="auth-left-glow"></div>
+    <div class="auth-left-glow2"></div>
+    <div class="auth-brand">
+      <div class="auth-logo">💕</div>
+      <div class="auth-brand-name">Kind <span>Date</span></div>
+      <div class="auth-tagline">Real People. Smart Matches. Real Dates.</div>
+    </div>
+    <div class="auth-features">
+      <div class="auth-feat"><div class="auth-feat-ico af1"><i class="fas fa-shield-alt"></i></div><div><div class="auth-feat-text">100% Verified Profiles</div><div class="auth-feat-sub">No bots. No fakes. Ever.</div></div></div>
+      <div class="auth-feat"><div class="auth-feat-ico af2"><i class="fas fa-brain"></i></div><div><div class="auth-feat-text">AI-Powered Matching</div><div class="auth-feat-sub">Quality matches, not quantity</div></div></div>
+      <div class="auth-feat"><div class="auth-feat-ico af3"><i class="fas fa-map-marked-alt"></i></div><div><div class="auth-feat-text">Real-World Dates</div><div class="auth-feat-sub">Book at top Newport Beach venues</div></div></div>
+    </div>
+    <div style="position:relative;z-index:1;width:100%;max-width:300px;margin-top:auto;padding-top:32px;border-top:1px solid var(--border)">
+      <div style="font-family:var(--serif);font-size:0.85rem;color:rgba(44,32,24,0.7);margin-bottom:6px">Kindness Community Foundation</div>
+      <div style="font-size:11px;color:var(--tm);line-height:1.7">
+        <div>Building sustainable systems for community impact</div>
+        <a href="https://kindnesscommunityfoundation.com/" target="_blank" rel="noopener" style="color:var(--primary);text-decoration:none;display:block;margin-top:4px">kindnesscommunityfoundation.com</a>
+        <div style="margin-top:2px;color:var(--ts)">📍 Newport Beach, CA · contact@kindnesscommunityfoundation.com</div>
+        <div style="margin-top:6px;font-size:10px;color:var(--ts);letter-spacing:0.04em">Kind, an initiative by KCF LLC</div>
+      </div>
+    </div>
+  </div>
+  <div class="auth-right">
+    <div class="auth-box">
+      <div style="margin-bottom:28px"><a href="index.html" style="font-size:13px;color:var(--tm);display:flex;align-items:center;gap:6px"><i class="fas fa-arrow-left"></i> Back to home</a></div>
+      <div class="auth-tabs">
+        <button class="auth-tab active" onclick="showAuthTab('signin')">Sign In</button>
+        <button class="auth-tab" onclick="showAuthTab('signup')">Create Account</button>
+      </div>
+
+      <!-- SIGN IN -->
+      <div id="form-signin" class="auth-form">
+        <h2 style="font-family:var(--serif);font-size:26px;font-weight:700;margin-bottom:4px">Welcome back 👋</h2>
+        <p style="font-size:14px;color:var(--tm);margin-bottom:16px">Sign in to your Kind Date account</p>
+        <div class="fgroup"><label class="flabel">Email Address</label><input class="finput" type="email" placeholder="you@example.com" id="si-email"></div>
+        <div class="fgroup"><label class="flabel">Password</label><input class="finput" type="password" placeholder="Your password" id="si-pass"></div>
+        <div style="text-align:right;margin-top:-8px"><span class="auth-link" style="font-size:13px">Forgot password?</span></div>
+        <button class="btn-full" onclick="handleSignIn()"><i class="fas fa-sign-in-alt"></i> Sign In</button>
+        <div class="auth-or"><div class="auth-or-line"></div><div class="auth-or-text">or continue with</div><div class="auth-or-line"></div></div>
+        <button class="btn-google" onclick="handleGoogleAuth()"><img src="https://www.google.com/favicon.ico" width="18" height="18" alt="G"> Continue with Google</button>
+        <div class="auth-footer-text">No account? <span class="auth-link" onclick="showAuthTab('signup')">Create one free →</span></div>
+      </div>
+
+      <!-- SIGN UP -->
+      <div id="form-signup" class="auth-form hide">
+        <h2 style="font-family:var(--serif);font-size:26px;font-weight:700;margin-bottom:4px">Join Kind Date 💕</h2>
+        <p style="font-size:14px;color:var(--tm);margin-bottom:16px">Create your free verified account</p>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+          <div class="fgroup"><label class="flabel">First Name</label><input class="finput" type="text" placeholder="Alex" id="su-fname"></div>
+          <div class="fgroup"><label class="flabel">Last Name</label><input class="finput" type="text" placeholder="Smith" id="su-lname"></div>
+        </div>
+        <div class="fgroup"><label class="flabel">Email Address</label><input class="finput" type="email" placeholder="you@example.com" id="su-email"></div>
+        <div class="fgroup"><label class="flabel">Password</label><input class="finput" type="password" placeholder="Min 8 characters" id="su-pass"></div>
+        <div class="fgroup"><label class="flabel">Date of Birth</label><input class="finput" type="date" id="su-dob"></div>
+        <button class="btn-full" onclick="handleSignUp()"><i class="fas fa-heart"></i> Create Free Account</button>
+        <div class="auth-or"><div class="auth-or-line"></div><div class="auth-or-text">or</div><div class="auth-or-line"></div></div>
+        <button class="btn-google" onclick="handleGoogleAuth()"><img src="https://www.google.com/favicon.ico" width="18" height="18" alt="G"> Continue with Google</button>
+        <p style="font-size:12px;color:var(--ts);text-align:center;margin-top:4px">By signing up, you agree to our <span class="auth-link">Terms</span> & <span class="auth-link">Privacy Policy</span></p>
+        <div class="auth-footer-text">Already have an account? <span class="auth-link" onclick="showAuthTab('signin')">Sign in →</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ ONBOARDING SCREEN ══ -->
+<div id="s-onboard" class="screen">
+  <div class="ob-wrap">
+    <div class="ob-progress">
+      <div class="ob-step-bar" id="ob-bar-1"><div class="fill"></div></div>
+      <div class="ob-step-bar" id="ob-bar-2"><div class="fill"></div></div>
+      <div class="ob-step-bar" id="ob-bar-3"><div class="fill"></div></div>
+      <div class="ob-step-bar" id="ob-bar-4"><div class="fill"></div></div>
+    </div>
+
+    <!-- Step 1: Phone -->
+    <div class="ob-step active" id="ob-1">
+      <div class="ob-title">Verify Your Phone 📱</div>
+      <div class="ob-sub">We'll send a code to confirm it's really you</div>
+      <div class="ob-card">
+        <div id="phone-entry">
+          <label class="ef-lbl">Phone Number</label>
+          <div class="phone-row" style="margin-bottom:16px">
+            <select class="ef-inp ef-sel country-sel" style="flex-shrink:0;width:100px"><option value="+1">🇺🇸 +1</option><option value="+44">🇬🇧 +44</option><option value="+91">🇮🇳 +91</option></select>
+            <input class="finput" type="tel" placeholder="(555) 000-0000" id="ob-phone" style="flex:1">
+          </div>
+          <button class="btn-full" onclick="sendOTP()"><i class="fas fa-sms"></i> Send Verification Code</button>
+        </div>
+        <div id="otp-entry" class="hide">
+          <p style="font-size:14px;color:var(--tm);text-align:center;margin-bottom:20px">Enter the 6-digit code sent to your phone</p>
+          <div class="otp-row" id="otp-boxes"></div>
+          <div style="text-align:center;margin-top:16px"><span style="font-size:13px;color:var(--tm)">Didn't receive it? <span class="auth-link" onclick="sendOTP()">Resend</span></span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 2: AI Chat -->
+    <div class="ob-step" id="ob-2">
+      <div class="ob-title">Meet Your AI Matchmaker 🤖</div>
+      <div class="ob-sub">A quick chat to understand what you're looking for</div>
+      <div class="ob-card">
+        <div class="ai-chat-ob" id="ob-chat">
+          <div class="bmsg bai">Hi! I'm Kind AI, your personal matchmaker. I'm going to ask you a few quick questions to find your perfect match. Ready? 😊</div>
+        </div>
+        <div class="ob-inp-row">
+          <input class="ob-inp" type="text" placeholder="Type your answer..." id="ob-chat-inp" onkeydown="if(event.key==='Enter')sendObMsg()">
+          <button class="ob-send" onclick="sendObMsg()"><i class="fas fa-paper-plane"></i></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 3: Profile Photo & Bio -->
+    <div class="ob-step" id="ob-3">
+      <div class="ob-title">Your AI-Generated Profile ✨</div>
+      <div class="ob-sub">Your bio has been written by AI based on our conversation. Add a photo to complete it.</div>
+      <div class="ob-card">
+        <div class="photo-area">
+          <div class="photo-circle" onclick="showToast('📸 Photo upload coming soon!')">📸</div>
+          <div class="photo-hint">Tap to upload your best photo<br><span style="color:var(--ts)">JPG, PNG · Max 10MB</span></div>
+        </div>
+        <div class="bio-area" style="margin-top:20px">
+          <div class="bio-label"><i class="fas fa-magic"></i> AI-Written Bio</div>
+          <p class="bio-text" id="ai-bio">An adventurous soul who loves beach walks at sunset, discovering hidden Newport Beach gems, and meaningful conversations over great food. Looking for someone genuine who values real connection over small talk. Ready for something real. 🌅</p>
+          <div style="margin-top:12px"><span class="auth-link" style="font-size:13px" onclick="regenerateBio()"><i class="fas fa-redo"></i> Regenerate Bio</span></div>
+        </div>
+        <div style="margin-top:16px">
+          <label class="ef-lbl">Edit Your Display Name</label>
+          <input class="finput" type="text" placeholder="How should we display your name?" id="ob-name" value="">
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 4: Preferences -->
+    <div class="ob-step" id="ob-4">
+      <div class="ob-title">Your Preferences 🎯</div>
+      <div class="ob-sub">Help us find your ideal match</div>
+      <div class="ob-card">
+        <div style="margin-bottom:20px">
+          <label class="ef-lbl" style="margin-bottom:12px;display:block">I am a...</label>
+          <div class="pref-grid" id="pref-gender">
+            <div class="pref-opt" onclick="selectPref('gender',this,'man')"><span class="pref-emoji">👨</span>Man</div>
+            <div class="pref-opt" onclick="selectPref('gender',this,'woman')"><span class="pref-emoji">👩</span>Woman</div>
+            <div class="pref-opt" onclick="selectPref('gender',this,'nonbinary')"><span class="pref-emoji">🌈</span>Non-binary</div>
+            <div class="pref-opt" onclick="selectPref('gender',this,'other')"><span class="pref-emoji">✨</span>Prefer not to say</div>
+          </div>
+        </div>
+        <div style="margin-bottom:20px">
+          <label class="ef-lbl" style="margin-bottom:12px;display:block">I'm looking for...</label>
+          <div class="pref-grid" id="pref-intent">
+            <div class="pref-opt" onclick="selectPref('intent',this,'serious')"><span class="pref-emoji">💍</span>Serious relationship</div>
+            <div class="pref-opt" onclick="selectPref('intent',this,'dating')"><span class="pref-emoji">💕</span>Casual dating</div>
+            <div class="pref-opt" onclick="selectPref('intent',this,'friends')"><span class="pref-emoji">🤝</span>New friends</div>
+            <div class="pref-opt" onclick="selectPref('intent',this,'open')"><span class="pref-emoji">🌟</span>Open to anything</div>
+          </div>
+        </div>
+        <div>
+          <label class="ef-lbl" style="margin-bottom:8px;display:block">Age range I'm interested in</label>
+          <div style="display:flex;gap:12px;align-items:center">
+            <input class="finput" type="number" placeholder="Min" value="22" min="18" max="100" style="width:100px">
+            <span style="color:var(--tm)">to</span>
+            <input class="finput" type="number" placeholder="Max" value="38" min="18" max="100" style="width:100px">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ob-nav">
+      <button class="btn-ob btn-ob-back" id="ob-back-btn" onclick="obBack()" style="display:none"><i class="fas fa-arrow-left"></i> Back</button>
+      <button class="btn-ob btn-ob-next" id="ob-next-btn" onclick="obNext()">Continue <i class="fas fa-arrow-right"></i></button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MAIN APP SCREEN ══ -->
+<div id="s-app" class="screen">
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="sb-logo"><div class="sb-logo-i">💕</div><div class="sb-logo-t">Kind <span>Date</span></div></div>
+    <div class="sb-nav">
+      <div class="sb-link active" onclick="switchTab('discover')"><i class="fas fa-compass"></i> Discover</div>
+      <div class="sb-link" onclick="switchTab('matches')"><i class="fas fa-heart"></i> Matches <span class="sb-badge">3</span></div>
+      <div class="sb-link" onclick="switchTab('messages')"><i class="fas fa-comment-dots"></i> Messages <span class="sb-badge">2</span></div>
+      <div class="sb-link" onclick="window.location.href='aria.html'"><i class="fas fa-robot"></i> Aria ✦</div>
+      <div class="sb-link" onclick="switchTab('venues')"><i class="fas fa-map-marker-alt"></i> Venues</div>
+      <div class="sb-link" onclick="switchTab('profile')"><i class="fas fa-user"></i> My Profile</div>
+    </div>
+    <div class="sb-user" onclick="switchTab('profile')">
+      <div class="sb-av">😊</div>
+      <div><div class="sb-uname" id="sb-name">Alex S.</div><div class="sb-uplan">✦ Plus Member</div></div>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main-area">
+    <div class="main-header">
+      <div>
+        <div class="mh-title" id="mh-title">Discover</div>
+        <div class="mh-sub" id="mh-sub">Newport Beach · 5 new profiles today</div>
+      </div>
+      <div class="mh-actions">
+        <div class="icon-btn" onclick="showToast('🔔 Notifications')"><i class="fas fa-bell"></i></div>
+        <div class="icon-btn" onclick="switchTab('profile')"><i class="fas fa-sliders-h"></i></div>
+      </div>
+    </div>
+
+    <div class="main-content">
+      <!-- DISCOVER TAB -->
+      <div id="tab-discover" class="tab-view active">
+        <div class="discover-layout">
+          <div class="wm-col">
+            <div class="wm-top-bar">
+              <div>
+                <div class="wm-week-lbl">Week 17 · Your 3 curated matches</div>
+                <div class="wm-timer">Next batch refreshes in <b id="refresh-cd">4d 12h</b></div>
+              </div>
+              <div style="font-size:12px;color:var(--tm);font-weight:500">No swiping ✦</div>
+            </div>
+            <div id="reflect-area"></div>
+            <div id="weekly-match-list"></div>
+          </div>
+          <div class="discover-sidebar">
+            <div class="ds-card">
+              <div class="ds-card-title"><i class="fas fa-brain" style="color:var(--pl)"></i> AI Compatibility</div>
+              <div class="compat-label"><span>Personality Match</span><span style="color:var(--pl);font-weight:600">94%</span></div>
+              <div class="compat-bar"><div class="compat-fill" style="width:94%"></div></div>
+              <div class="compat-label"><span>Lifestyle Fit</span><span style="color:var(--pl);font-weight:600">88%</span></div>
+              <div class="compat-bar"><div class="compat-fill" style="width:88%"></div></div>
+              <div class="compat-label"><span>Intent Alignment</span><span style="color:var(--pl);font-weight:600">96%</span></div>
+              <div class="compat-bar"><div class="compat-fill" style="width:96%"></div></div>
+            </div>
+            <div class="ds-card">
+              <div class="ds-card-title"><i class="fas fa-users" style="color:var(--gold)"></i> Today's Suggestions</div>
+              <div id="mini-matches"></div>
+            </div>
+            <div class="ds-card">
+              <div class="ds-card-title"><i class="fas fa-lightbulb" style="color:var(--pl)"></i> AI Icebreaker</div>
+              <p style="font-size:13px;color:var(--tm);line-height:1.6;margin-bottom:12px">"You both love sunset beach walks. Ask her: 'Best sunset spot in Newport Beach — go!'"</p>
+              <button style="width:100%;padding:8px;background:var(--grads);border:1px solid rgba(232,64,108,.2);border-radius:var(--r1);color:var(--pl);font-size:13px;font-weight:600;cursor:pointer" onclick="showToast('✨ Icebreaker copied!')">Copy Icebreaker</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MATCHES TAB -->
+      <div id="tab-matches" class="tab-view">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
+          <div>
+            <h3 style="font-size:18px;font-weight:700">Your Matches</h3>
+            <p style="font-size:13px;color:var(--tm)">3 new matches this week</p>
+          </div>
+          <select class="ef-inp ef-sel" style="width:160px;font-size:13px">
+            <option>Most Recent</option><option>Closest First</option><option>Highest Match</option>
+          </select>
+        </div>
+        <div class="matches-grid" id="matches-grid"></div>
+      </div>
+
+      <!-- MESSAGES TAB -->
+      <div id="tab-messages" class="tab-view">
+        <div class="messages-layout">
+          <div class="convo-list">
+            <div class="cl-search"><input type="text" placeholder="🔍 Search conversations..."></div>
+            <div class="convo-items" id="convo-items"></div>
+          </div>
+          <div class="chat-area" id="chat-area">
+            <div class="chat-header">
+              <div class="chat-av" id="chat-av">👩</div>
+              <div><div class="chat-name" id="chat-name">Sarah M.</div><div class="chat-status">● Online</div></div>
+              <div class="chat-actions">
+                <div class="icon-btn" onclick="showToast('📞 Voice call — Premium feature')"><i class="fas fa-phone"></i></div>
+                <div class="icon-btn" onclick="showUpgradeModal()"><i class="fas fa-video"></i></div>
+                <div class="icon-btn" onclick="showToast('ℹ️ Profile info')"><i class="fas fa-info-circle"></i></div>
+              </div>
+            </div>
+            <div class="chat-messages" id="chat-messages"></div>
+            <div class="chat-input-area">
+              <div class="chat-attach" onclick="showToast('📎 Attach file')"><i class="fas fa-paperclip"></i></div>
+              <input class="chat-input" type="text" placeholder="Type a message..." id="chat-inp" onkeydown="if(event.key==='Enter')sendMsg()">
+              <div class="icon-btn" onclick="showToast('😊 Emoji picker')"><i class="fas fa-smile"></i></div>
+              <button class="chat-send" onclick="sendMsg()"><i class="fas fa-paper-plane"></i></button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- AI ASSISTANT TAB -->
+      <div id="tab-ai" class="tab-view">
+        <div class="ai-layout">
+          <div class="ai-chat-main">
+            <div class="ai-chat-hdr">
+              <div class="ai-hdr-av">🤖</div>
+              <div><div class="ai-hdr-name">Kind AI Assistant</div><div class="ai-hdr-st">● Always here to help</div></div>
+              <div style="margin-left:auto"><button style="background:var(--grad);border:none;color:#fff;padding:8px 16px;border-radius:var(--rf);font-size:13px;font-weight:600;cursor:pointer" onclick="clearAiChat()"><i class="fas fa-redo"></i> New Chat</button></div>
+            </div>
+            <div class="ai-msgs" id="ai-msgs">
+              <div class="bmsg bai">👋 Hi! I'm your Kind AI assistant. I can help you with:<br><br>🎯 Improve your profile<br>💬 Suggest icebreakers<br>🗓️ Plan the perfect date<br>💕 Understand your matches<br><br>What would you like help with today?</div>
+            </div>
+            <div class="ai-inp-area">
+              <input class="ai-inp" type="text" placeholder="Ask me anything about dating, profiles, matches..." id="ai-inp" onkeydown="if(event.key==='Enter')sendAiMsg()">
+              <button class="ai-send-btn" onclick="sendAiMsg()"><i class="fas fa-paper-plane"></i></button>
+            </div>
+          </div>
+          <div class="ai-sidebar">
+            <div class="ai-scard">
+              <div class="ai-scard-title">Quick Prompts</div>
+              <span class="ai-chip" onclick="askAi('Improve my profile bio')">✍️ Improve my bio</span>
+              <span class="ai-chip" onclick="askAi('Suggest an icebreaker for Sarah')">💬 Icebreaker for Sarah</span>
+              <span class="ai-chip" onclick="askAi('Plan a first date in Newport Beach')">🗓️ Plan my first date</span>
+              <span class="ai-chip" onclick="askAi('Why am I not getting matches?')">🤔 Why no matches?</span>
+              <span class="ai-chip" onclick="askAi('What venues does Kind Date recommend for a first date?')">📍 Best date venues</span>
+            </div>
+            <div class="ai-scard">
+              <div class="ai-scard-title">Your AI Stats</div>
+              <div style="display:flex;flex-direction:column;gap:10px">
+                <div><div class="compat-label" style="margin-bottom:4px"><span style="font-size:13px;color:var(--tm)">Profile Score</span><span style="color:var(--pl);font-weight:600">82/100</span></div><div class="compat-bar"><div class="compat-fill" style="width:82%"></div></div></div>
+                <div><div class="compat-label" style="margin-bottom:4px"><span style="font-size:13px;color:var(--tm)">Match Potential</span><span style="color:var(--pl);font-weight:600">94%</span></div><div class="compat-bar"><div class="compat-fill" style="width:94%"></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- VENUES TAB -->
+      <div id="tab-venues" class="tab-view">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;flex-wrap:wrap">
+          <input class="finput" type="text" placeholder="🔍 Search Newport Beach venues..." style="flex:1;min-width:200px">
+          <select class="ef-inp ef-sel" style="width:140px;font-size:13px"><option>All Types</option><option>Restaurant</option><option>Bar & Lounge</option><option>Café</option></select>
+          <select class="ef-inp ef-sel" style="width:140px;font-size:13px"><option>Price: Any</option><option>$ Budget</option><option>$$ Mid-range</option><option>$$$ Fine Dining</option></select>
+        </div>
+        <div class="venues-grid" id="venues-grid"></div>
+      </div>
+
+      <!-- PROFILE TAB -->
+      <div id="tab-profile" class="tab-view">
+        <div class="profile-layout">
+          <div>
+            <div class="profile-card-left">
+              <div class="prof-av" onclick="showToast('📸 Photo upload')">😊<div class="prof-av-edit"><i class="fas fa-camera"></i></div></div>
+              <div class="prof-name" id="prof-name">Alex S.</div>
+              <div class="prof-meta">28 · Newport Beach, CA</div>
+              <div class="prof-trust">
+                <div class="pt-score">98</div>
+                <div class="pt-label">Trust Score · Fully Verified</div>
+                <div style="margin-top:8px;display:flex;flex-direction:column;gap:4px">
+                  <div style="font-size:11px;color:var(--green);display:flex;align-items:center;gap:4px"><i class="fas fa-check-circle"></i> Phone Verified</div>
+                  <div style="font-size:11px;color:var(--green);display:flex;align-items:center;gap:4px"><i class="fas fa-check-circle"></i> Email Verified</div>
+                  <div style="font-size:11px;color:var(--green);display:flex;align-items:center;gap:4px"><i class="fas fa-check-circle"></i> ID Verified</div>
+                </div>
+              </div>
+              <div class="prof-plan" onclick="showUpgradeModal()">
+                <div class="pp-name">✦ Plus Member</div>
+                <div class="pp-hint">Upgrade to Premium → $19/mo</div>
+              </div>
+            </div>
+          </div>
+          <div class="edit-form">
+            <div class="ef-section">
+              <div class="ef-section-title"><i class="fas fa-user"></i> Basic Information</div>
+              <div class="ef-grid">
+                <div><label class="ef-lbl">Display Name</label><input class="ef-inp" type="text" value="Alex S." id="pf-name"></div>
+                <div><label class="ef-lbl">Age</label><input class="ef-inp" type="number" value="28" min="18" max="100"></div>
+                <div><label class="ef-lbl">Gender</label><select class="ef-inp ef-sel"><option>Man</option><option>Woman</option><option>Non-binary</option><option>Other</option></select></div>
+                <div><label class="ef-lbl">Looking For</label><select class="ef-inp ef-sel"><option>Serious Relationship</option><option>Casual Dating</option><option>New Friends</option></select></div>
+                <div class="ef-full"><label class="ef-lbl">Bio</label><textarea class="ef-inp ef-ta">An adventurous soul who loves beach walks at sunset, discovering hidden Newport Beach gems, and meaningful conversations over great food. Looking for someone genuine who values real connection over small talk.</textarea></div>
+              </div>
+            </div>
+            <div class="ef-section">
+              <div class="ef-section-title"><i class="fas fa-map-marker-alt"></i> Location</div>
+              <div class="ef-grid">
+                <div class="ef-full"><label class="ef-lbl">City / Location Name</label><input class="ef-inp" type="text" value="Newport Beach, CA"></div>
+              </div>
+              <div style="margin-top:12px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r2);height:200px;display:flex;align-items:center;justify-content:center;color:var(--tm);font-size:14px;cursor:pointer" onclick="showToast('🗺️ Map location picker — configure Leaflet.js')">
+                <div style="text-align:center"><i class="fas fa-map-marked-alt" style="font-size:32px;margin-bottom:8px;display:block;color:var(--ts)"></i>Click to pick location on map</div>
+              </div>
+            </div>
+            <div class="ef-section">
+              <div class="ef-section-title"><i class="fas fa-star"></i> Interests</div>
+              <div class="tag-sel" id="tag-sel">
+                <div class="tag-opt on" onclick="this.classList.toggle('on')">🏄 Beach</div>
+                <div class="tag-opt on" onclick="this.classList.toggle('on')">🍽️ Fine Dining</div>
+                <div class="tag-opt" onclick="this.classList.toggle('on')">🏃 Running</div>
+                <div class="tag-opt on" onclick="this.classList.toggle('on')">🌅 Sunsets</div>
+                <div class="tag-opt" onclick="this.classList.toggle('on')">📚 Reading</div>
+                <div class="tag-opt" onclick="this.classList.toggle('on')">✈️ Travel</div>
+                <div class="tag-opt" onclick="this.classList.toggle('on')">🎵 Music</div>
+                <div class="tag-opt on" onclick="this.classList.toggle('on')">🍷 Wine</div>
+                <div class="tag-opt" onclick="this.classList.toggle('on')">🎨 Art</div>
+                <div class="tag-opt" onclick="this.classList.toggle('on')">🧘 Yoga</div>
+                <div class="tag-opt" onclick="this.classList.toggle('on')">🐾 Pets</div>
+                <div class="tag-opt" onclick="this.classList.toggle('on')">🎭 Theater</div>
+              </div>
+            </div>
+            <div style="display:flex;align-items:center">
+              <button class="save-btn" onclick="saveProfile()"><i class="fas fa-check"></i> Save Changes</button>
+              <button class="logout-btn" onclick="handleLogout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BOTTOM NAV -->
+  <div class="bottom-nav">
+    <div class="bn-inner">
+      <div class="bn-link active" onclick="switchTab('discover')" id="bn-discover"><i class="fas fa-compass"></i><span>Discover</span></div>
+      <div class="bn-link" onclick="switchTab('matches')" id="bn-matches"><i class="fas fa-heart"></i><span>Matches</span><div class="bn-badge"></div></div>
+      <div class="bn-link" onclick="switchTab('messages')" id="bn-messages"><i class="fas fa-comment-dots"></i><span>Messages</span><div class="bn-badge"></div></div>
+      <div class="bn-link" onclick="window.location.href='aria.html'" id="bn-ai"><i class="fas fa-robot"></i><span>Aria</span></div>
+      <div class="bn-link" onclick="switchTab('venues')" id="bn-venues"><i class="fas fa-map-marker-alt"></i><span>Venues</span></div>
+      <div class="bn-link" onclick="switchTab('profile')" id="bn-profile"><i class="fas fa-user"></i><span>Profile</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MATCH MODAL ══ -->
+<div class="modal-overlay" id="match-modal">
+  <div class="modal match-modal" style="max-width:380px">
+    <div class="mm-emoji">🎉</div>
+    <div class="mm-title">It's a Match!</div>
+    <div class="mm-sub" id="mm-sub">You and Sarah both liked each other!</div>
+    <div class="mm-profiles">
+      <div class="mm-av">😊</div>
+      <div class="mm-heart">💕</div>
+      <div class="mm-av" id="mm-av">👩</div>
+    </div>
+    <div class="mm-btns">
+      <button class="mm-btn-chat" onclick="goToChat()"><i class="fas fa-comment-dots"></i> Send a Message</button>
+      <button class="mm-btn-later" onclick="closeModal('match-modal')">Keep Swiping</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ UPGRADE MODAL ══ -->
+<div class="modal-overlay" id="upgrade-modal">
+  <div class="modal upgrade-modal">
+    <button class="modal-close" onclick="closeModal('upgrade-modal')"><i class="fas fa-times"></i></button>
+    <div style="text-align:center;margin-bottom:20px">
+      <div style="font-size:40px;margin-bottom:10px">✨</div>
+      <h2 style="font-family:var(--serif);font-size:24px;font-weight:700;margin-bottom:6px">Upgrade Your Experience</h2>
+      <p style="font-size:14px;color:var(--tm)">Unlock the full Kind Date experience</p>
+    </div>
+    <div class="um-plans">
+      <div class="um-plan sel" onclick="selectPlan(this)">
+        <div><div class="um-plan-name">Plus</div><div class="um-plan-desc">Unlimited chat · Voice messages · Date booking</div></div>
+        <div class="um-plan-price">$9<span style="font-size:14px;color:var(--tm)">/mo</span></div>
+      </div>
+      <div class="um-plan" onclick="selectPlan(this)">
+        <div><div class="um-plan-name" style="color:var(--gold)">Premium ⭐</div><div class="um-plan-desc">Everything + Video calls · AI assistant · Priority matching</div></div>
+        <div class="um-plan-price">$19<span style="font-size:14px;color:var(--tm)">/mo</span></div>
+      </div>
+    </div>
+    <button class="btn-full" onclick="showToast('💳 Stripe checkout — configure Stripe keys');closeModal('upgrade-modal')"><i class="fas fa-lock"></i> Upgrade Securely with Stripe</button>
+    <p style="font-size:12px;color:var(--ts);text-align:center;margin-top:10px">Cancel anytime · 7-day money-back guarantee</p>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"><span class="toast-icon" id="toast-icon"></span><span id="toast-msg"></span></div>
+
+<!-- Supabase -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+
+<script>
+// ══ SUPABASE CONFIG ══
+const SUPABASE_URL = 'https://anjitnicmeggnazwapsw.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFuaml0bmljbWVnZ25hendhcHN3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUzMjUzNTAsImV4cCI6MjA5MDkwMTM1MH0.pN3I5uVPa6cXMFveSWIPOybH8OaSUzJnJrxow7Tgkew';
+const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+// ══ SAMPLE DATA ══
+const PROFILES = [
+  {id:1,name:'Sarah M.',age:28,emoji:'👩',loc:'Newport Beach',dist:'2mi',trust:98,
+   bio:'Beach lover, foodie, and sunset chaser. Looking for someone to explore Newport with and share great conversations over great wine. 🌊',
+   tags:['🏄 Beach','🍷 Wine','🌅 Sunsets','🍽️ Fine Dining'],compat:94,
+   whyMatch:'Both seek depth in intimacy without losing independence. Your love of sunsets aligns with her coastal ritual — this signals a shared need for meaning in everyday moments.',
+   breakdown:{p:96,i:92,v:88}},
+  {id:2,name:'Emma R.',age:26,emoji:'👩‍🦰',loc:'Corona del Mar',dist:'3mi',trust:95,
+   bio:'Yoga instructor and wellness enthusiast. Love hiking in the morning and finding new coffee spots on weekends. Looking for genuine connection. ✨',
+   tags:['🧘 Yoga','☕ Coffee','🏃 Running','✈️ Travel'],compat:87,
+   whyMatch:'Her secure attachment style pairs well with your growth orientation. Both of you name presence as a core value — rare to find. The lifestyle and adventure compatibility here is high.',
+   breakdown:{p:84,i:91,v:89}},
+  {id:3,name:'Olivia K.',age:31,emoji:'👩‍🦳',loc:'Laguna Beach',dist:'8mi',trust:92,
+   bio:'Creative director by day, art gallery hopper by night. Love the arts, good food, and spontaneous adventures. Serious connection only. 🎨',
+   tags:['🎨 Art','🍽️ Fine Dining','🎭 Theater','📚 Reading'],compat:91,
+   whyMatch:'Strong values alignment around intentionality and depth. Her creative independence complements rather than clashes with yours. She is explicit about wanting a serious connection — and so are you.',
+   breakdown:{p:93,i:96,v:87}},
+];
+
+const MATCHES = [
+  {id:1,name:'Jessica L.',age:27,emoji:'😍',loc:'Newport Beach',dist:'1mi',isNew:true,lastMsg:'Would love to grab coffee sometime!'},
+  {id:2,name:'Mia W.',age:29,emoji:'🥰',loc:'Corona del Mar',dist:'4mi',isNew:true,lastMsg:'That beach you mentioned sounds amazing!'},
+  {id:3,name:'Aiden C.',age:32,emoji:'😊',loc:'Irvine',dist:'12mi',isNew:false,lastMsg:'How was your weekend?'},
+];
+
+const CONVOS = [
+  {id:1,name:'Jessica L.',emoji:'😍',time:'2m ago',preview:'Would love to grab coffee sometime!',unread:2,online:true},
+  {id:2,name:'Mia W.',emoji:'🥰',time:'1h ago',preview:"That beach you mentioned sounds amazing!",unread:1,online:true},
+  {id:3,name:'Aiden C.',emoji:'😊',time:'3h ago',preview:'How was your weekend?',unread:0,online:false},
+  {id:4,name:'Lily P.',emoji:'😄',time:'1d ago',preview:'Haha yes exactly! 😂',unread:0,online:false},
+];
+
+const CHAT_HISTORY = {
+  1:[
+    {me:false,text:"Hi! I saw your profile and love that you're into sunsets too 🌅",time:'10:02 AM'},
+    {me:true,text:'Hey! Yes, nothing beats a Newport Beach sunset. Do you have a favorite spot?',time:'10:05 AM'},
+    {me:false,text:'Corona del Mar beach 100%! The view from the bluff is unreal. Have you been?',time:'10:08 AM'},
+    {me:true,text:"I have! It's stunning. We should check it out sometime 😊",time:'10:10 AM'},
+    {me:false,text:'Would love to grab coffee sometime!',time:'10:12 AM'},
+  ],
+  2:[
+    {me:false,text:'Hey! Your AI compatibility score with me is 94% — pretty impressive! 😄',time:'9:30 AM'},
+    {me:true,text:'Ha! The AI knows what it\'s doing. Love your profile btw 🌊',time:'9:35 AM'},
+    {me:false,text:"That beach you mentioned sounds amazing!",time:'9:40 AM'},
+  ],
+  3:[{me:false,text:'How was your weekend?',time:'Yesterday'}],
+  4:[{me:true,text:'Haha yes exactly! 😂',time:'Yesterday'}],
+};
+
+const VENUES_DATA = [
+  {name:'Nobu Newport Beach',type:'Restaurant',emoji:'🍣',loc:'Fashion Island',rating:'4.9',reviews:342,bg:'linear-gradient(135deg,#1a1a2e,#2d1b69)',featured:true,offer:'20% off for Kind Date couples'},
+  {name:'The Bungalow',type:'Bar & Lounge',emoji:'🍹',loc:'Coast Hwy',rating:'4.8',reviews:218,bg:'linear-gradient(135deg,#1a2e1a,#1b692d)',featured:false,offer:null},
+  {name:'Bear Flag Fish Co.',type:'Café',emoji:'🐟',loc:'Lido Marina',rating:'4.7',reviews:189,bg:'linear-gradient(135deg,#2e1a1a,#692d1b)',featured:false,offer:'Free dessert on first date'},
+  {name:'Balboa Bay Resort',type:'Restaurant',emoji:'🥂',loc:'Balboa Bay',rating:'4.9',reviews:276,bg:'linear-gradient(135deg,#1a2535,#2d3a5a)',featured:true,offer:'Private table with harbor view'},
+  {name:'Sol Cocina',type:'Restaurant',emoji:'🌮',loc:'Newport Beach',rating:'4.6',reviews:431,bg:'linear-gradient(135deg,#35261a,#5a3d1a)',featured:false,offer:null},
+  {name:'Balboa Coffee',type:'Café',emoji:'☕',loc:'Balboa Island',rating:'4.5',reviews:112,bg:'linear-gradient(135deg,#251a35,#3d1a5a)',featured:false,offer:'Free coffee on sign-up'},
+];
+
+// AI conversation flow
+const AI_FLOW = [
+  {q:"What are you looking for — something serious and long-term, or more casual and fun?",delay:800},
+  {q:"Love that! And what's your lifestyle like? Are you more of a beach person, city explorer, foodie...?",delay:1000},
+  {q:"Nice! What's the most important quality you look for in a partner?",delay:900},
+  {q:"Perfect. One last thing — any dealbreakers I should know about? (kids, smoking, distance, etc.)",delay:1000},
+  {q:"Got it! I have everything I need to create your profile and find your best matches. Let's continue! 🎉",delay:800,last:true},
+];
+
+// ══ STATE ══
+let currentUser = {name:'Alex S.',plan:'plus'};
+let currentCard = 0;
+let obStep = 1;
+let obChatStep = 0;
+let activeConvo = 1;
+let prefs = {};
+
+// ══ AUTH ══
+function showAuthTab(tab) {
+  document.getElementById('form-signin').classList.toggle('hide', tab !== 'signin');
+  document.getElementById('form-signup').classList.toggle('hide', tab !== 'signup');
+  document.querySelectorAll('.auth-tab').forEach((t,i) => t.classList.toggle('active', (i===0&&tab==='signin')||(i===1&&tab==='signup')));
+}
+
+function handleSignIn() {
+  const email = document.getElementById('si-email').value;
+  if (!email) { showToast('⚠️ Please enter your email'); return; }
+  showToast('🔐 Signing in...');
+  setTimeout(() => {
+    localStorage.setItem('kd_user', JSON.stringify({name:'Alex S.',email}));
+    goToOnboard();
+  }, 1200);
+}
+
+function handleSignUp() {
+  const fname = document.getElementById('su-fname').value;
+  const email = document.getElementById('su-email').value;
+  if (!fname || !email) { showToast('⚠️ Please fill all fields'); return; }
+  showToast('🎉 Creating your account...');
+  currentUser.name = fname + ' ' + (document.getElementById('su-lname').value||'').charAt(0) + '.';
+  setTimeout(() => goToOnboard(), 1200);
+}
+
+function handleGoogleAuth() {
+  showToast('🔗 Google login — configure Supabase OAuth');
+  setTimeout(() => goToOnboard(), 1500);
+}
+
+function handleLogout() {
+  localStorage.removeItem('kd_user');
+  showScreen('s-auth');
+  showToast('👋 Logged out successfully');
+}
+
+// ══ ONBOARDING ══
+function goToOnboard() {
+  showScreen('s-onboard');
+  updateObProgress();
+  // Build OTP boxes
+  const otp = document.getElementById('otp-boxes');
+  otp.innerHTML = '';
+  for(let i=0;i<6;i++){const b=document.createElement('input');b.type='text';b.maxLength=1;b.className='otp-box';b.inputMode='numeric';b.addEventListener('input',e=>{if(e.target.value&&b.nextElementSibling)b.nextElementSibling.focus();if(getAllOTP().length===6)setTimeout(verifyOTP,400)});otp.appendChild(b);}
+  // Start AI chat
+  setTimeout(()=>{if(obStep===2)startAiFlow();},300);
+}
+
+function sendOTP() {
+  const phone = document.getElementById('ob-phone').value;
+  if(!phone){showToast('⚠️ Enter your phone number');return;}
+  showToast('📱 Code sent! (Demo: use any 6 digits)');
+  document.getElementById('phone-entry').classList.add('hide');
+  document.getElementById('otp-entry').classList.remove('hide');
+}
+
+function getAllOTP(){return [...document.querySelectorAll('.otp-box')].map(b=>b.value).join('');}
+
+function verifyOTP(){
+  showToast('✅ Phone verified!');
+  setTimeout(()=>obNext(),600);
+}
+
+function startAiFlow() {
+  if(obChatStep===0) setTimeout(()=>addAiMsg(AI_FLOW[0].q),AI_FLOW[0].delay);
+}
+
+function addAiMsg(text){
+  const chat=document.getElementById('ob-chat');
+  const div=document.createElement('div');
+  div.className='bmsg bai';div.textContent=text;
+  chat.appendChild(div);chat.scrollTop=chat.scrollHeight;
+}
+
+function addUserMsg(text){
+  const chat=document.getElementById('ob-chat');
+  const div=document.createElement('div');
+  div.className='bmsg bme';div.textContent=text;
+  chat.appendChild(div);chat.scrollTop=chat.scrollHeight;
+}
+
+function sendObMsg(){
+  const inp=document.getElementById('ob-chat-inp');
+  const val=inp.value.trim();
+  if(!val)return;
+  inp.value='';
+  addUserMsg(val);
+  obChatStep++;
+  if(obChatStep < AI_FLOW.length){
+    const next=AI_FLOW[obChatStep];
+    setTimeout(()=>{
+      addAiMsg(next.q);
+      if(next.last) setTimeout(()=>obNext(),1500);
+    },next.delay);
+  }
+}
+
+function obBack(){
+  if(obStep<=1)return;
+  obStep--;
+  updateObUI();
+}
+
+function obNext(){
+  if(obStep===1){
+    const phone=document.getElementById('ob-phone').value;
+    const otp=getAllOTP();
+    if(!phone&&!otp){showToast('⚠️ Please verify your phone');return;}
+  }
+  if(obStep>=4){goToApp();return;}
+  obStep++;
+  updateObUI();
+  if(obStep===2) startAiFlow();
+}
+
+function updateObUI(){
+  document.querySelectorAll('.ob-step').forEach((s,i)=>s.classList.toggle('active',i===obStep-1));
+  document.getElementById('ob-back-btn').style.display=obStep>1?'block':'none';
+  document.getElementById('ob-next-btn').textContent=obStep>=4?'Start Matching 💕':'Continue →';
+  updateObProgress();
+}
+
+function updateObProgress(){
+  document.querySelectorAll('.ob-step-bar').forEach((b,i)=>{
+    b.classList.toggle('done',i<obStep-1);
+    b.querySelector('.fill').style.width=i===obStep-1?'100%':'0';
+  });
+}
+
+function selectPref(type,el,val){
+  const group=el.closest('.pref-grid');
+  group.querySelectorAll('.pref-opt').forEach(o=>o.classList.remove('sel'));
+  el.classList.add('sel');
+  prefs[type]=val;
+}
+
+function regenerateBio(){
+  const bios=[
+    'Sun-kissed and salt-aired, I live for Newport Beach sunsets and genuine conversations. An entrepreneur who believes in quality over quantity — in everything, including relationships. 🌅',
+    'Life is too short for bad food and shallow connections. I\'m a creative soul who loves art galleries, impromptu beach picnics, and people who can make me laugh until my sides hurt. 😄',
+    'Adventurous at heart, cozy at home. Whether it\'s paddleboarding at dawn or discovering the city\'s best hidden brunch spots — I\'m always up for something new with the right person. 🏄',
+  ];
+  document.getElementById('ai-bio').textContent=bios[Math.floor(Math.random()*bios.length)];
+  showToast('✨ New bio generated!');
+}
+
+// ══ MAIN APP ══
+function goToApp(){
+  showScreen('s-app');
+  initApp();
+}
+
+function initApp(){
+  renderWeeklyMatches();
+  updateRefreshCountdown();
+  renderMatches();
+  renderConvos();
+  renderVenues();
+  loadChat(1);
+  const n=document.getElementById('ob-name');
+  if(n&&n.value){currentUser.name=n.value;document.getElementById('sb-name').textContent=currentUser.name;document.getElementById('prof-name').textContent=currentUser.name;}
+}
+
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function switchTab(tab){
+  const titles={discover:'Discover',matches:'Your Matches',messages:'Messages',ai:'AI Assistant',venues:'Date Venues',profile:'My Profile'};
+  const subs={discover:'Newport Beach · 5 new profiles today',matches:'3 new matches this week',messages:'2 unread conversations',ai:'Powered by Kind AI · Always here to help',venues:'Newport Beach · 6 verified venues',profile:'Manage your profile & settings'};
+  document.querySelectorAll('.tab-view').forEach(t=>t.classList.remove('active'));
+  document.getElementById('tab-'+tab).classList.add('active');
+  document.querySelectorAll('.sb-link').forEach(l=>l.classList.remove('active'));
+  document.querySelectorAll('.sb-link')[['discover','matches','messages','ai','venues','profile'].indexOf(tab)].classList.add('active');
+  document.querySelectorAll('.bn-link').forEach(l=>l.classList.remove('active'));
+  document.getElementById('bn-'+tab).classList.add('active');
+  document.getElementById('mh-title').textContent=titles[tab];
+  document.getElementById('mh-sub').textContent=subs[tab];
+}
+
+// ── DISCOVER — WEEKLY CURATED MATCHES ──
+function renderWeeklyMatches(){
+  const list=document.getElementById('weekly-match-list');
+  if(!list)return;
+  list.innerHTML=PROFILES.map(p=>`
+    <div class="wm-card">
+      <div class="wm-card-hdr">
+        <div class="wm-av">${p.emoji}</div>
+        <div style="flex:1;min-width:0">
+          <div class="wm-nm">${p.name}, ${p.age}</div>
+          <div class="wm-mt">📍 ${p.loc} · ${p.dist} away · <span class="wm-trust-lbl">✓ ${p.trust}/100 Trust</span></div>
+        </div>
+        <div class="wm-score">${p.compat}%</div>
+      </div>
+      <div class="wm-why">
+        <div class="wm-why-lbl">✦ Why Aria matched you</div>
+        <p class="wm-why-txt">"${p.whyMatch}"</p>
+      </div>
+      <div class="wm-breakdown">
+        <div class="wm-bd"><div class="wm-bd-lbl">Personality</div><div class="wm-bd-bar"><div class="wm-bd-fill bd-rose" style="width:${p.breakdown.p}%"></div></div><div class="wm-bd-pct">${p.breakdown.p}%</div></div>
+        <div class="wm-bd"><div class="wm-bd-lbl">Intent</div><div class="wm-bd-bar"><div class="wm-bd-fill bd-gold" style="width:${p.breakdown.i}%"></div></div><div class="wm-bd-pct">${p.breakdown.i}%</div></div>
+        <div class="wm-bd"><div class="wm-bd-lbl">Values</div><div class="wm-bd-bar"><div class="wm-bd-fill bd-sage" style="width:${p.breakdown.v}%"></div></div><div class="wm-bd-pct">${p.breakdown.v}%</div></div>
+      </div>
+      <div class="wm-tags">${p.tags.map(t=>`<span class="wm-tag">${t}</span>`).join('')}</div>
+      <div class="wm-actions">
+        <button class="wm-btn-hi" onclick="openMatchChat(${p.id})"><i class="fas fa-comment-dots"></i> Say hello →</button>
+        <button class="wm-btn-more" onclick="showToast('Full profile view coming soon ✨')">See profile</button>
+      </div>
+    </div>`).join('');
+
+  // Post-date reflection banner
+  const ra=document.getElementById('reflect-area');
+  if(ra){
+    const had=localStorage.getItem('kd_had_date');
+    if(had){
+      ra.innerHTML=`<div class="reflect-banner">
+        <div class="reflect-icon">🌿</div>
+        <div style="flex:1;min-width:0"><div style="font-size:14px;font-weight:600;color:var(--text)">How did your date with Jessica go?</div><div style="font-size:12px;color:var(--tm);margin-top:2px">Aria is here to help you process and grow from it.</div></div>
+        <button class="reflect-btn" onclick="window.location.href='aria.html'">Reflect with Aria →</button>
+      </div>`;
+    }
+  }
+
+  // Mini matches sidebar
+  const mini=document.getElementById('mini-matches');
+  if(mini){mini.innerHTML=PROFILES.map(p=>`<div class="mini-match"><div class="mini-av">${p.emoji}</div><div><div class="mini-name">${p.name}</div><div class="mini-dist">${p.dist} · ${p.compat}% match</div></div></div>`).join('');}
+}
+
+function updateRefreshCountdown(){
+  const el=document.getElementById('refresh-cd');
+  if(!el)return;
+  const now=new Date();
+  const day=now.getDay();
+  const daysLeft=day===1?7:(day===0?1:(8-day));
+  const hrs=23-now.getHours();
+  el.textContent=`${daysLeft}d ${hrs}h`;
+}
+
+// ── MATCHES ──
+function renderMatches(){
+  const grid=document.getElementById('matches-grid');
+  if(!grid)return;
+  grid.innerHTML=MATCHES.map(m=>`
+    <div class="match-card" onclick="openMatchChat(${m.id})">
+      <div class="match-img">${m.emoji}${m.isNew?'<div class="match-new">NEW</div>':''}</div>
+      <div class="match-info">
+        <div class="match-name">${m.name}, ${m.age}</div>
+        <div class="match-meta">📍 ${m.loc} · ${m.dist}</div>
+        <button class="match-msg-btn"><i class="fas fa-comment-dots"></i> Send Message</button>
+      </div>
+    </div>`).join('');
+}
+
+function openMatchChat(id){switchTab('messages');loadChat(id);}
+
+// ── MESSAGES ──
+function renderConvos(){
+  const list=document.getElementById('convo-items');
+  if(!list)return;
+  list.innerHTML=CONVOS.map(c=>`
+    <div class="convo-item${c.id===activeConvo?' active':''}" onclick="loadChat(${c.id})">
+      <div class="ci-av">${c.emoji}${c.online?'<div class="ci-online"></div>':''}</div>
+      <div style="flex:1;min-width:0">
+        <div class="ci-name">${c.name}</div>
+        <div class="ci-preview">${c.preview}</div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex-shrink:0">
+        <div class="ci-time">${c.time}</div>
+        ${c.unread?`<div class="ci-unread">${c.unread}</div>`:''}
+      </div>
+    </div>`).join('');
+}
+
+function loadChat(id){
+  activeConvo=id;
+  const convo=CONVOS.find(c=>c.id===id)||CONVOS[0];
+  document.getElementById('chat-av').textContent=convo.emoji;
+  document.getElementById('chat-name').textContent=convo.name;
+  renderConvos();
+  const msgs=document.getElementById('chat-messages');
+  const history=CHAT_HISTORY[id]||[];
+  msgs.innerHTML=`<div class="match-announce"><div class="ma-emoji">💕</div><div class="ma-text">You matched with ${convo.name}!</div><div class="ma-sub">Say something kind to start the conversation</div></div>`;
+  history.forEach(m=>{
+    const row=document.createElement('div');
+    row.className=`msg-row ${m.me?'me':'them'}`;
+    row.innerHTML=`<div class="msg-bubble">${m.text}</div><div class="msg-time">${m.time}</div>`;
+    msgs.appendChild(row);
+  });
+  msgs.scrollTop=msgs.scrollHeight;
+}
+
+function mkMsgRow(cls,text,time){
+  const row=document.createElement('div');
+  row.className='msg-row '+cls;
+  const bub=document.createElement('div');bub.className='msg-bubble';bub.textContent=text;
+  const ts=document.createElement('div');ts.className='msg-time';ts.textContent=time;
+  row.appendChild(bub);row.appendChild(ts);
+  return row;
+}
+function sendMsg(){
+  const inp=document.getElementById('chat-inp');
+  const val=inp.value.trim();
+  if(!val)return;
+  inp.value='';
+  const msgs=document.getElementById('chat-messages');
+  if(!msgs)return;
+  msgs.appendChild(mkMsgRow('me',val,'Just now'));
+  msgs.scrollTop=msgs.scrollHeight;
+  setTimeout(()=>{
+    const replies=["That sounds amazing! 😊","Haha yes! 😄","I totally agree!","Would love that!","Let's make it happen 💕"];
+    msgs.appendChild(mkMsgRow('them',replies[Math.floor(Math.random()*replies.length)],'Just now'));
+    msgs.scrollTop=msgs.scrollHeight;
+  },2000+Math.random()*2000);
+}
+
+// ── AI ──
+const AI_RESPONSES = [
+  {k:'bio',r:"✍️ Here's an improved bio:\n\n\"Sun-chaser and Newport Beach local who believes the best conversations happen over great food and ocean views. Looking for someone genuine, ambitious, and ready to build something real. Let's write our own story. 🌊\""},
+  {k:'icebreaker',r:"💬 Try this icebreaker:\n\n\"I saw you're into sunsets too — what's your absolute favorite spot in Newport Beach? I have a secret spot on the bluff that might surprise you. 😊\""},
+  {k:'date',r:"🗓️ Perfect first date plan:\n\n1. **4:30 PM** — Sunset cocktails at The Bungalow\n2. **6:30 PM** — Dinner at Nobu Newport Beach\n3. **8:30 PM** — Walk along the boardwalk\n\nKind Date can book all of this for you! 💕"},
+  {k:'venue',r:"📍 Top Kind Date venues in Newport Beach:\n\n⭐ Nobu — Best for impressive dates\n🍹 The Bungalow — Best for relaxed first dates\n☕ Bear Flag — Best for casual coffee dates\n🥂 Balboa Bay — Best for romantic evenings"},
+  {k:'match',r:"🤔 Profile optimization tips:\n\n• Add more specific photos (beach, activity shots)\n• Your bio is good but add one unique detail\n• Connect your Instagram for +15 trust score\n• Be online during peak hours: 6-9 PM"},
+];
+
+function sendAiMsg(){
+  const inp=document.getElementById('ai-inp');
+  const val=inp.value.trim();
+  if(!val)return;
+  inp.value='';
+  askAi(val);
+}
+
+function askAi(msg){
+  const inp=document.getElementById('ai-inp');
+  inp.value='';
+  const msgs=document.getElementById('ai-msgs');
+  const userMsg=document.createElement('div');
+  userMsg.className='bmsg bme';userMsg.textContent=msg;msgs.appendChild(userMsg);
+  const typing=document.createElement('div');
+  typing.className='ai-typing';typing.innerHTML='<span></span><span></span><span></span>';
+  msgs.appendChild(typing);msgs.scrollTop=msgs.scrollHeight;
+  setTimeout(()=>{
+    typing.remove();
+    const response=AI_RESPONSES.find(r=>msg.toLowerCase().includes(r.k))||{r:"Great question! I'm analyzing your profile and matches to give you the best advice. Based on your activity, I recommend being more active during evening hours (6-9 PM) when most Newport Beach singles are online. Shall I send you a daily reminder? 💕"};
+    const aiMsg=document.createElement('div');
+    aiMsg.className='bmsg bai';aiMsg.style.whiteSpace='pre-line';aiMsg.textContent=response.r;
+    msgs.appendChild(aiMsg);msgs.scrollTop=msgs.scrollHeight;
+  },1500+Math.random()*1000);
+}
+
+function clearAiChat(){
+  document.getElementById('ai-msgs').innerHTML='<div class="bmsg bai">👋 New conversation started! How can I help you today?</div>';
+}
+
+// ── VENUES ──
+function renderVenues(){
+  const grid=document.getElementById('venues-grid');
+  if(!grid)return;
+  grid.innerHTML=VENUES_DATA.map(v=>`
+    <div class="venue-card">
+      <div class="vc-img" style="background:${v.bg}"><div style="position:relative;z-index:1">${v.emoji}</div><div class="vc-tag">${v.type}</div>${v.featured?'<div class="vc-feat">⭐ Featured</div>':''}</div>
+      <div class="vc-body">
+        <div class="vc-name">${v.name}</div>
+        <div class="vc-loc"><i class="fas fa-map-marker-alt" style="color:var(--primary)"></i> ${v.loc}, Newport Beach</div>
+        <div class="vc-rat">★★★★★ ${v.rating} <span style="color:var(--tm)">(${v.reviews} reviews)</span></div>
+        ${v.offer?`<div class="vc-offer">🎁 ${v.offer}</div>`:''}
+        <button class="vc-btn" onclick="bookVenue('${v.name}')"><i class="fas fa-calendar-plus"></i> Book a Date Here</button>
+      </div>
+    </div>`).join('');
+}
+
+function bookVenue(name){showToast(`📅 Booking ${name}... (Connect OpenTable API)`);}
+
+// ── MODALS ──
+function closeModal(id){document.getElementById(id).classList.remove('open');}
+function showUpgradeModal(){document.getElementById('upgrade-modal').classList.add('open');}
+function selectPlan(el){document.querySelectorAll('.um-plan').forEach(p=>p.classList.remove('sel'));el.classList.add('sel');}
+function goToChat(){closeModal('match-modal');switchTab('messages');}
+
+// ── TOAST ──
+let toastTimer;
+function showToast(msg){
+  clearTimeout(toastTimer);
+  const t=document.getElementById('toast');
+  document.getElementById('toast-msg').textContent=msg;
+  t.classList.add('show');
+  toastTimer=setTimeout(()=>t.classList.remove('show'),3000);
+}
+
+// ── PROFILE ──
+function saveProfile(){
+  const name=document.getElementById('pf-name').value;
+  if(name){currentUser.name=name;document.getElementById('sb-name').textContent=name;document.getElementById('prof-name').textContent=name;}
+  showToast('✅ Profile saved!');
+}
+
+// ── INIT ──
+document.addEventListener('DOMContentLoaded',()=>{
+  // Build OTP boxes
+  const otp=document.getElementById('otp-boxes');
+  if(otp&&!otp.children.length){for(let i=0;i<6;i++){const b=document.createElement('input');b.type='text';b.maxLength=1;b.className='otp-box';b.inputMode='numeric';b.addEventListener('input',e=>{if(e.target.value&&b.nextElementSibling)b.nextElementSibling.focus();});otp.appendChild(b);}}
+  // Check returning user
+  const saved=localStorage.getItem('kd_user');
+  if(saved){const u=JSON.parse(saved);currentUser.name=u.name||'Alex S.';goToApp();}
+});
+
+// Close modals on overlay click
+document.querySelectorAll('.modal-overlay').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('open');}));
+</script>
+</body>
+</html>

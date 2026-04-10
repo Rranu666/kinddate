@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KindDate Admin — Dashboard | Kindness Community Foundation</title>
+<meta name="description" content="KindDate Admin Dashboard — User management, analytics, AI moderation, and platform controls for the KindDate guided dating app." />
+<meta name="robots" content="noindex, nofollow" />
+<link rel="canonical" href="https://kinddate.netlify.app/admin.html" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="KindDate Admin Dashboard" />
+<meta property="og:description" content="KindDate platform administration and analytics dashboard." />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛡️</text></svg>">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "KindDate Admin Dashboard",
+  "description": "Administration and analytics platform for KindDate dating app",
+  "url": "https://kinddate.netlify.app/admin.html",
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "KindDate",
+    "url": "https://kinddate.netlify.app"
+  }
+}
+</script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+:root{--bg:#FAF6F0;--bg2:#FFFFFF;--bg3:#F0E8DE;--surface:rgba(44,32,24,.04);--sh:rgba(44,32,24,.07);--border:rgba(44,32,24,.08);--bs:rgba(44,32,24,.14);--primary:#C8716A;--pl:#E8A89E;--pglow:rgba(200,113,106,.15);--gold:#C9A96E;--gl:#E8CFA0;--green:#7B9E87;--red:#EF4444;--orange:#F97316;--grad:linear-gradient(135deg,#C8716A,#E8A89E);--gradg:linear-gradient(135deg,#C9A96E,#E8CFA0);--grads:linear-gradient(135deg,rgba(200,113,106,.08),rgba(123,158,135,.08));--text:#2C2018;--tm:#8A7B6E;--ts:#B8A89A;--serif:'Playfair Display',serif;--sans:'Inter',sans-serif;--r1:8px;--r2:14px;--r3:20px;--r4:28px;--rf:9999px}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;font-family:var(--sans);background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;overflow:hidden;color-scheme:light}
+button{cursor:pointer;font-family:var(--sans)}
+input,select,textarea{font-family:var(--sans);outline:none}
+
+/* ── LAYOUT ── */
+.layout{display:flex;height:100vh;overflow:hidden}
+.sidebar{width:220px;flex-shrink:0;background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;padding:0}
+.sb-brand{padding:20px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
+.sb-icon{width:34px;height:34px;background:var(--grad);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.sb-name{font-family:var(--serif);font-size:16px;font-weight:700}
+.sb-name span{background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.sb-badge{font-size:10px;background:rgba(239,68,68,.2);border:1px solid rgba(239,68,68,.3);color:#EF4444;padding:2px 6px;border-radius:var(--rf);font-weight:600;display:block;margin-top:2px}
+.sb-nav{flex:1;padding:12px 8px;display:flex;flex-direction:column;gap:2px;overflow-y:auto}
+.sb-link{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:var(--r2);color:var(--tm);font-size:13px;font-weight:500;cursor:pointer;transition:all .2s;position:relative}
+.sb-link:hover{background:var(--surface);color:var(--text)}
+.sb-link.active{background:var(--grads);color:var(--pl);border:1px solid rgba(232,64,108,.15)}
+.sb-link i{width:16px;text-align:center;font-size:14px}
+.sb-count{margin-left:auto;background:var(--primary);color:#fff;font-size:10px;font-weight:700;padding:2px 6px;border-radius:var(--rf)}
+.sb-count.warn{background:var(--orange)}
+.sb-section{font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:var(--ts);font-weight:600;padding:12px 12px 6px;margin-top:4px}
+.sb-user{padding:14px 16px;border-top:1px solid var(--border);display:flex;align-items:center;gap:10px}
+.sb-av{width:32px;height:32px;border-radius:50%;background:var(--grad);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+.sb-uname{font-size:13px;font-weight:600}
+.sb-urole{font-size:11px;color:var(--primary)}
+
+/* ── MAIN ── */
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden}
+.topbar{padding:14px 24px;background:var(--bg2);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.tb-left{display:flex;align-items:center;gap:12px}
+.tb-title{font-size:18px;font-weight:700}
+.tb-sub{font-size:12px;color:var(--tm)}
+.tb-right{display:flex;align-items:center;gap:10px}
+.tb-btn{padding:8px 14px;border-radius:var(--rf);font-size:13px;font-weight:600;cursor:pointer;transition:all .2s}
+.tb-btn-p{background:var(--grad);border:none;color:#fff}
+.tb-btn-p:hover{opacity:.9}
+.tb-btn-g{background:var(--surface);border:1px solid var(--border);color:var(--text)}
+.tb-btn-g:hover{background:var(--sh)}
+.ib{width:34px;height:34px;background:var(--surface);border:1px solid var(--border);border-radius:10px;display:flex;align-items:center;justify-content:center;color:var(--tm);cursor:pointer;transition:all .2s}
+.ib:hover{background:var(--sh);color:var(--text)}
+.content{flex:1;overflow-y:auto;padding:24px}
+.content::-webkit-scrollbar{width:4px}
+.content::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
+
+/* TAB VIEWS */
+.tv{display:none}.tv.active{display:block}
+
+/* ── STAT CARDS ── */
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px}
+.scard{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r3);padding:20px;position:relative;overflow:hidden}
+.scard::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;border-radius:2px 2px 0 0}
+.scard.c1::before{background:var(--grad)}
+.scard.c2::before{background:linear-gradient(90deg,var(--green),#22c55e)}
+.scard.c3::before{background:linear-gradient(90deg,var(--gold),var(--gl))}
+.scard.c4::before{background:linear-gradient(90deg,var(--red),#f87171)}
+.sc-icon{width:44px;height:44px;border-radius:var(--r2);display:flex;align-items:center;justify-content:center;font-size:20px;margin-bottom:14px}
+.sci1{background:rgba(232,64,108,.15);color:var(--pl)}
+.sci2{background:rgba(34,197,94,.15);color:var(--green)}
+.sci3{background:rgba(212,168,83,.15);color:var(--gold)}
+.sci4{background:rgba(239,68,68,.15);color:var(--red)}
+.sc-val{font-size:30px;font-weight:800;font-family:var(--serif);line-height:1;margin-bottom:4px}
+.sc-lbl{font-size:13px;color:var(--tm);margin-bottom:8px}
+.sc-change{font-size:12px;font-weight:600;display:flex;align-items:center;gap:4px}
+.sc-up{color:var(--green)}.sc-down{color:var(--red)}
+
+/* ── CHARTS ── */
+.charts-row{display:grid;grid-template-columns:2fr 1fr;gap:16px;margin-bottom:24px}
+.chart-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r3);padding:20px}
+.cc-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
+.cc-title{font-size:15px;font-weight:700}
+.cc-sub{font-size:12px;color:var(--tm)}
+.chart-wrap{position:relative}
+
+/* ── TABLE ── */
+.table-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r3);overflow:hidden;margin-bottom:20px}
+.tc-header{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
+.tc-title{font-size:15px;font-weight:700}
+.tc-tools{display:flex;align-items:center;gap:8px}
+.search-inp{background:var(--surface);border:1px solid var(--border);border-radius:var(--rf);padding:8px 14px;color:var(--text);font-size:13px;width:200px}
+.search-inp::placeholder{color:var(--ts)}
+.filter-sel{background:var(--surface);border:1px solid var(--border);border-radius:var(--rf);padding:8px 14px;color:var(--text);font-size:13px;appearance:none;padding-right:28px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'%3E%3Cpath fill='%238892A4' d='M5 7L0 2h10z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center}
+table{width:100%;border-collapse:collapse}
+thead tr{border-bottom:1px solid var(--border);background:rgba(44,32,24,.02)}
+th{padding:12px 16px;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.8px;color:var(--tm);text-align:left}
+td{padding:13px 16px;font-size:13px;border-bottom:1px solid rgba(44,32,24,.05)}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:rgba(44,32,24,.02)}
+.user-cell{display:flex;align-items:center;gap:10px}
+.u-av{width:34px;height:34px;border-radius:50%;background:var(--grad);display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
+.u-name{font-weight:600;font-size:13px}
+.u-email{font-size:11px;color:var(--tm)}
+.badge{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:var(--rf);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px}
+.b-verified{background:rgba(34,197,94,.15);color:var(--green);border:1px solid rgba(34,197,94,.2)}
+.b-pending{background:rgba(249,115,22,.15);color:var(--orange);border:1px solid rgba(249,115,22,.2)}
+.b-flagged{background:rgba(239,68,68,.15);color:var(--red);border:1px solid rgba(239,68,68,.2)}
+.b-premium{background:rgba(212,168,83,.15);color:var(--gold);border:1px solid rgba(212,168,83,.2)}
+.b-plus{background:rgba(168,85,247,.15);color:#c084fc;border:1px solid rgba(168,85,247,.2)}
+.b-free{background:var(--surface);color:var(--tm);border:1px solid var(--border)}
+.act-btn{padding:5px 10px;border-radius:var(--r1);font-size:11px;font-weight:600;cursor:pointer;border:none;transition:all .2s}
+.ab-view{background:var(--grads);color:var(--pl);border:1px solid rgba(232,64,108,.2)}
+.ab-approve{background:rgba(34,197,94,.15);color:var(--green);border:1px solid rgba(34,197,94,.2)}
+.ab-reject{background:rgba(239,68,68,.15);color:var(--red);border:1px solid rgba(239,68,68,.2)}
+.ab-suspend{background:rgba(249,115,22,.15);color:var(--orange);border:1px solid rgba(249,115,22,.2)}
+.actions-cell{display:flex;gap:6px}
+
+/* ── VERIFICATION QUEUE ── */
+.vq-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+.vq-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r3);padding:20px}
+.vq-top{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.vq-av{width:48px;height:48px;border-radius:50%;background:var(--grad);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+.vq-name{font-weight:700;font-size:15px}
+.vq-sub{font-size:12px;color:var(--tm)}
+.vq-checklist{display:flex;flex-direction:column;gap:8px;margin-bottom:16px}
+.vq-item{display:flex;align-items:center;justify-content:space-between;font-size:13px;padding:8px 12px;background:var(--surface);border-radius:var(--r1)}
+.vq-ok{color:var(--green)}.vq-no{color:var(--red)}.vq-pending-ic{color:var(--orange)}
+.vq-actions{display:flex;gap:8px}
+.vq-btn-a{flex:1;padding:9px;background:rgba(34,197,94,.15);border:1px solid rgba(34,197,94,.2);color:var(--green);border-radius:var(--r1);font-size:13px;font-weight:600;cursor:pointer}
+.vq-btn-r{flex:1;padding:9px;background:rgba(239,68,68,.15);border:1px solid rgba(239,68,68,.2);color:var(--red);border-radius:var(--r1);font-size:13px;font-weight:600;cursor:pointer}
+
+/* ── REPORTS ── */
+.rep-list{display:flex;flex-direction:column;gap:12px}
+.rep-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r2);padding:16px;display:flex;align-items:flex-start;gap:14px}
+.rep-ic{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.rep-high{background:rgba(239,68,68,.15);color:var(--red)}
+.rep-med{background:rgba(249,115,22,.15);color:var(--orange)}
+.rep-low{background:rgba(212,168,83,.15);color:var(--gold)}
+.rep-body{flex:1}
+.rep-title{font-weight:700;font-size:14px;margin-bottom:4px}
+.rep-desc{font-size:13px;color:var(--tm);margin-bottom:8px}
+.rep-meta{font-size:11px;color:var(--ts)}
+.rep-acts{display:flex;gap:8px;margin-left:auto;flex-shrink:0;flex-direction:column}
+
+/* ── VENUE MGMT ── */
+.venue-mgmt-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
+.vm-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r3);overflow:hidden}
+.vm-img{height:120px;display:flex;align-items:center;justify-content:center;font-size:48px;position:relative}
+.vm-badge-act{position:absolute;top:8px;right:8px;background:rgba(34,197,94,.9);color:#fff;font-size:10px;font-weight:700;padding:3px 8px;border-radius:var(--rf)}
+.vm-body{padding:16px}
+.vm-name{font-weight:700;font-size:15px;margin-bottom:4px}
+.vm-type{font-size:12px;color:var(--tm);margin-bottom:10px}
+.vm-stats{display:flex;gap:12px;margin-bottom:12px}
+.vm-stat{font-size:12px;color:var(--tm);text-align:center}
+.vm-stat strong{display:block;font-size:16px;font-weight:700;color:var(--text)}
+.vm-acts{display:flex;gap:8px}
+.vm-btn{flex:1;padding:8px;border-radius:var(--r1);font-size:12px;font-weight:600;cursor:pointer;border:none;transition:all .2s}
+.vm-btn-e{background:var(--grads);color:var(--pl);border:1px solid rgba(232,64,108,.2)}
+.vm-btn-d{background:rgba(239,68,68,.1);color:var(--red);border:1px solid rgba(239,68,68,.2)}
+
+/* ── ANALYTICS ── */
+.analytics-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:20px}
+.an-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r3);padding:20px}
+.an-title{font-size:14px;font-weight:700;margin-bottom:4px}
+.an-val{font-size:32px;font-weight:800;font-family:var(--serif);background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1;margin:8px 0}
+.an-sub{font-size:12px;color:var(--tm)}
+
+/* TOAST */
+.toast{position:fixed;bottom:24px;right:24px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--r2);padding:12px 18px;font-size:13px;font-weight:500;box-shadow:0 8px 32px rgba(0,0,0,.4);z-index:9999;transform:translateY(80px);opacity:0;transition:all .3s;display:flex;align-items:center;gap:8px}
+.toast.show{transform:translateY(0);opacity:1}
+
+@media(max-width:768px){
+  .sidebar{display:none}
+  .main{width:100vw}
+  .stats-row{grid-template-columns:1fr 1fr}
+  .charts-row{grid-template-columns:1fr}
+  .analytics-grid{grid-template-columns:1fr}
+  .vq-grid{grid-template-columns:1fr}
+  .topbar{padding:12px 16px}
+  .content{padding:16px}
+  .tc-tools{flex-wrap:wrap}
+  .search-inp{width:100%}
+}
+@media(max-width:480px){
+  .stats-row{grid-template-columns:1fr}
+  .topbar{padding:10px 12px}
+  .tb-title{font-size:15px}
+  .content{padding:12px}
+  table{font-size:12px}
+  th,td{padding:10px 10px}
+  .tb-btn{padding:7px 10px;font-size:12px}
+  input,select{font-size:16px}/* prevent iOS zoom */
+}
+@supports(padding:max(0px)){
+  .topbar{padding-left:max(16px,env(safe-area-inset-left));padding-right:max(16px,env(safe-area-inset-right))}
+  .content{padding-bottom:max(24px,env(safe-area-inset-bottom))}
+}
+</style>
+</head>
+<body>
+<div class="layout">
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+  <div class="sb-brand">
+    <div class="sb-icon">🛡️</div>
+    <div><div class="sb-name">Kind <span>Date</span></div><div class="sb-badge">Admin Panel</div></div>
+  </div>
+  <div class="sb-nav">
+    <div class="sb-section">Overview</div>
+    <div class="sb-link active" onclick="showTab('dashboard')"><i class="fas fa-chart-line"></i> Dashboard</div>
+    <div class="sb-link" onclick="showTab('analytics')"><i class="fas fa-chart-pie"></i> Analytics</div>
+    <div class="sb-section">User Management</div>
+    <div class="sb-link" onclick="showTab('users')"><i class="fas fa-users"></i> All Users <span class="sb-count">12,430</span></div>
+    <div class="sb-link" onclick="showTab('verification')"><i class="fas fa-id-card"></i> Verification Queue <span class="sb-count warn">47</span></div>
+    <div class="sb-link" onclick="showTab('reports')"><i class="fas fa-flag"></i> Reports & Flags <span class="sb-count warn">12</span></div>
+    <div class="sb-section">Platform</div>
+    <div class="sb-link" onclick="showTab('venues')"><i class="fas fa-map-marker-alt"></i> Venue Management</div>
+    <div class="sb-link" onclick="showTab('subscriptions')"><i class="fas fa-credit-card"></i> Subscriptions</div>
+    <div class="sb-link" onclick="showTab('ai')"><i class="fas fa-robot"></i> AI Moderation</div>
+    <div class="sb-section">Settings</div>
+    <div class="sb-link" onclick="showToast('⚙️ Settings panel coming soon')"><i class="fas fa-cog"></i> Settings</div>
+    <div class="sb-link" onclick="window.location.href='app.html'"><i class="fas fa-external-link-alt"></i> View Live App</div>
+  </div>
+  <div class="sb-user">
+    <div class="sb-av">👤</div>
+    <div><div class="sb-uname">Admin</div><div class="sb-urole">Super Admin</div></div>
+  </div>
+  <div style="padding:12px 16px;border-top:1px solid var(--border)">
+    <div style="font-family:var(--serif);font-size:12px;color:var(--tm);margin-bottom:4px;font-weight:500">Kindness Community Foundation</div>
+    <div style="font-size:10px;color:var(--ts);line-height:1.6">
+      <div>Newport Beach, CA 92660</div>
+      <a href="https://kindnesscommunityfoundation.com/" target="_blank" rel="noopener" style="color:var(--primary);text-decoration:none;display:block">kindnesscommunityfoundation.com</a>
+      <div style="margin-top:3px;letter-spacing:0.03em;opacity:0.7">Kind, an initiative by KCF LLC</div>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+  <div class="topbar">
+    <div class="tb-left">
+      <div><div class="tb-title" id="tb-title">Dashboard</div><div class="tb-sub" id="tb-sub">Kind Date Admin · Newport Beach, CA · <span id="live-time"></span></div></div>
+    </div>
+    <div class="tb-right">
+      <div class="ib"><i class="fas fa-bell"></i></div>
+      <div class="ib"><i class="fas fa-search"></i></div>
+      <button class="tb-btn tb-btn-g" onclick="showToast('📊 Exporting report...')"><i class="fas fa-download"></i> Export</button>
+      <button class="tb-btn tb-btn-p" onclick="window.location.href='app.html'"><i class="fas fa-heart"></i> Kind Date App</button>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- ── DASHBOARD ── -->
+    <div id="tv-dashboard" class="tv active">
+      <div class="stats-row">
+        <div class="scard c1"><div class="sc-icon sci1"><i class="fas fa-users"></i></div><div class="sc-val">12,430</div><div class="sc-lbl">Total Users</div><div class="sc-change sc-up"><i class="fas fa-arrow-up"></i> +8.4% this week</div></div>
+        <div class="scard c2"><div class="sc-icon sci2"><i class="fas fa-shield-alt"></i></div><div class="sc-val">11,847</div><div class="sc-lbl">Verified Users</div><div class="sc-change sc-up"><i class="fas fa-arrow-up"></i> 95.3% rate</div></div>
+        <div class="scard c3"><div class="sc-icon sci3"><i class="fas fa-heart"></i></div><div class="sc-val">54,219</div><div class="sc-lbl">Total Matches</div><div class="sc-change sc-up"><i class="fas fa-arrow-up"></i> +12.1% this week</div></div>
+        <div class="scard c4"><div class="sc-icon sci4"><i class="fas fa-dollar-sign"></i></div><div class="sc-val">$48,320</div><div class="sc-lbl">Monthly Revenue</div><div class="sc-change sc-up"><i class="fas fa-arrow-up"></i> +22.7% MoM</div></div>
+      </div>
+
+      <div class="charts-row">
+        <div class="chart-card">
+          <div class="cc-header">
+            <div><div class="cc-title">User Growth & Matches</div><div class="cc-sub">Last 7 days</div></div>
+            <select class="filter-sel" style="width:120px"><option>Last 7 Days</option><option>Last 30 Days</option><option>Last 90 Days</option></select>
+          </div>
+          <div class="chart-wrap"><canvas id="growthChart" height="100"></canvas></div>
+        </div>
+        <div class="chart-card">
+          <div class="cc-header"><div><div class="cc-title">Subscription Mix</div><div class="cc-sub">Active plans</div></div></div>
+          <div class="chart-wrap"><canvas id="planChart" height="180"></canvas></div>
+        </div>
+      </div>
+
+      <div class="table-card">
+        <div class="tc-header">
+          <div class="tc-title">Recent Users</div>
+          <div class="tc-tools">
+            <input class="search-inp" type="text" placeholder="Search users...">
+            <select class="filter-sel"><option>All Status</option><option>Verified</option><option>Pending</option><option>Flagged</option></select>
+            <button class="tb-btn tb-btn-p" style="font-size:12px;padding:8px 14px" onclick="showToast('➕ Add user flow')"><i class="fas fa-plus"></i> Add User</button>
+          </div>
+        </div>
+        <div style="overflow-x:auto">
+        <table id="users-mini-table">
+          <thead><tr><th>User</th><th>Status</th><th>Plan</th><th>Trust Score</th><th>Joined</th><th>Actions</th></tr></thead>
+          <tbody id="users-mini-body"></tbody>
+        </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── ANALYTICS ── -->
+    <div id="tv-analytics" class="tv">
+      <div class="analytics-grid">
+        <div class="an-card"><div class="an-title">Match Success Rate</div><div class="an-val">67%</div><div class="an-sub">Chat-to-date conversion</div></div>
+        <div class="an-card"><div class="an-title">Avg. Session Time</div><div class="an-val">18m</div><div class="an-sub">Per active user daily</div></div>
+        <div class="an-card"><div class="an-title">7-Day Retention</div><div class="an-val">74%</div><div class="an-sub">Users returning after 7 days</div></div>
+        <div class="an-card"><div class="an-title">Subscription Conversion</div><div class="an-val">23%</div><div class="an-sub">Free → paid upgrade rate</div></div>
+        <div class="an-card"><div class="an-title">Fraud Detection Rate</div><div class="an-val">99.8%</div><div class="an-sub">Bots & fakes caught by AI</div></div>
+        <div class="an-card"><div class="an-title">Venue Bookings</div><div class="an-val">1,204</div><div class="an-sub">This month</div></div>
+      </div>
+      <div class="charts-row">
+        <div class="chart-card">
+          <div class="cc-header"><div><div class="cc-title">Revenue Over Time</div><div class="cc-sub">Monthly MRR growth</div></div></div>
+          <div class="chart-wrap"><canvas id="revenueChart" height="100"></canvas></div>
+        </div>
+        <div class="chart-card">
+          <div class="cc-header"><div><div class="cc-title">User Demographics</div><div class="cc-sub">Age distribution</div></div></div>
+          <div class="chart-wrap"><canvas id="demoChart" height="180"></canvas></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── ALL USERS ── -->
+    <div id="tv-users" class="tv">
+      <div class="table-card">
+        <div class="tc-header">
+          <div class="tc-title">All Users (12,430)</div>
+          <div class="tc-tools">
+            <input class="search-inp" type="text" placeholder="Search by name or email...">
+            <select class="filter-sel"><option>All Status</option><option>Verified</option><option>Pending</option><option>Flagged</option></select>
+            <select class="filter-sel"><option>All Plans</option><option>Free</option><option>Plus</option><option>Premium</option></select>
+          </div>
+        </div>
+        <div style="overflow-x:auto">
+        <table>
+          <thead><tr><th>User</th><th>Verification</th><th>Plan</th><th>Trust Score</th><th>Matches</th><th>Joined</th><th>Last Active</th><th>Actions</th></tr></thead>
+          <tbody id="all-users-body"></tbody>
+        </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── VERIFICATION QUEUE ── -->
+    <div id="tv-verification" class="tv">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
+        <div><h3 style="font-size:16px;font-weight:700">Verification Queue</h3><p style="font-size:13px;color:var(--tm)">47 users awaiting ID verification</p></div>
+        <button class="tb-btn tb-btn-p" onclick="showToast('✅ Bulk approving verified users...')"><i class="fas fa-check-double"></i> Bulk Approve Safe</button>
+      </div>
+      <div class="vq-grid" id="vq-grid"></div>
+    </div>
+
+    <!-- ── REPORTS ── -->
+    <div id="tv-reports" class="tv">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
+        <div><h3 style="font-size:16px;font-weight:700">Reports & Flags</h3><p style="font-size:13px;color:var(--tm)">12 active reports requiring review</p></div>
+        <div style="display:flex;gap:8px">
+          <select class="filter-sel"><option>All Priority</option><option>High</option><option>Medium</option><option>Low</option></select>
+          <select class="filter-sel"><option>All Types</option><option>Fake Profile</option><option>Harassment</option><option>Spam</option></select>
+        </div>
+      </div>
+      <div class="rep-list" id="rep-list"></div>
+    </div>
+
+    <!-- ── VENUES ── -->
+    <div id="tv-venues" class="tv">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
+        <div><h3 style="font-size:16px;font-weight:700">Venue Management</h3><p style="font-size:13px;color:var(--tm)">6 active partner venues in Newport Beach</p></div>
+        <button class="tb-btn tb-btn-p" onclick="showToast('➕ Add new venue partner')"><i class="fas fa-plus"></i> Add Venue</button>
+      </div>
+      <div class="venue-mgmt-grid" id="vm-grid"></div>
+    </div>
+
+    <!-- ── SUBSCRIPTIONS ── -->
+    <div id="tv-subscriptions" class="tv">
+      <div class="stats-row" style="grid-template-columns:repeat(3,1fr)">
+        <div class="scard c1"><div class="sc-icon sci1"><i class="fas fa-dollar-sign"></i></div><div class="sc-val">$48,320</div><div class="sc-lbl">Monthly Revenue</div><div class="sc-change sc-up"><i class="fas fa-arrow-up"></i> +22.7% MoM</div></div>
+        <div class="scard c3"><div class="sc-icon sci3"><i class="fas fa-users"></i></div><div class="sc-val">2,841</div><div class="sc-lbl">Paid Subscribers</div><div class="sc-change sc-up"><i class="fas fa-arrow-up"></i> 23% conversion</div></div>
+        <div class="scard c2"><div class="sc-icon sci2"><i class="fas fa-redo"></i></div><div class="sc-val">94%</div><div class="sc-lbl">Renewal Rate</div><div class="sc-change sc-up"><i class="fas fa-arrow-up"></i> Excellent retention</div></div>
+      </div>
+      <div class="table-card">
+        <div class="tc-header"><div class="tc-title">Recent Transactions</div><div class="tc-tools"><input class="search-inp" type="text" placeholder="Search transactions..."></div></div>
+        <div style="overflow-x:auto">
+        <table>
+          <thead><tr><th>User</th><th>Plan</th><th>Amount</th><th>Status</th><th>Date</th><th>Actions</th></tr></thead>
+          <tbody id="sub-body"></tbody>
+        </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── AI MODERATION ── -->
+    <div id="tv-ai" class="tv">
+      <div class="stats-row">
+        <div class="scard c1"><div class="sc-icon sci1"><i class="fas fa-robot"></i></div><div class="sc-val">99.8%</div><div class="sc-lbl">Bot Detection Rate</div><div class="sc-change sc-up"><i class="fas fa-arrow-up"></i> AI powered</div></div>
+        <div class="scard c2"><div class="sc-icon sci2"><i class="fas fa-comment-slash"></i></div><div class="sc-val">1,204</div><div class="sc-lbl">Messages Flagged</div><div class="sc-change sc-up"><i class="fas fa-check"></i> This month</div></div>
+        <div class="scard c3"><div class="sc-icon sci3"><i class="fas fa-user-slash"></i></div><div class="sc-val">34</div><div class="sc-lbl">Accounts Suspended</div><div class="sc-change sc-up"><i class="fas fa-check"></i> Auto-detected</div></div>
+        <div class="scard c4"><div class="sc-icon sci4"><i class="fas fa-shield-virus"></i></div><div class="sc-val">0</div><div class="sc-lbl">Active Bot Accounts</div><div class="sc-change sc-up"><i class="fas fa-check"></i> Fully eliminated</div></div>
+      </div>
+      <div class="charts-row">
+        <div class="chart-card">
+          <div class="cc-header"><div><div class="cc-title">AI Moderation Activity</div><div class="cc-sub">Flags & actions over time</div></div></div>
+          <div class="chart-wrap"><canvas id="aiChart" height="100"></canvas></div>
+        </div>
+        <div class="chart-card" style="display:flex;flex-direction:column;gap:12px">
+          <div class="cc-header"><div><div class="cc-title">AI Rules Active</div></div></div>
+          <div style="display:flex;flex-direction:column;gap:8px;font-size:13px">
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:10px;background:rgba(34,197,94,.1);border-radius:var(--r1)"><span><i class="fas fa-check-circle" style="color:var(--green);margin-right:8px"></i>Bot behavior detection</span><span style="color:var(--green);font-weight:600">Active</span></div>
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:10px;background:rgba(34,197,94,.1);border-radius:var(--r1)"><span><i class="fas fa-check-circle" style="color:var(--green);margin-right:8px"></i>Hate speech filter</span><span style="color:var(--green);font-weight:600">Active</span></div>
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:10px;background:rgba(34,197,94,.1);border-radius:var(--r1)"><span><i class="fas fa-check-circle" style="color:var(--green);margin-right:8px"></i>Spam detection</span><span style="color:var(--green);font-weight:600">Active</span></div>
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:10px;background:rgba(34,197,94,.1);border-radius:var(--r1)"><span><i class="fas fa-check-circle" style="color:var(--green);margin-right:8px"></i>Photo verification AI</span><span style="color:var(--green);font-weight:600">Active</span></div>
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:10px;background:rgba(34,197,94,.1);border-radius:var(--r1)"><span><i class="fas fa-check-circle" style="color:var(--green);margin-right:8px"></i>Suspicious behavior alert</span><span style="color:var(--green);font-weight:600">Active</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /content -->
+</div><!-- /main -->
+</div><!-- /layout -->
+
+<div class="toast" id="toast"><span id="toast-msg"></span></div>
+
+<script>
+// ── DATA ──
+const USERS = [
+  {emoji:'👩',name:'Sarah M.',email:'sarah@example.com',status:'verified',plan:'premium',trust:98,matches:24,joined:'Jan 5, 2026',active:'2h ago'},
+  {emoji:'👨',name:'James K.',email:'james@example.com',status:'verified',plan:'plus',trust:95,matches:18,joined:'Jan 8, 2026',active:'Just now'},
+  {emoji:'👩‍🦰',name:'Emma R.',email:'emma@example.com',status:'pending',plan:'free',trust:72,matches:0,joined:'Feb 1, 2026',active:'1d ago'},
+  {emoji:'👨‍🦱',name:'Marcus T.',email:'marcus@example.com',status:'verified',plan:'premium',trust:97,matches:31,joined:'Dec 20, 2025',active:'5m ago'},
+  {emoji:'👩',name:'Aisha R.',email:'aisha@example.com',status:'verified',plan:'plus',trust:94,matches:15,joined:'Jan 14, 2026',active:'3h ago'},
+  {emoji:'👨‍🦳',name:'David L.',email:'david@example.com',status:'flagged',plan:'free',trust:34,matches:2,joined:'Feb 10, 2026',active:'4d ago'},
+  {emoji:'👩‍🦳',name:'Olivia K.',email:'olivia@example.com',status:'verified',plan:'premium',trust:96,matches:22,joined:'Nov 30, 2025',active:'30m ago'},
+  {emoji:'👦',name:'Tyler W.',email:'tyler@example.com',status:'pending',plan:'free',trust:61,matches:0,joined:'Feb 14, 2026',active:'2d ago'},
+];
+
+const VQ_USERS = [
+  {emoji:'👩‍🦰',name:'Emma R.',sub:'Newport Beach · 26y · Free',phone:true,email:true,id:false,selfie:false,social:false},
+  {emoji:'👦',name:'Tyler W.',sub:'Irvine · 24y · Free',phone:true,email:true,id:false,selfie:false,social:false},
+  {emoji:'👨‍🦱',name:'Chris M.',sub:'Laguna Beach · 33y · Plus',phone:true,email:true,id:true,selfie:false,social:true},
+  {emoji:'👩',name:'Priya S.',sub:'Newport Beach · 29y · Free',phone:true,email:true,id:false,selfie:false,social:false},
+];
+
+const REPORTS = [
+  {priority:'high',icon:'🚨',title:'Suspected Fake Profile',desc:'User "John999" flagged by 3 members for using stock photos and suspicious messaging patterns.',reporter:'Multiple users',time:'2h ago',type:'Fake Profile'},
+  {priority:'med',icon:'⚠️',title:'Harassment Report',desc:'User reported for sending unsolicited explicit messages after being unmatched.',reporter:'sarah@example.com',time:'5h ago',type:'Harassment'},
+  {priority:'med',icon:'⚠️',title:'Spam Behavior',desc:'AI detected repetitive copy-paste messages sent to 47 matches in 2 hours.',reporter:'AI System',time:'6h ago',type:'Spam'},
+  {priority:'low',icon:'ℹ️',title:'Misleading Profile Age',desc:'User reported to be using photos that appear much younger than stated age.',reporter:'james@example.com',time:'1d ago',type:'Misrepresentation'},
+];
+
+const VENUES_DATA = [
+  {name:'Nobu Newport Beach',type:'Restaurant',emoji:'🍣',bg:'linear-gradient(135deg,#1a1a2e,#2d1b69)',bookings:124,revenue:'$4,960',rating:'4.9',active:true},
+  {name:'The Bungalow',type:'Bar & Lounge',emoji:'🍹',bg:'linear-gradient(135deg,#1a2e1a,#1b692d)',bookings:89,revenue:'$1,780',rating:'4.8',active:true},
+  {name:'Bear Flag Fish Co.',type:'Café',emoji:'🐟',bg:'linear-gradient(135deg,#2e1a1a,#692d1b)',bookings:67,revenue:'$1,340',rating:'4.7',active:true},
+  {name:'Balboa Bay Resort',type:'Restaurant',emoji:'🥂',bg:'linear-gradient(135deg,#1a2535,#2d3a5a)',bookings:98,revenue:'$5,880',rating:'4.9',active:true},
+  {name:'Sol Cocina',type:'Restaurant',emoji:'🌮',bg:'linear-gradient(135deg,#35261a,#5a3d1a)',bookings:45,revenue:'$900',rating:'4.6',active:true},
+  {name:'Balboa Coffee',type:'Café',emoji:'☕',bg:'linear-gradient(135deg,#251a35,#3d1a5a)',bookings:38,revenue:'$380',rating:'4.5',active:false},
+];
+
+const SUBS = [
+  {emoji:'👩',name:'Sarah M.',email:'sarah@example.com',plan:'Premium',amount:'$19.00',status:'Active',date:'Feb 1, 2026'},
+  {emoji:'👨',name:'James K.',email:'james@example.com',plan:'Plus',amount:'$9.00',status:'Active',date:'Feb 3, 2026'},
+  {emoji:'👨‍🦱',name:'Marcus T.',email:'marcus@example.com',plan:'Premium',amount:'$19.00',status:'Active',date:'Jan 20, 2026'},
+  {emoji:'👩',name:'Aisha R.',email:'aisha@example.com',plan:'Plus',amount:'$9.00',status:'Active',date:'Feb 7, 2026'},
+  {emoji:'👩‍🦳',name:'Olivia K.',email:'olivia@example.com',plan:'Premium',amount:'$19.00',status:'Active',date:'Dec 30, 2025'},
+];
+
+// ── TABS ──
+function showTab(tab){
+  const titles={dashboard:'Dashboard',analytics:'Analytics',users:'User Management',verification:'Verification Queue',reports:'Reports & Flags',venues:'Venue Management',subscriptions:'Subscriptions',ai:'AI Moderation'};
+  document.querySelectorAll('.tv').forEach(t=>t.classList.remove('active'));
+  document.getElementById('tv-'+tab).classList.add('active');
+  document.querySelectorAll('.sb-link').forEach(l=>l.classList.remove('active'));
+  event.target.closest('.sb-link').classList.add('active');
+  document.getElementById('tb-title').textContent=titles[tab]||tab;
+}
+
+// ── RENDER TABLES ──
+function renderUsersTable(body,users){
+  body.innerHTML=users.map(u=>`
+    <tr>
+      <td><div class="user-cell"><div class="u-av">${u.emoji}</div><div><div class="u-name">${u.name}</div><div class="u-email">${u.email}</div></div></div></td>
+      <td><span class="badge b-${u.status}">${u.status==='verified'?'✓ Verified':u.status==='pending'?'⏳ Pending':'🚨 Flagged'}</span></td>
+      <td><span class="badge b-${u.plan}">${u.plan.charAt(0).toUpperCase()+u.plan.slice(1)}</span></td>
+      <td><span style="font-weight:700;color:${u.trust>85?'var(--green)':u.trust>60?'var(--gold)':'var(--red)'}">${u.trust}/100</span></td>
+      <td>${u.matches||'-'}</td>
+      <td style="color:var(--tm)">${u.joined}</td>
+      <td style="color:var(--tm)">${u.active||'-'}</td>
+      <td><div class="actions-cell">
+        <button class="act-btn ab-view" onclick="showToast('👁️ Viewing ${u.name}')">View</button>
+        ${u.status==='flagged'?`<button class="act-btn ab-suspend" onclick="showToast('⚠️ Account suspended')">Suspend</button>`:''}
+        ${u.status==='pending'?`<button class="act-btn ab-approve" onclick="showToast('✅ Approved')">Approve</button>`:''}
+      </div></td>
+    </tr>`).join('');
+}
+
+function renderVQ(){
+  const grid=document.getElementById('vq-grid');
+  grid.innerHTML=VQ_USERS.map(u=>`
+    <div class="vq-card">
+      <div class="vq-top"><div class="vq-av">${u.emoji}</div><div><div class="vq-name">${u.name}</div><div class="vq-sub">${u.sub}</div></div></div>
+      <div class="vq-checklist">
+        <div class="vq-item"><span>📱 Phone OTP</span><i class="fas fa-check-circle ${u.phone?'vq-ok':'vq-no'}"></i></div>
+        <div class="vq-item"><span>✉️ Email Verified</span><i class="fas fa-check-circle ${u.email?'vq-ok':'vq-no'}"></i></div>
+        <div class="vq-item"><span>🪪 Government ID</span><i class="fas fa-${u.id?'check-circle vq-ok':'clock vq-pending-ic'}"></i></div>
+        <div class="vq-item"><span>🤳 Selfie Match</span><i class="fas fa-${u.selfie?'check-circle vq-ok':'clock vq-pending-ic'}"></i></div>
+        <div class="vq-item"><span>📱 Social Link</span><i class="fas fa-${u.social?'check-circle vq-ok':'times-circle vq-no'}"></i></div>
+      </div>
+      <div class="vq-actions">
+        <button class="vq-btn-a" onclick="showToast('✅ ${u.name} approved & notified!')"><i class="fas fa-check"></i> Approve</button>
+        <button class="vq-btn-r" onclick="showToast('❌ ${u.name} rejected with reason')"><i class="fas fa-times"></i> Reject</button>
+      </div>
+    </div>`).join('');
+}
+
+function renderReports(){
+  const list=document.getElementById('rep-list');
+  list.innerHTML=REPORTS.map(r=>`
+    <div class="rep-card">
+      <div class="rep-ic rep-${r.priority==='high'?'high':r.priority==='med'?'med':'low'}">${r.icon}</div>
+      <div class="rep-body">
+        <div class="rep-title">${r.title}</div>
+        <div class="rep-desc">${r.desc}</div>
+        <div class="rep-meta">Reported by: ${r.reporter} · ${r.time} · Type: ${r.type}</div>
+      </div>
+      <div class="rep-acts">
+        <button class="act-btn ab-view" onclick="showToast('👁️ Reviewing report...')">Review</button>
+        <button class="act-btn ab-reject" onclick="showToast('🚫 User suspended')">Suspend</button>
+        <button class="act-btn ab-approve" onclick="showToast('✅ Report dismissed')">Dismiss</button>
+      </div>
+    </div>`).join('');
+}
+
+function renderVenues(){
+  const grid=document.getElementById('vm-grid');
+  grid.innerHTML=VENUES_DATA.map(v=>`
+    <div class="vm-card">
+      <div class="vm-img" style="background:${v.bg}"><div>${v.emoji}</div>${v.active?'<div class="vm-badge-act">Active</div>':''}</div>
+      <div class="vm-body">
+        <div class="vm-name">${v.name}</div>
+        <div class="vm-type">${v.type} · ★ ${v.rating}</div>
+        <div class="vm-stats">
+          <div class="vm-stat"><strong>${v.bookings}</strong>Bookings</div>
+          <div class="vm-stat"><strong>${v.revenue}</strong>Revenue</div>
+        </div>
+        <div class="vm-acts">
+          <button class="vm-btn vm-btn-e" onclick="showToast('✏️ Editing ${v.name}')">Edit</button>
+          <button class="vm-btn vm-btn-d" onclick="showToast('🗑️ Removing ${v.name}')">Remove</button>
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+function renderSubs(){
+  const body=document.getElementById('sub-body');
+  body.innerHTML=SUBS.map(s=>`
+    <tr>
+      <td><div class="user-cell"><div class="u-av">${s.emoji}</div><div><div class="u-name">${s.name}</div><div class="u-email">${s.email}</div></div></div></td>
+      <td><span class="badge ${s.plan==='Premium'?'b-premium':'b-plus'}">${s.plan}</span></td>
+      <td style="font-weight:700">${s.amount}</td>
+      <td><span class="badge b-verified">${s.status}</span></td>
+      <td style="color:var(--tm)">${s.date}</td>
+      <td><button class="act-btn ab-view" onclick="showToast('🧾 Invoice for ${s.name}')">Invoice</button></td>
+    </tr>`).join('');
+}
+
+// ── CHARTS ──
+const CHART_TICK='#8A7B6E';
+const CHART_GRID='rgba(44,32,24,.07)';
+const scaleOpts={x:{ticks:{color:CHART_TICK},grid:{color:CHART_GRID}},y:{ticks:{color:CHART_TICK},grid:{color:CHART_GRID}}};
+function safeChart(id,cfg){const el=document.getElementById(id);if(el)new Chart(el,cfg);}
+function initCharts(){
+  safeChart('growthChart',{type:'line',data:{labels:['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],datasets:[{label:'New Users',data:[120,145,132,178,190,240,215],borderColor:'#C8716A',backgroundColor:'rgba(200,113,106,.1)',tension:.4,fill:true},{label:'Matches',data:[340,420,390,480,520,620,580],borderColor:'#7B9E87',backgroundColor:'rgba(123,158,135,.1)',tension:.4,fill:true}]},options:{responsive:true,maintainAspectRatio:true,plugins:{legend:{labels:{color:CHART_TICK,font:{size:12}}}},scales:scaleOpts}});
+
+  safeChart('planChart',{type:'doughnut',data:{labels:['Free','Plus ($9)','Premium ($19)'],datasets:[{data:[9589,1841,1000],backgroundColor:['rgba(44,32,24,.08)','rgba(123,158,135,.6)','rgba(200,113,106,.8)'],borderColor:['rgba(44,32,24,.1)','#7B9E87','#C8716A'],borderWidth:2}]},options:{responsive:true,plugins:{legend:{position:'bottom',labels:{color:CHART_TICK,font:{size:12},padding:12}}}}});
+
+  safeChart('revenueChart',{type:'bar',data:{labels:['Sep','Oct','Nov','Dec','Jan','Feb'],datasets:[{label:'MRR ($)',data:[18000,24000,31000,38000,42000,48320],backgroundColor:'rgba(200,113,106,.7)',borderRadius:6}]},options:{responsive:true,plugins:{legend:{display:false}},scales:scaleOpts}});
+
+  safeChart('demoChart',{type:'bar',data:{labels:['18-22','23-27','28-32','33-37','38-42','43+'],datasets:[{label:'Users',data:[890,3240,4120,2640,1180,360],backgroundColor:'rgba(123,158,135,.7)',borderRadius:4}]},options:{responsive:true,plugins:{legend:{display:false}},scales:scaleOpts}});
+
+  safeChart('aiChart',{type:'line',data:{labels:['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],datasets:[{label:'Flagged Messages',data:[42,38,51,44,60,78,55],borderColor:'#F97316',tension:.4},{label:'Bots Detected',data:[3,2,4,1,3,5,2],borderColor:'#EF4444',tension:.4}]},options:{responsive:true,plugins:{legend:{labels:{color:CHART_TICK,font:{size:12}}}},scales:scaleOpts}});
+}
+
+// ── TOAST ──
+let tt;
+function showToast(msg){clearTimeout(tt);const t=document.getElementById('toast');document.getElementById('toast-msg').textContent=msg;t.classList.add('show');tt=setTimeout(()=>t.classList.remove('show'),3000);}
+
+// ── LIVE TIME ──
+function updateTime(){document.getElementById('live-time').textContent=new Date().toLocaleTimeString();}
+setInterval(updateTime,1000);updateTime();
+
+// ── INIT ──
+document.addEventListener('DOMContentLoaded',()=>{
+  renderUsersTable(document.getElementById('users-mini-body'),USERS.slice(0,5));
+  renderUsersTable(document.getElementById('all-users-body'),USERS);
+  renderVQ();
+  renderReports();
+  renderVenues();
+  renderSubs();
+  setTimeout(initCharts,100);
+});
+</script>
+</body>
+</html>
