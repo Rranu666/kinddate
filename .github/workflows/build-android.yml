@@ -59,17 +59,20 @@ jobs:
         working-directory: mobile/android
         run: chmod +x gradlew
 
-      - name: Configure Java toolchain for Gradle
+      - name: Configure Java and Android SDK for Gradle
         working-directory: mobile/android
         run: |
-          # Tell Gradle which JVM to run on AND where to find toolchains
-          # org.gradle.java.home  → JVM used to run the Gradle daemon
-          # org.gradle.java.installations.paths → extra paths Gradle searches when
-          #   resolving jvmToolchain(17) requests inside @react-native/gradle-plugin
+          # 1. Tell Gradle which JVM to run on (set by setup-java above)
           echo "org.gradle.java.home=$JAVA_HOME" >> gradle.properties
           echo "org.gradle.java.installations.paths=$JAVA_HOME" >> gradle.properties
           echo "Gradle will use Java at: $JAVA_HOME"
           java -version
+
+          # 2. Write local.properties so AGP always finds the Android SDK.
+          #    Relying on the ANDROID_HOME env var alone can fail if the
+          #    step-level env: block accidentally shadows it with an empty value.
+          echo "sdk.dir=$ANDROID_HOME" > local.properties
+          echo "SDK dir written: $ANDROID_HOME"
 
       - name: Build release APK
         working-directory: mobile/android
@@ -79,9 +82,6 @@ jobs:
           BUILD_EXIT=${PIPESTATUS[0]}
           echo "BUILD_EXIT=$BUILD_EXIT" >> $GITHUB_ENV
           exit $BUILD_EXIT
-        env:
-          ANDROID_HOME: ${{ env.ANDROID_HOME }}
-          ANDROID_SDK_ROOT: ${{ env.ANDROID_HOME }}
 
       - name: Show root cause error
         if: failure()
