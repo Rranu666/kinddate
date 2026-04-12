@@ -233,6 +233,22 @@ export default function MatchDetailScreen() {
                 onPress={() => router.push(`/chat/${match.id}`)}
                 size="lg"
               />
+              <Button
+                title="Start video date 📹"
+                variant="outline"
+                onPress={() => router.push(`/video-date/${match.id}`)}
+              />
+              <Button
+                title="Report profile"
+                variant="ghost"
+                onPress={() =>
+                  router.push({
+                    pathname: '/report',
+                    params: { userId: profile.id, name: profile.display_name },
+                  })
+                }
+                textStyle={{ color: COLORS.textMuted }}
+              />
             </View>
           )}
         </View>

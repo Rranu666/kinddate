@@ -108,6 +108,9 @@ export default function ChatScreen() {
           </View>
         </TouchableOpacity>
 
+        <TouchableOpacity style={styles.headerAction} onPress={() => match?.id && router.push(`/video-date/${match.id}`)}>
+          <Text style={styles.headerActionIcon}>📹</Text>
+        </TouchableOpacity>
         <TouchableOpacity style={styles.headerAction} onPress={() => router.push(`/match/${match?.id}`)}>
           <Text style={styles.headerActionIcon}>ℹ</Text>
         </TouchableOpacity>

@@ -11,7 +11,8 @@ export default function IndexScreen() {
     if (!initialized) return;
 
     if (!user) {
-      router.replace('/(auth)/login');
+      // New visitors see the welcome/landing screen
+      router.replace('/welcome');
       return;
     }
 

@@ -191,25 +191,19 @@ export default function ProfileScreen() {
           <SectionRow
             label="Subscription"
             value={(user?.plan ?? 'free').charAt(0).toUpperCase() + (user?.plan ?? 'free').slice(1)}
-            onPress={() => Alert.alert('Subscription', 'Upgrade plans coming soon!')}
+            onPress={() => router.push('/subscription')}
           />
           <View style={styles.divider} />
           <SectionRow
-            label="Notifications"
-            value="Manage"
-            onPress={() => Alert.alert('Notifications', 'Notification settings coming soon.')}
+            label="Verification"
+            value={user?.is_verified ? '✓ Verified' : 'Get verified'}
+            onPress={() => router.push('/verify')}
           />
           <View style={styles.divider} />
           <SectionRow
-            label="Privacy"
-            value="Manage"
-            onPress={() => Alert.alert('Privacy', 'Privacy settings coming soon.')}
-          />
-          <View style={styles.divider} />
-          <SectionRow
-            label="Safety"
-            value="Block & Report"
-            onPress={() => Alert.alert('Safety', 'Safety tools coming soon.')}
+            label="Settings"
+            value="Notifications, Privacy…"
+            onPress={() => router.push('/settings')}
           />
         </View>
       </View>
