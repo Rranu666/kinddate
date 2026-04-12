@@ -1,0 +1,19 @@
+diff --git a/node_modules/expo-notifications/android/build.gradle b/node_modules/expo-notifications/android/build.gradle
+index a2f8797..198760b 100644
+--- a/node_modules/expo-notifications/android/build.gradle
++++ b/node_modules/expo-notifications/android/build.gradle
+@@ -1,9 +1,13 @@
+ plugins {
+   id 'com.android.library'
+   id 'kotlin-parcelize'
+-  id 'expo-module-gradle-plugin'
+ }
+ 
++def expoModulesCorePlugin = new File(project(":expo-modules-core").projectDir.absolutePath, "ExpoModulesCorePlugin.gradle")
++apply from: expoModulesCorePlugin
++applyKotlinExpoModulesCorePlugin()
++useDefaultAndroidSdkVersions()
++
+ group = 'host.exp.exponent'
+ version = '55.0.18'
+ 

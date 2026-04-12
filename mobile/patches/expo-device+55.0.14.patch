@@ -1,0 +1,18 @@
+diff --git a/node_modules/expo-device/android/build.gradle b/node_modules/expo-device/android/build.gradle
+index 796b364..f49b04a 100644
+--- a/node_modules/expo-device/android/build.gradle
++++ b/node_modules/expo-device/android/build.gradle
+@@ -1,8 +1,12 @@
+ plugins {
+   id 'com.android.library'
+-  id 'expo-module-gradle-plugin'
+ }
+ 
++def expoModulesCorePlugin = new File(project(":expo-modules-core").projectDir.absolutePath, "ExpoModulesCorePlugin.gradle")
++apply from: expoModulesCorePlugin
++applyKotlinExpoModulesCorePlugin()
++useDefaultAndroidSdkVersions()
++
+ group = 'host.exp.exponent'
+ version = '55.0.14'
+ 

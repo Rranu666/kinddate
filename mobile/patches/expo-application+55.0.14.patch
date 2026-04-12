@@ -1,0 +1,21 @@
+diff --git a/node_modules/expo-application/android/build.gradle b/node_modules/expo-application/android/build.gradle
+index 4efd7af..58c74d8 100644
+--- a/node_modules/expo-application/android/build.gradle
++++ b/node_modules/expo-application/android/build.gradle
+@@ -1,8 +1,15 @@
+ plugins {
+   id 'com.android.library'
+-  id 'expo-module-gradle-plugin'
+ }
+ 
++// expo-module-gradle-plugin is not registered in bare RN builds (the Gradle
++// plugin project is missing from the expo-modules-core npm package).
++// Fall back to the classic ExpoModulesCorePlugin.gradle approach.
++def expoModulesCorePlugin = new File(project(":expo-modules-core").projectDir.absolutePath, "ExpoModulesCorePlugin.gradle")
++apply from: expoModulesCorePlugin
++applyKotlinExpoModulesCorePlugin()
++useDefaultAndroidSdkVersions()
++
+ group = 'host.exp.exponent'
+ version = '55.0.14'
+ 
