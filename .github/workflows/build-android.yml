@@ -36,11 +36,17 @@ jobs:
 
       - name: Install Android SDK 35 and build-tools
         run: |
+          # Find sdkmanager - it lives in cmdline-tools on GitHub runners
+          SDKMANAGER="$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager"
+          if [ ! -f "$SDKMANAGER" ]; then
+            SDKMANAGER=$(find "$ANDROID_HOME" -name sdkmanager -type f 2>/dev/null | head -1)
+          fi
+          echo "Using sdkmanager: $SDKMANAGER"
           echo "ANDROID_HOME=$ANDROID_HOME"
-          echo "Available SDK packages:"
-          sdkmanager --list_installed 2>/dev/null | head -20 || true
-          yes | sdkmanager --licenses 2>/dev/null || true
-          sdkmanager "platforms;android-35" "build-tools;35.0.0" "ndk;26.1.10909125" 2>&1
+          yes | "$SDKMANAGER" --licenses 2>/dev/null || true
+          "$SDKMANAGER" "platforms;android-35" "build-tools;35.0.0" "ndk;26.1.10909125"
+          echo "$ANDROID_HOME/cmdline-tools/latest/bin" >> $GITHUB_PATH
+          echo "$ANDROID_HOME/platform-tools" >> $GITHUB_PATH
 
       - name: Make gradlew executable
         working-directory: mobile/android
