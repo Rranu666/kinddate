@@ -16,6 +16,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          ref: claude/create-mobile-app-CPYLh
 
       - name: Set up JDK 17
         uses: actions/setup-java@v4
@@ -27,26 +29,18 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache: 'npm'
-          cache-dependency-path: mobile/package-lock.json
 
-      - name: Install JS dependencies (applies patch-package patches)
+      - name: Install JS dependencies
         working-directory: mobile
         run: npm install --legacy-peer-deps
 
-      - name: Set up Android SDK
-        uses: android-actions/setup-android@v3
-
-      - name: Accept Android SDK licenses
-        run: yes | sdkmanager --licenses || true
-
-      - name: Install required Android SDK components
+      - name: Install Android SDK 35 and build-tools
         run: |
-          sdkmanager \
-            "platform-tools" \
-            "build-tools;35.0.0" \
-            "platforms;android-35" \
-            "ndk;26.1.10909125"
+          echo "ANDROID_HOME=$ANDROID_HOME"
+          echo "Available SDK packages:"
+          sdkmanager --list_installed 2>/dev/null | head -20 || true
+          yes | sdkmanager --licenses 2>/dev/null || true
+          sdkmanager "platforms;android-35" "build-tools;35.0.0" "ndk;26.1.10909125" 2>&1
 
       - name: Make gradlew executable
         working-directory: mobile/android
@@ -54,25 +48,26 @@ jobs:
 
       - name: Build release APK
         working-directory: mobile/android
-        run: ./gradlew assembleRelease --no-daemon
+        run: |
+          ./gradlew assembleRelease \
+            --no-daemon \
+            --stacktrace \
+            -Pandroid.useAndroidX=true
         env:
-          ANDROID_HOME: ${{ env.ANDROID_SDK_ROOT }}
+          ANDROID_HOME: ${{ env.ANDROID_HOME }}
+          ANDROID_SDK_ROOT: ${{ env.ANDROID_HOME }}
 
-      - name: Upload APK artifact
+      - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: kinddate-release-apk
           path: mobile/android/app/build/outputs/apk/release/app-release.apk
           retention-days: 30
 
-      - name: APK build summary
+      - name: Summary
         run: |
-          APK_PATH="mobile/android/app/build/outputs/apk/release/app-release.apk"
-          if [ -f "$APK_PATH" ]; then
-            SIZE=$(du -sh "$APK_PATH" | cut -f1)
-            echo "## APK Built Successfully" >> $GITHUB_STEP_SUMMARY
-            echo "**Size:** $SIZE" >> $GITHUB_STEP_SUMMARY
-            echo "**Path:** $APK_PATH" >> $GITHUB_STEP_SUMMARY
-            echo "" >> $GITHUB_STEP_SUMMARY
-            echo "Download the APK from the **Artifacts** section above." >> $GITHUB_STEP_SUMMARY
-          fi
+          APK="mobile/android/app/build/outputs/apk/release/app-release.apk"
+          SIZE=$(du -sh "$APK" | cut -f1)
+          echo "## APK Built Successfully" >> $GITHUB_STEP_SUMMARY
+          echo "**Size:** $SIZE" >> $GITHUB_STEP_SUMMARY
+          echo "Download from the Artifacts section above." >> $GITHUB_STEP_SUMMARY
