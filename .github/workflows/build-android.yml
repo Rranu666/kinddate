@@ -36,7 +36,14 @@ jobs:
         run: npm install --legacy-peer-deps
 
       - name: Verify patch applied
-        run: grep -c "findByName" mobile/node_modules/expo-modules-core/android/ExpoModulesCorePlugin.gradle && echo "Patch OK"
+        run: |
+          # Confirm the no-op patch removed 'from components.release'
+          if grep -q "from components.release" mobile/node_modules/expo-modules-core/android/ExpoModulesCorePlugin.gradle; then
+            echo "ERROR: Patch NOT applied - components.release still present"
+            exit 1
+          else
+            echo "Patch OK - components.release removed"
+          fi
 
       - name: Install Android SDK 35 and build-tools
         run: |
@@ -51,6 +58,14 @@ jobs:
       - name: Make gradlew executable
         working-directory: mobile/android
         run: chmod +x gradlew
+
+      - name: Configure Java toolchain for Gradle
+        working-directory: mobile/android
+        run: |
+          # Tell Gradle exactly where Java 17 is (set by setup-java above)
+          echo "org.gradle.java.home=$JAVA_HOME" >> gradle.properties
+          echo "Gradle will use Java at: $JAVA_HOME"
+          java -version
 
       - name: Build release APK
         working-directory: mobile/android
