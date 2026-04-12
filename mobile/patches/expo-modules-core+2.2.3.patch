@@ -1,31 +1,41 @@
 diff --git a/node_modules/expo-modules-core/android/ExpoModulesCorePlugin.gradle b/node_modules/expo-modules-core/android/ExpoModulesCorePlugin.gradle
-index 4ec4514..e1d317f 100644
+index 4ec4514..29f185b 100644
 --- a/node_modules/expo-modules-core/android/ExpoModulesCorePlugin.gradle
 +++ b/node_modules/expo-modules-core/android/ExpoModulesCorePlugin.gradle
-@@ -89,15 +89,18 @@ ext.useExpoPublishing = {
-   }
+@@ -76,32 +76,10 @@ ext.useDefaultAndroidSdkVersions = {
+ }
  
-   project.afterEvaluate {
+ ext.useExpoPublishing = {
+-  if (!project.plugins.hasPlugin('maven-publish')) {
+-    apply plugin: 'maven-publish'
+-  }
+-
+-  project.android {
+-    publishing {
+-      singleVariant("release") {
+-        withSourcesJar()
+-      }
+-    }
+-  }
+-
+-  project.afterEvaluate {
 -    publishing {
 -      publications {
 -        release(MavenPublication) {
 -          from components.release
-+    def releaseComponent = project.components.findByName("release")
-+    if (releaseComponent != null) {
-+      publishing {
-+        publications {
-+          release(MavenPublication) {
-+            from releaseComponent
-+          }
-         }
+-        }
 -      }
 -      repositories {
 -        maven {
 -          url = mavenLocal().url
-+        repositories {
-+          maven {
-+            url = mavenLocal().url
-+          }
-         }
-       }
-     }
+-        }
+-      }
+-    }
+-  }
++  // No-op: maven-publish is only needed when releasing expo modules to Maven.
++  // Disabled to avoid Gradle 8.x / AGP 8.5 SoftwareComponents API incompatibility
++  // when building apps. The singleVariant + afterEvaluate publishing block causes
++  // "Could not get unknown property 'release'" on Gradle 8.8+.
+ }
+ 
+ ext.useCoreDependencies = {
