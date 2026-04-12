@@ -62,8 +62,12 @@ jobs:
       - name: Configure Java toolchain for Gradle
         working-directory: mobile/android
         run: |
-          # Tell Gradle exactly where Java 17 is (set by setup-java above)
+          # Tell Gradle which JVM to run on AND where to find toolchains
+          # org.gradle.java.home  → JVM used to run the Gradle daemon
+          # org.gradle.java.installations.paths → extra paths Gradle searches when
+          #   resolving jvmToolchain(17) requests inside @react-native/gradle-plugin
           echo "org.gradle.java.home=$JAVA_HOME" >> gradle.properties
+          echo "org.gradle.java.installations.paths=$JAVA_HOME" >> gradle.properties
           echo "Gradle will use Java at: $JAVA_HOME"
           java -version
 
