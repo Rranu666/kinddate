@@ -86,6 +86,9 @@ jobs:
       - name: Show root cause error
         if: failure()
         run: |
+          echo "======== KOTLIN COMPILER ERRORS (e:) ========"
+          grep "^e: " /tmp/gradle-build.log | head -80 || echo "(no e: lines found)"
+          echo ""
           echo "======== WHAT WENT WRONG ========"
           grep -A 10 "What went wrong" /tmp/gradle-build.log | head -60
           echo ""

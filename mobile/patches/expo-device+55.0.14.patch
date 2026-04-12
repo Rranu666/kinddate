@@ -2,7 +2,7 @@ diff --git a/node_modules/expo-device/android/build.gradle b/node_modules/expo-d
 index 796b364..f49b04a 100644
 --- a/node_modules/expo-device/android/build.gradle
 +++ b/node_modules/expo-device/android/build.gradle
-@@ -1,8 +1,12 @@
+@@ -1,8 +1,13 @@
  plugins {
    id 'com.android.library'
 -  id 'expo-module-gradle-plugin'
@@ -12,6 +12,7 @@ index 796b364..f49b04a 100644
 +apply from: expoModulesCorePlugin
 +applyKotlinExpoModulesCorePlugin()
 +useDefaultAndroidSdkVersions()
++useCoreDependencies()
 +
  group = 'host.exp.exponent'
  version = '55.0.14'

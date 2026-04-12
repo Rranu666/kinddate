@@ -2,7 +2,7 @@ diff --git a/node_modules/expo-notifications/android/build.gradle b/node_modules
 index a2f8797..198760b 100644
 --- a/node_modules/expo-notifications/android/build.gradle
 +++ b/node_modules/expo-notifications/android/build.gradle
-@@ -1,9 +1,13 @@
+@@ -1,9 +1,14 @@
  plugins {
    id 'com.android.library'
    id 'kotlin-parcelize'
@@ -13,6 +13,7 @@ index a2f8797..198760b 100644
 +apply from: expoModulesCorePlugin
 +applyKotlinExpoModulesCorePlugin()
 +useDefaultAndroidSdkVersions()
++useCoreDependencies()
 +
  group = 'host.exp.exponent'
  version = '55.0.18'
