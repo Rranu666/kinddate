@@ -1,0 +1,78 @@
+name: Build Android APK
+
+on:
+  push:
+    branches:
+      - claude/create-mobile-app-CPYLh
+    paths:
+      - 'mobile/**'
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build Signed APK
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: mobile/package-lock.json
+
+      - name: Install JS dependencies (applies patch-package patches)
+        working-directory: mobile
+        run: npm install --legacy-peer-deps
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Accept Android SDK licenses
+        run: yes | sdkmanager --licenses || true
+
+      - name: Install required Android SDK components
+        run: |
+          sdkmanager \
+            "platform-tools" \
+            "build-tools;35.0.0" \
+            "platforms;android-35" \
+            "ndk;26.1.10909125"
+
+      - name: Make gradlew executable
+        working-directory: mobile/android
+        run: chmod +x gradlew
+
+      - name: Build release APK
+        working-directory: mobile/android
+        run: ./gradlew assembleRelease --no-daemon
+        env:
+          ANDROID_HOME: ${{ env.ANDROID_SDK_ROOT }}
+
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: kinddate-release-apk
+          path: mobile/android/app/build/outputs/apk/release/app-release.apk
+          retention-days: 30
+
+      - name: APK build summary
+        run: |
+          APK_PATH="mobile/android/app/build/outputs/apk/release/app-release.apk"
+          if [ -f "$APK_PATH" ]; then
+            SIZE=$(du -sh "$APK_PATH" | cut -f1)
+            echo "## APK Built Successfully" >> $GITHUB_STEP_SUMMARY
+            echo "**Size:** $SIZE" >> $GITHUB_STEP_SUMMARY
+            echo "**Path:** $APK_PATH" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "Download the APK from the **Artifacts** section above." >> $GITHUB_STEP_SUMMARY
+          fi
