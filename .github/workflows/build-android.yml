@@ -53,7 +53,7 @@ jobs:
           fi
           echo "sdkmanager: $SDKMANAGER"
           yes | "$SDKMANAGER" --licenses 2>/dev/null || true
-          "$SDKMANAGER" "platforms;android-35" "build-tools;35.0.0" "ndk;26.1.10909125"
+          "$SDKMANAGER" "platforms;android-35" "platforms;android-36" "build-tools;35.0.0" "ndk;26.1.10909125"
 
       - name: Make gradlew executable
         working-directory: mobile/android
