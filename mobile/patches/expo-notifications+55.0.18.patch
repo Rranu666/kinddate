@@ -28,3 +28,16 @@ index a2f8797..d370be2 100644
 +tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
 +    kotlinOptions.freeCompilerArgs += ["-Xskip-metadata-version-check"]
 +}
+diff --git a/node_modules/expo-notifications/android/src/main/java/expo/modules/notifications/Utils.kt b/node_modules/expo-notifications/android/src/main/java/expo/modules/notifications/Utils.kt
+index f305a3d..73df5b9 100644
+--- a/node_modules/expo-notifications/android/src/main/java/expo/modules/notifications/Utils.kt
++++ b/node_modules/expo-notifications/android/src/main/java/expo/modules/notifications/Utils.kt
+@@ -3,7 +3,7 @@ package expo.modules.notifications
+ import android.os.Bundle
+ import android.os.Handler
+ import android.os.ResultReceiver
+-import expo.modules.kotlin.types.JSTypeConverterProvider
++import expo.modules.kotlin.types.JSTypeConverter as JSTypeConverterProvider
+ import org.json.JSONArray
+ import org.json.JSONException
+ import org.json.JSONObject
