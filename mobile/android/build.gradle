@@ -56,8 +56,12 @@ allprojects {
 // The flag suppresses the "incompatible metadata version 2.1.0" error; the public API
 // shape (method signatures, class names) encoded in the metadata is still fully readable
 // by the 1.9.x reader.  This does NOT affect the compiled output bytecode.
-subprojects {
-    afterEvaluate {
+//
+// Uses plugins.withId() — the Gradle 8.x-safe alternative to afterEvaluate — so the
+// task configuration fires the moment kotlin-android is applied to each subproject,
+// regardless of evaluation order.
+allprojects {
+    plugins.withId("org.jetbrains.kotlin.android") {
         tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach { task ->
             task.kotlinOptions.freeCompilerArgs += ["-Xskip-metadata-version-check"]
         }
