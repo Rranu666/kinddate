@@ -90,10 +90,20 @@ export default function AriaScreen() {
       });
 
       const data = await response.json();
+
+      let replyContent: string;
+      if (data.reply) {
+        replyContent = data.reply;
+      } else if (data.error) {
+        replyContent = `⚠️ ${data.error}`;
+      } else {
+        replyContent = "I didn't quite catch that. Could you say more?";
+      }
+
       const ariaMsg: AriaMessage = {
         id: (Date.now() + 1).toString(),
         role: 'assistant',
-        content: data.reply ?? "I'm here. Tell me more.",
+        content: replyContent,
         created_at: new Date().toISOString(),
       };
 
