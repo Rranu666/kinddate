@@ -41,3 +41,38 @@ index f305a3d..73df5b9 100644
  import org.json.JSONArray
  import org.json.JSONException
  import org.json.JSONObject
+diff --git a/node_modules/expo-notifications/android/src/main/java/expo/modules/notifications/notifications/channels/NotificationChannelManagerModule.kt b/node_modules/expo-notifications/android/src/main/java/expo/modules/notifications/notifications/channels/NotificationChannelManagerModule.kt
+index 4c6eb52..f4e7f1d 100644
+--- a/node_modules/expo-notifications/android/src/main/java/expo/modules/notifications/notifications/channels/NotificationChannelManagerModule.kt
++++ b/node_modules/expo-notifications/android/src/main/java/expo/modules/notifications/notifications/channels/NotificationChannelManagerModule.kt
+@@ -2,6 +2,7 @@ package expo.modules.notifications.notifications.channels
+ 
+ import android.os.Build
+ import android.os.Bundle
++import android.util.Log
+ import androidx.annotation.RequiresApi
+ import expo.modules.core.arguments.ReadableArguments
+ import expo.modules.kotlin.modules.Module
+@@ -45,7 +46,8 @@ open class NotificationChannelManagerModule : Module(), NotificationsChannelProv
+     AsyncFunction("setNotificationChannelAsync") { channelId: String, channelOptions: ReadableArguments ->
+       if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+         if (!channelManager.customSoundExists(channelOptions)) {
+-          appContext.jsLogger?.error(
++          Log.e(
++            "expo-notifications",
+             "expo-notifications: Custom sound '${channelOptions.getString("sound", null)}' not found in native app. " +
+               "Make sure the sound file (e.g. 'custom_sound.wav') is included in the expo-notifications config plugin sounds array in app config."
+           )
+diff --git a/node_modules/expo-notifications/android/src/main/java/expo/modules/notifications/service/NotificationsService.kt b/node_modules/expo-notifications/android/src/main/java/expo/modules/notifications/service/NotificationsService.kt
+index 74554be..4553d3a 100644
+--- a/node_modules/expo-notifications/android/src/main/java/expo/modules/notifications/service/NotificationsService.kt
++++ b/node_modules/expo-notifications/android/src/main/java/expo/modules/notifications/service/NotificationsService.kt
+@@ -504,7 +504,7 @@ open class NotificationsService : BroadcastReceiver() {
+       val textResponse = intent?.let { RemoteInput.getResultsFromIntent(it) }?.getString(USER_TEXT_RESPONSE_KEY)
+       val isTextInputResponse = textResponse != null && action is TextInputNotificationAction
+       val backgroundAction = if (isTextInputResponse) {
+-        TextInputNotificationAction(action.identifier, action.title, false, action.placeholder)
++        TextInputNotificationAction(action.identifier, action.title, false, (action as TextInputNotificationAction).placeholder)
+       } else {
+         NotificationAction(action.identifier, action.title, false)
+       }
