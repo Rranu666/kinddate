@@ -39,14 +39,21 @@ allprojects {
         maven { url 'https://www.jitpack.io' }
     }
 
-    // Force androidx.core to 1.15.0 for ALL projects (app + every library module).
-    // expo-notifications@55.0.18 declares core:1.17.0 which was compiled with AGP 8.9.1
-    // and embeds a minAgpVersion that fails checkReleaseAarMetadata with our AGP 8.6.0.
-    // 1.15.0 has all APIs needed by our SDK-55 Expo modules.
+    // Force all K2-compiled transitive deps to K1-compiled equivalents.
+    // expo-notifications@55.0.18 declares lifecycle:2.9.3, coroutines:1.10.x, and
+    // firebase-messaging:25.0.1, all built with Kotlin 2.x. The Kotlin 1.9.24 compiler
+    // cannot read Kotlin 2.x metadata — forcing to 1.x-compiled versions avoids that.
+    // These versions expose the same API surface used by expo-notifications.
     configurations.all {
         resolutionStrategy {
             force 'androidx.core:core:1.15.0'
             force 'androidx.core:core-ktx:1.15.0'
+            force 'androidx.lifecycle:lifecycle-runtime:2.7.0'
+            force 'androidx.lifecycle:lifecycle-process:2.7.0'
+            force 'androidx.lifecycle:lifecycle-common-java8:2.7.0'
+            force 'androidx.lifecycle:lifecycle-runtime-ktx:2.7.0'
+            force 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.1'
+            force 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.1'
         }
     }
 }
@@ -60,10 +67,17 @@ allprojects {
 // Uses plugins.withId() — the Gradle 8.x-safe alternative to afterEvaluate — so the
 // task configuration fires the moment kotlin-android is applied to each subproject,
 // regardless of evaluation order.
+// firebase-messaging:25.0.1 may still carry K2 metadata even after the lifecycle/
+// coroutines forces above.  Apply -Xskip-metadata-version-check so the 1.9.24
+// compiler can consume it.  plugins.withId() is the Gradle 8.x-safe hook
+// (no afterEvaluate, fires exactly when kotlin-android is applied).
 allprojects {
     plugins.withId("org.jetbrains.kotlin.android") {
         tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach { task ->
-            task.kotlinOptions.freeCompilerArgs += ["-Xskip-metadata-version-check"]
+            def cur = task.kotlinOptions.freeCompilerArgs
+            if (!cur.contains("-Xskip-metadata-version-check")) {
+                task.kotlinOptions.freeCompilerArgs = cur + ["-Xskip-metadata-version-check"]
+            }
         }
     }
 }
