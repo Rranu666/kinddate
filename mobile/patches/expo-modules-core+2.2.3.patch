@@ -39,3 +39,17 @@ index 4ec4514..29f185b 100644
  }
  
  ext.useCoreDependencies = {
+diff --git a/node_modules/expo-modules-core/android/build.gradle b/node_modules/expo-modules-core/android/build.gradle
+index 05c45a6..de4c891 100644
+--- a/node_modules/expo-modules-core/android/build.gradle
++++ b/node_modules/expo-modules-core/android/build.gradle
+@@ -248,3 +248,9 @@ if (shouldTurnWarningsIntoErrors) {
+     compilerOptions.allWarningsAsErrors = true
+   }
+ }
++
++// androidx.compose.foundation:1.7.6 is compiled with Kotlin 2.x (K2).
++// Suppress the "incompatible metadata version" error when compiling with Kotlin 1.9.24.
++tasks.withType(KotlinCompile).configureEach {
++    kotlinOptions.freeCompilerArgs += ["-Xskip-metadata-version-check"]
++}

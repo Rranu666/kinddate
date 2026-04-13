@@ -86,20 +86,26 @@ jobs:
       - name: Show root cause error
         if: failure()
         run: |
+          echo "======== FIRST 80 LINES OF BUILD LOG ========"
+          head -80 /tmp/gradle-build.log
+          echo ""
           echo "======== KOTLIN COMPILER ERRORS (e:) ========"
           grep "^e: " /tmp/gradle-build.log | head -80 || echo "(no e: lines found)"
           echo ""
           echo "======== WHAT WENT WRONG ========"
-          grep -A 10 "What went wrong" /tmp/gradle-build.log | head -80
+          grep -A 15 "What went wrong" /tmp/gradle-build.log | head -120
           echo ""
           echo "======== CAUSED BY ========"
-          grep -A 5 "Caused by\|cause:" /tmp/gradle-build.log | head -50
+          grep -A 8 "Caused by\|cause:" /tmp/gradle-build.log | head -80
           echo ""
-          echo "======== TASK FAILURES ========"
-          grep "FAILED\|error:" /tmp/gradle-build.log | grep -v "^e: " | head -40 || echo "(none)"
+          echo "======== TASK FAILURES + ERRORS ========"
+          grep "FAILED\|> Error\|> error\|error:" /tmp/gradle-build.log | grep -v "^e: " | head -60 || echo "(none)"
           echo ""
-          echo "======== LAST 120 LINES ========"
-          tail -120 /tmp/gradle-build.log
+          echo "======== checkReleaseAarMetadata errors ========"
+          grep -A 5 "checkRelease\|minAgpVersion\|minCompileSdk\|requires libraries" /tmp/gradle-build.log | head -60 || echo "(none)"
+          echo ""
+          echo "======== LAST 150 LINES ========"
+          tail -150 /tmp/gradle-build.log
 
       - name: Upload APK
         if: success()

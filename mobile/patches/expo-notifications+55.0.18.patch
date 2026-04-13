@@ -1,5 +1,5 @@
 diff --git a/node_modules/expo-notifications/android/build.gradle b/node_modules/expo-notifications/android/build.gradle
-index a2f8797..198760b 100644
+index a2f8797..d370be2 100644
 --- a/node_modules/expo-notifications/android/build.gradle
 +++ b/node_modules/expo-notifications/android/build.gradle
 @@ -1,9 +1,14 @@
@@ -18,3 +18,13 @@ index a2f8797..198760b 100644
  group = 'host.exp.exponent'
  version = '55.0.18'
  
+@@ -48,3 +53,9 @@ dependencies {
+     androidTestImplementation project(':expo-modules-test-core')
+   }
+ }
++
++// firebase-messaging:25.0.1 is compiled with Kotlin 2.x (K2).
++// Suppress the "incompatible metadata version" error when compiling with Kotlin 1.9.24.
++tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
++    kotlinOptions.freeCompilerArgs += ["-Xskip-metadata-version-check"]
++}
