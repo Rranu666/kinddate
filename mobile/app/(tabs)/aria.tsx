@@ -135,14 +135,14 @@ export default function AriaScreen() {
         throw new Error(data.error?.message ?? 'No response from Aria');
       }
 
-      // Extract insight tags
-      const insightRegex = /<ARIA_INSIGHT>(.*?)<\/ARIA_INSIGHT>/gs;
+      // Extract insight tags (avoid 's' dotAll flag — not supported in all Hermes versions)
+      const insightRegex = /<ARIA_INSIGHT>([\s\S]*?)<\/ARIA_INSIGHT>/g;
       const insights: Array<Record<string, unknown>> = [];
-      let m: RegExpExecArray | null;
-      while ((m = insightRegex.exec(rawText)) !== null) {
-        try { insights.push(JSON.parse(m[1])); } catch { /* skip malformed */ }
+      let im: RegExpExecArray | null;
+      while ((im = insightRegex.exec(rawText)) !== null) {
+        try { insights.push(JSON.parse(im[1])); } catch { /* skip malformed */ }
       }
-      const cleanText = rawText.replace(/<ARIA_INSIGHT>.*?<\/ARIA_INSIGHT>/gs, '').trim();
+      const cleanText = rawText.replace(/<ARIA_INSIGHT>[\s\S]*?<\/ARIA_INSIGHT>/g, '').trim();
 
       const ariaMsg: AriaMessage = {
         id: (Date.now() + 1).toString(),
@@ -161,13 +161,17 @@ export default function AriaScreen() {
         }).catch(() => {/* non-critical */});
         await refreshProfile().catch(() => {});
       }
-    } catch (err) {
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : String(err);
+      console.error('[Aria] error:', msg);
       setMessages((prev) => [
         ...prev,
         {
           id: (Date.now() + 1).toString(),
           role: 'assistant',
-          content: "I'm having a moment. Please try again.",
+          content: !ANTHROPIC_API_KEY
+            ? '⚠️ Aria is not configured. API key missing.'
+            : `⚠️ ${msg}`,
           created_at: new Date().toISOString(),
         },
       ]);
