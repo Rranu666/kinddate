@@ -35,6 +35,16 @@ jobs:
         with:
           node-version: '20'
 
+      - name: Create .env with Supabase credentials
+        working-directory: mobile
+        run: |
+          printf '%s\n' \
+            'EXPO_PUBLIC_SUPABASE_URL=https://anjitnicmeggnazwapsw.supabase.co' \
+            'EXPO_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFuaml0bmljbWVnZ25hendhcHN3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUzMjUzNTAsImV4cCI6MjA5MDkwMTM1MH0.pN3I5uVPa6cXMFveSWIPOybH8OaSUzJnJrxow7Tgkew' \
+            'EXPO_PUBLIC_API_BASE_URL=https://kinddate.netlify.app' \
+            'EXPO_PUBLIC_APP_NAME=KindDate' \
+            > .env
+
       - name: Install JS dependencies
         working-directory: mobile
         run: npm install --legacy-peer-deps
