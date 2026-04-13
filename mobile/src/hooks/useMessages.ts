@@ -48,7 +48,7 @@ export function useSendMessage(matchId: string) {
   const userId = useAuthStore((s) => s.userId);
 
   return useMutation({
-    mutationFn: (content: string) => sendMessage(matchId, userId!, content),
+    mutationFn: (content: string) => sendMessage(matchId, content),
     onSuccess: ({ data }) => {
       if (!data) return;
       queryClient.setQueryData<{ pages: Message[][] }>(
