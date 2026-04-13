@@ -90,13 +90,16 @@ jobs:
           grep "^e: " /tmp/gradle-build.log | head -80 || echo "(no e: lines found)"
           echo ""
           echo "======== WHAT WENT WRONG ========"
-          grep -A 10 "What went wrong" /tmp/gradle-build.log | head -60
+          grep -A 10 "What went wrong" /tmp/gradle-build.log | head -80
           echo ""
           echo "======== CAUSED BY ========"
-          grep -A 5 "Caused by\|cause:" /tmp/gradle-build.log | head -40
+          grep -A 5 "Caused by\|cause:" /tmp/gradle-build.log | head -50
           echo ""
-          echo "======== FIRST 80 LINES ========"
-          head -80 /tmp/gradle-build.log
+          echo "======== TASK FAILURES ========"
+          grep "FAILED\|error:" /tmp/gradle-build.log | grep -v "^e: " | head -40 || echo "(none)"
+          echo ""
+          echo "======== LAST 120 LINES ========"
+          tail -120 /tmp/gradle-build.log
 
       - name: Upload APK
         if: success()
