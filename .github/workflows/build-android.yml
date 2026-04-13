@@ -43,6 +43,7 @@ jobs:
             'EXPO_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFuaml0bmljbWVnZ25hendhcHN3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUzMjUzNTAsImV4cCI6MjA5MDkwMTM1MH0.pN3I5uVPa6cXMFveSWIPOybH8OaSUzJnJrxow7Tgkew' \
             'EXPO_PUBLIC_API_BASE_URL=https://kinddate.netlify.app' \
             'EXPO_PUBLIC_APP_NAME=KindDate' \
+            "EXPO_PUBLIC_ANTHROPIC_API_KEY=${{ secrets.ANTHROPIC_API_KEY }}" \
             > .env
 
       - name: Install JS dependencies
