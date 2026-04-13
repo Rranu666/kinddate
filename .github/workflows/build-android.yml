@@ -107,6 +107,84 @@ jobs:
           echo "======== LAST 150 LINES ========"
           tail -150 /tmp/gradle-build.log
 
+      - name: Post error summary to PR
+        if: failure()
+        run: |
+          python3 << 'PYEOF'
+          import json, urllib.request, subprocess, os
+
+          def run(cmd):
+              try:
+                  r = subprocess.run(cmd, shell=True, capture_output=True, text=True)
+                  return r.stdout.strip() or "(empty)"
+              except:
+                  return "(error running command)"
+
+          first   = run("head -50 /tmp/gradle-build.log")
+          kotlin  = run("grep '^e: ' /tmp/gradle-build.log | head -40") or "(none)"
+          wrong   = run("grep -A 15 'What went wrong' /tmp/gradle-build.log | head -80") or "(none)"
+          caused  = run("grep -A 8 'Caused by:' /tmp/gradle-build.log | head -60") or "(none)"
+          last    = run("tail -80 /tmp/gradle-build.log")
+          aar     = run("grep -A 4 'minAgpVersion\\|requires libraries\\|checkRelease\\|minCompileSdk' /tmp/gradle-build.log | head -30") or "(none)"
+
+          body = f"""## CI Build Failure
+
+          **First 50 lines:**
+          ```
+          {first}
+          ```
+
+          **Kotlin errors (`e:`):**
+          ```
+          {kotlin}
+          ```
+
+          **What went wrong:**
+          ```
+          {wrong}
+          ```
+
+          **Caused by:**
+          ```
+          {caused}
+          ```
+
+          **AAR metadata errors:**
+          ```
+          {aar}
+          ```
+
+          **Last 80 lines:**
+          ```
+          {last}
+          ```
+          """
+
+          token = os.environ.get("GH_TOKEN", "")
+          if not token:
+              print("No GH_TOKEN, skipping comment")
+              exit(0)
+
+          data = json.dumps({"body": body}).encode()
+          req = urllib.request.Request(
+              "https://api.github.com/repos/Rranu666/kinddate/issues/1/comments",
+              data=data,
+              headers={
+                  "Authorization": f"Bearer {token}",
+                  "Content-Type": "application/json",
+                  "Accept": "application/vnd.github.v3+json"
+              },
+              method="POST"
+          )
+          try:
+              with urllib.request.urlopen(req) as r:
+                  print("Comment posted, status:", r.status)
+          except Exception as e:
+              print("Failed:", e)
+          PYEOF
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Upload APK
         if: success()
         uses: actions/upload-artifact@v4
