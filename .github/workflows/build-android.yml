@@ -50,15 +50,43 @@ jobs:
         working-directory: mobile
         run: npm install --legacy-peer-deps
 
-      - name: Verify patch applied
+      - name: Verify patches applied
         run: |
-          # Confirm the no-op patch removed 'from components.release'
+          FAIL=0
+
+          # 1. expo-modules-core: no-op patch removed 'from components.release'
           if grep -q "from components.release" mobile/node_modules/expo-modules-core/android/ExpoModulesCorePlugin.gradle; then
-            echo "ERROR: Patch NOT applied - components.release still present"
-            exit 1
+            echo "ERROR: expo-modules-core patch NOT applied"
+            FAIL=1
           else
-            echo "Patch OK - components.release removed"
+            echo "OK: expo-modules-core patch applied"
           fi
+
+          # 2. expo-notifications: jsLogger replaced with Log.e
+          if grep -q "jsLogger" mobile/node_modules/expo-notifications/android/src/main/java/expo/modules/notifications/notifications/channels/NotificationChannelManagerModule.kt; then
+            echo "ERROR: expo-notifications jsLogger patch NOT applied"
+            FAIL=1
+          else
+            echo "OK: expo-notifications jsLogger patch applied"
+          fi
+
+          # 3. expo-notifications: placeholder explicit cast
+          if grep -q "action\.placeholder" mobile/node_modules/expo-notifications/android/src/main/java/expo/modules/notifications/service/NotificationsService.kt; then
+            echo "ERROR: expo-notifications placeholder patch NOT applied"
+            FAIL=1
+          else
+            echo "OK: expo-notifications placeholder patch applied"
+          fi
+
+          # 4. expo-notifications: JSTypeConverter alias
+          if grep -q "JSTypeConverterProvider$" mobile/node_modules/expo-notifications/android/src/main/java/expo/modules/notifications/Utils.kt; then
+            echo "ERROR: expo-notifications JSTypeConverter patch NOT applied"
+            FAIL=1
+          else
+            echo "OK: expo-notifications JSTypeConverter patch applied"
+          fi
+
+          exit $FAIL
 
       - name: Install Android SDK 35 and build-tools
         run: |
@@ -202,11 +230,54 @@ jobs:
 
       - name: Upload APK
         if: success()
+        id: upload_apk
         uses: actions/upload-artifact@v4
         with:
           name: kinddate-release-apk
           path: mobile/android/app/build/outputs/apk/release/app-release.apk
           retention-days: 30
+
+      - name: Post success comment with download instructions
+        if: success()
+        run: |
+          python3 << 'PYEOF'
+          import json, urllib.request, os
+
+          run_id  = os.environ.get("GITHUB_RUN_ID", "")
+          token   = os.environ.get("GH_TOKEN", "")
+          if not token:
+              print("No GH_TOKEN, skipping comment")
+              exit(0)
+
+          body = f"""## APK Build Succeeded
+
+**Download your APK:**
+1. Go to https://github.com/Rranu666/kinddate/actions/runs/{run_id}
+2. Scroll to **Artifacts** at the bottom → click **kinddate-release-apk** to download
+3. Unzip the file — you'll find `app-release.apk`
+4. Transfer the APK to your Android phone and install it
+   *(Settings → Install unknown apps → allow your file manager)*
+"""
+
+          data = json.dumps({"body": body}).encode()
+          req = urllib.request.Request(
+              "https://api.github.com/repos/Rranu666/kinddate/issues/1/comments",
+              data=data,
+              headers={
+                  "Authorization": f"Bearer {token}",
+                  "Content-Type": "application/json",
+                  "Accept": "application/vnd.github.v3+json"
+              },
+              method="POST"
+          )
+          try:
+              with urllib.request.urlopen(req) as r:
+                  print("Success comment posted, status:", r.status)
+          except Exception as e:
+              print("Failed:", e)
+          PYEOF
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Upload build log
         if: always()
