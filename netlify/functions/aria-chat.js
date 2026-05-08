@@ -23,10 +23,28 @@ exports.handler = async (event) => {
   const { messages, mode = 'DISCOVERY' } = body;
   if (!messages || !Array.isArray(messages)) return { statusCode: 400, headers, body: JSON.stringify({ error: 'messages array required' }) };
 
-  // FIX: sanitize — remove empty content blocks (prevents 400 error from Anthropic)
+  // Normalize content to a plain string — strips cache_control and flattens content block arrays.
+  // Anthropic rejects any empty text block that has cache_control set, and this can arrive from
+  // old localStorage sessions or automatic SDK transforms.
+  function normalizeContent(content) {
+    if (typeof content === 'string') return content.trim();
+    if (Array.isArray(content)) {
+      return content
+        .filter(b => b && b.type === 'text' && typeof b.text === 'string' && b.text.trim() !== '')
+        .map(b => b.text.trim())
+        .join('\n\n');
+    }
+    if (content && typeof content === 'object' && typeof content.text === 'string') {
+      return content.text.trim();
+    }
+    return '';
+  }
+
+  // FIX: normalize + remove empty content (prevents cache_control-on-empty-block 400 errors)
   const sanitized = messages
-    .filter(m => m && typeof m.role === 'string' && typeof m.content === 'string' && m.content.trim() !== '')
-    .map(m => ({ role: m.role, content: m.content.trim() }));
+    .filter(m => m && typeof m.role === 'string')
+    .map(m => ({ role: m.role, content: normalizeContent(m.content) }))
+    .filter(m => m.content !== '');
 
   if (sanitized.length === 0) return { statusCode: 400, headers, body: JSON.stringify({ error: 'No valid messages' }) };
 
