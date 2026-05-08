@@ -53,7 +53,7 @@ exports.handler = async (event) => {
         'content-type': 'application/json',
       },
       body: JSON.stringify({
-        model: 'claude-opus-4-6',
+        model: 'claude-sonnet-4-6',
         max_tokens: 1024,
         system: SYSTEM,
         messages: merged.slice(-20),
