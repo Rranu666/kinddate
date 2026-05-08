@@ -67,7 +67,7 @@ export default function PreferencesScreen() {
         seeking_gender: seeking === 'everyone' ? ['man', 'woman', 'non_binary', 'other'] : [seeking],
         intent,
         interests: selectedInterests,
-        ...(age ? { age: parseInt(age, 10) } : {}),
+        ...(age ? (() => { const n = parseInt(age, 10); return !isNaN(n) && n >= 18 && n <= 120 ? { age: n } : {}; })() : {}),
         onboarding_completed: true,
         onboarding_step: 4,
       });

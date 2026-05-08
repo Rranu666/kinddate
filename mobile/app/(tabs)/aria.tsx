@@ -18,6 +18,39 @@ import { useAuthStore } from '../../src/store/authStore';
 import { API_BASE_URL, ARIA_MODES, COLORS, FONTS, FONT_SIZES, SPACING, RADIUS } from '../../src/lib/constants';
 import type { AriaMessage, AriaMode } from '../../src/types';
 
+const ANTHROPIC_API_KEY = process.env.EXPO_PUBLIC_ANTHROPIC_API_KEY ?? '';
+
+const ARIA_SYSTEM_PROMPT = `You are Aria, an emotionally intelligent relationship concierge for KindDate — a guided dating platform built for intentional singles who are tired of the swipe culture.
+
+You are NOT a generic chatbot. You are a warm, deeply empathetic guide trained in attachment theory, the Gottman Method, Nonviolent Communication, Internal Family Systems, and behavioral science.
+
+━━━ TONE & CRAFT ━━━
+- Warm but not saccharine. Real, not performatively empathetic.
+- Ask ONE question at a time. Always one.
+- Reflect before advising. Always reflect first.
+- Never prescribe — explore. Use "I wonder..." and "I'm curious about..."
+- Name emotions precisely. Not just "sad" — explore grief, disappointment, fear.
+- When you identify a key insight, say: "I want to reflect something back to you..."
+- Challenge gently when you spot a blind spot.
+- Never shame. Never judge past choices.
+- Short messages are fine. Presence matters more than length.
+
+━━━ MODES ━━━
+DISCOVERY — Help them understand themselves through genuine conversation. Ask one question at a time. Go deeper. Reflect back. Name patterns gently.
+READINESS_CHECK — Assess emotional availability honestly and compassionately.
+MATCH_INSIGHT — Analyze a match pairing psychologically. Attachment pairing, friction points, growth edge.
+CONVERSATION_COACH — Review messages they want to send. Identify defensive patterns, anxious over-explaining.
+DATE_PREP — Help with nerves and expectations before a date.
+REFLECTION — Process what happened after a date or interaction.
+HEALING — When rejected, ghosted, or hurt — validate fully before offering perspective. Never toxic positivity.
+GROWTH — Help identify recurring patterns across relationships.
+
+━━━ INSIGHT EXTRACTION ━━━
+When you learn something significant, output:
+<ARIA_INSIGHT>{"type":"attachment_style","value":"Anxious-Preoccupied","confidence":0.7}</ARIA_INSIGHT>
+<ARIA_INSIGHT>{"type":"love_language","value":"Words of Affirmation","confidence":0.8}</ARIA_INSIGHT>
+Only include these when you have solid evidence. Never guess.`;
+
 const ARIA_INTRO: Record<string, string> = {
   DISCOVERY: "Let's explore who you are and what you're truly looking for. I'll ask you some thoughtful questions — take your time. There are no right answers here.",
   READINESS_CHECK: "Let's check in on your emotional readiness for dating. I'll ask about where you are right now — be honest with yourself.",
@@ -75,45 +108,70 @@ export default function AriaScreen() {
     setLoading(true);
 
     try {
-      const response = await fetch(`${API_BASE_URL}/.netlify/functions/aria-chat`, {
+      const modeContext = `\n\nCURRENT SESSION MODE: ${mode}\nUser's name: ${user?.first_name ?? 'friend'}\n\nBegin in this mode and stay in it unless the user explicitly asks to switch.`;
+
+      const response = await fetch('https://api.anthropic.com/v1/messages', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'x-api-key': ANTHROPIC_API_KEY,
+          'anthropic-version': '2023-06-01',
+          'content-type': 'application/json',
+        },
         body: JSON.stringify({
-          userId,
-          mode,
+          model: 'claude-opus-4-5',
+          max_tokens: 1024,
+          system: ARIA_SYSTEM_PROMPT + modeContext,
           messages: [...messages, userMsg].slice(-20).map((m) => ({
             role: m.role,
             content: m.content,
           })),
-          userName: user?.first_name ?? 'friend',
         }),
       });
 
       const data = await response.json();
+      const rawText: string = data.content?.[0]?.text ?? '';
+
+      if (!rawText) {
+        throw new Error(data.error?.message ?? 'No response from Aria');
+      }
+
+      // Extract insight tags (avoid 's' dotAll flag — not supported in all Hermes versions)
+      const insightRegex = /<ARIA_INSIGHT>([\s\S]*?)<\/ARIA_INSIGHT>/g;
+      const insights: Array<Record<string, unknown>> = [];
+      let im: RegExpExecArray | null;
+      while ((im = insightRegex.exec(rawText)) !== null) {
+        try { insights.push(JSON.parse(im[1])); } catch { /* skip malformed */ }
+      }
+      const cleanText = rawText.replace(/<ARIA_INSIGHT>[\s\S]*?<\/ARIA_INSIGHT>/g, '').trim();
+
       const ariaMsg: AriaMessage = {
         id: (Date.now() + 1).toString(),
         role: 'assistant',
-        content: data.reply ?? "I'm here. Tell me more.",
+        content: cleanText,
         created_at: new Date().toISOString(),
       };
 
       setMessages((prev) => [...prev, ariaMsg]);
 
-      if (data.insights?.length && userId) {
+      if (insights.length && userId) {
         await fetch(`${API_BASE_URL}/.netlify/functions/aria-save-profile`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ userId, insights: data.insights }),
-        });
-        await refreshProfile();
+          body: JSON.stringify({ userId, insights }),
+        }).catch(() => {/* non-critical */});
+        await refreshProfile().catch(() => {});
       }
-    } catch {
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : String(err);
+      console.error('[Aria] error:', msg);
       setMessages((prev) => [
         ...prev,
         {
           id: (Date.now() + 1).toString(),
           role: 'assistant',
-          content: "I'm having a moment. Please try again.",
+          content: !ANTHROPIC_API_KEY
+            ? '⚠️ Aria is not configured. API key missing.'
+            : `⚠️ ${msg}`,
           created_at: new Date().toISOString(),
         },
       ]);

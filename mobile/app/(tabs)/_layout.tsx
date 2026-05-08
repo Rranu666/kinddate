@@ -12,7 +12,13 @@ function TabIcon({ emoji, label, focused }: TabIconProps) {
   return (
     <View style={[styles.tabItem, focused && styles.tabItemActive]}>
       <Text style={styles.emoji}>{emoji}</Text>
-      <Text style={[styles.label, focused && styles.labelActive]}>{label}</Text>
+      <Text
+        style={[styles.label, focused && styles.labelActive]}
+        numberOfLines={1}
+        adjustsFontSizeToFit
+      >
+        {label}
+      </Text>
     </View>
   );
 }
@@ -24,6 +30,7 @@ export default function TabLayout() {
         headerShown: false,
         tabBarStyle: styles.tabBar,
         tabBarShowLabel: false,
+        tabBarItemStyle: styles.tabBarItem,
       }}
     >
       <Tabs.Screen
@@ -75,27 +82,33 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     borderTopWidth: 1,
     borderTopColor: COLORS.border,
-    height: 80,
-    paddingBottom: 8,
-    paddingTop: 8,
+    height: 72,
+    paddingBottom: 0,
+    paddingTop: 0,
+  },
+  tabBarItem: {
+    paddingVertical: 6,
   },
   tabItem: {
     alignItems: 'center',
-    gap: 3,
-    paddingHorizontal: 8,
-    paddingVertical: 6,
+    justifyContent: 'center',
+    gap: 2,
+    paddingHorizontal: 4,
+    paddingVertical: 4,
     borderRadius: 12,
+    width: 64,
   },
   tabItemActive: {
     backgroundColor: COLORS.roseFaint,
   },
   emoji: {
-    fontSize: 20,
+    fontSize: 22,
   },
   label: {
     fontFamily: FONTS.sans,
-    fontSize: FONT_SIZES.xs,
+    fontSize: 10,
     color: COLORS.textMuted,
+    textAlign: 'center',
   },
   labelActive: {
     color: COLORS.rose,

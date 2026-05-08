@@ -45,9 +45,21 @@ function distanceScore(distMiles) {
   return 0.25;
 }
 
+// Normalize attachment style to Title-Case with hyphen (e.g. "secure" → "Secure", "anxious_preoccupied" → "Anxious-Preoccupied")
+function normalizeAttachmentStyle(s) {
+  if (!s) return null;
+  return s
+    .replace(/_/g, '-')
+    .split('-')
+    .map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase())
+    .join('-');
+}
+
 function computeMatchScore(u1, u2) {
   // P — Personality (attachment style + personality tags + communication style)
-  const attachScore = (ATTACHMENT_COMPAT[u1.attachment_style]?.[u2.attachment_style]) ?? 0.55;
+  const style1 = normalizeAttachmentStyle(u1.attachment_style);
+  const style2 = normalizeAttachmentStyle(u2.attachment_style);
+  const attachScore = (ATTACHMENT_COMPAT[style1]?.[style2]) ?? 0.55;
   const tagOverlap = arrayOverlap(u1.interests, u2.interests);
   const lifestyleOverlap = arrayOverlap(u1.lifestyle_tags, u2.lifestyle_tags);
   const P = (attachScore * 0.5) + (tagOverlap * 0.3) + (lifestyleOverlap * 0.2);

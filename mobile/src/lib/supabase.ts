@@ -58,14 +58,20 @@ export async function updateProfile(userId: string, updates: Record<string, unkn
 }
 
 export async function uploadAvatar(userId: string, uri: string) {
-  const ext = uri.split('.').pop() ?? 'jpg';
-  const fileName = `${userId}/avatar.${ext}`;
+  // Strip query params before parsing extension (Android URIs may have ?t=... appended)
+  const cleanUri = uri.split('?')[0];
+  const ext = cleanUri.split('.').pop()?.toLowerCase() ?? 'jpg';
+  const mimeType = ext === 'png' ? 'image/png' : ext === 'gif' ? 'image/gif' : 'image/jpeg';
+  const storedExt = mimeType === 'image/png' ? 'png' : 'jpg';
+  const storagePath = `${userId}/avatar.${storedExt}`;
+
   const response = await fetch(uri);
+  if (!response.ok) throw new Error(`Failed to read image: ${response.status}`);
   const blob = await response.blob();
 
   const { data, error } = await supabase.storage
     .from('avatars')
-    .upload(fileName, blob, { upsert: true, contentType: `image/${ext}` });
+    .upload(storagePath, blob, { upsert: true, contentType: mimeType });
 
   if (error) throw error;
 
@@ -139,10 +145,12 @@ export async function getMessages(matchId: string, limit = 50, before?: string) 
   return query;
 }
 
-export async function sendMessage(matchId: string, senderId: string, content: string, type = 'text') {
+export async function sendMessage(matchId: string, content: string, type = 'text') {
+  const { data: { session } } = await supabase.auth.getSession();
+  if (!session?.user) throw new Error('Not authenticated');
   return supabase
     .from('messages')
-    .insert({ match_id: matchId, sender_id: senderId, content, type })
+    .insert({ match_id: matchId, sender_id: session.user.id, content, type })
     .select()
     .single();
 }

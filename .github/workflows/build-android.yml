@@ -1,0 +1,288 @@
+name: Build Android APK
+
+on:
+  push:
+    branches:
+      - claude/create-mobile-app-CPYLh
+    paths:
+      - 'mobile/**'
+      - '.github/workflows/**'
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build Signed APK
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+      pull-requests: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: claude/create-mobile-app-CPYLh
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Create .env with Supabase credentials
+        working-directory: mobile
+        run: |
+          printf '%s\n' \
+            'EXPO_PUBLIC_SUPABASE_URL=https://anjitnicmeggnazwapsw.supabase.co' \
+            'EXPO_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFuaml0bmljbWVnZ25hendhcHN3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUzMjUzNTAsImV4cCI6MjA5MDkwMTM1MH0.pN3I5uVPa6cXMFveSWIPOybH8OaSUzJnJrxow7Tgkew' \
+            'EXPO_PUBLIC_API_BASE_URL=https://kinddate.netlify.app' \
+            'EXPO_PUBLIC_APP_NAME=KindDate' \
+            "EXPO_PUBLIC_ANTHROPIC_API_KEY=${{ secrets.ANTHROPIC_API_KEY }}" \
+            > .env
+
+      - name: Install JS dependencies
+        working-directory: mobile
+        run: npm install --legacy-peer-deps
+
+      - name: Verify patches applied
+        run: |
+          FAIL=0
+
+          # 1. expo-modules-core: no-op patch removed 'from components.release'
+          if grep -q "from components.release" mobile/node_modules/expo-modules-core/android/ExpoModulesCorePlugin.gradle; then
+            echo "ERROR: expo-modules-core patch NOT applied"
+            FAIL=1
+          else
+            echo "OK: expo-modules-core patch applied"
+          fi
+
+          # 2. expo-notifications: jsLogger replaced with Log.e
+          if grep -q "jsLogger" mobile/node_modules/expo-notifications/android/src/main/java/expo/modules/notifications/notifications/channels/NotificationChannelManagerModule.kt; then
+            echo "ERROR: expo-notifications jsLogger patch NOT applied"
+            FAIL=1
+          else
+            echo "OK: expo-notifications jsLogger patch applied"
+          fi
+
+          # 3. expo-notifications: placeholder explicit cast
+          if grep -q "action\.placeholder" mobile/node_modules/expo-notifications/android/src/main/java/expo/modules/notifications/service/NotificationsService.kt; then
+            echo "ERROR: expo-notifications placeholder patch NOT applied"
+            FAIL=1
+          else
+            echo "OK: expo-notifications placeholder patch applied"
+          fi
+
+          # 4. expo-notifications: JSTypeConverter alias
+          if grep -q "JSTypeConverterProvider$" mobile/node_modules/expo-notifications/android/src/main/java/expo/modules/notifications/Utils.kt; then
+            echo "ERROR: expo-notifications JSTypeConverter patch NOT applied"
+            FAIL=1
+          else
+            echo "OK: expo-notifications JSTypeConverter patch applied"
+          fi
+
+          exit $FAIL
+
+      - name: Install Android SDK 35 and build-tools
+        run: |
+          SDKMANAGER="$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager"
+          if [ ! -f "$SDKMANAGER" ]; then
+            SDKMANAGER=$(find "$ANDROID_HOME" -name sdkmanager -type f 2>/dev/null | head -1)
+          fi
+          echo "sdkmanager: $SDKMANAGER"
+          yes | "$SDKMANAGER" --licenses 2>/dev/null || true
+          "$SDKMANAGER" "platforms;android-35" "build-tools;35.0.0" "ndk;26.1.10909125"
+
+      - name: Make gradlew executable
+        working-directory: mobile/android
+        run: chmod +x gradlew
+
+      - name: Configure Java and Android SDK for Gradle
+        working-directory: mobile/android
+        run: |
+          # 1. Tell Gradle which JVM to run on (set by setup-java above)
+          echo "org.gradle.java.home=$JAVA_HOME" >> gradle.properties
+          echo "org.gradle.java.installations.paths=$JAVA_HOME" >> gradle.properties
+          echo "Gradle will use Java at: $JAVA_HOME"
+          java -version
+
+          # 2. Write local.properties so AGP always finds the Android SDK.
+          #    Relying on the ANDROID_HOME env var alone can fail if the
+          #    step-level env: block accidentally shadows it with an empty value.
+          echo "sdk.dir=$ANDROID_HOME" > local.properties
+          echo "SDK dir written: $ANDROID_HOME"
+
+      - name: Build release APK
+        working-directory: mobile/android
+        run: |
+          set +e
+          ./gradlew assembleRelease --no-daemon --stacktrace 2>&1 | tee /tmp/gradle-build.log
+          BUILD_EXIT=${PIPESTATUS[0]}
+          echo "BUILD_EXIT=$BUILD_EXIT" >> $GITHUB_ENV
+          exit $BUILD_EXIT
+
+      - name: Show root cause error
+        if: failure()
+        run: |
+          echo "======== FIRST 80 LINES OF BUILD LOG ========"
+          head -80 /tmp/gradle-build.log
+          echo ""
+          echo "======== KOTLIN COMPILER ERRORS (e:) ========"
+          grep "^e: " /tmp/gradle-build.log | head -80 || echo "(no e: lines found)"
+          echo ""
+          echo "======== WHAT WENT WRONG ========"
+          grep -A 15 "What went wrong" /tmp/gradle-build.log | head -120
+          echo ""
+          echo "======== CAUSED BY ========"
+          grep -A 8 "Caused by\|cause:" /tmp/gradle-build.log | head -80
+          echo ""
+          echo "======== TASK FAILURES + ERRORS ========"
+          grep "FAILED\|> Error\|> error\|error:" /tmp/gradle-build.log | grep -v "^e: " | head -60 || echo "(none)"
+          echo ""
+          echo "======== checkReleaseAarMetadata errors ========"
+          grep -A 5 "checkRelease\|minAgpVersion\|minCompileSdk\|requires libraries" /tmp/gradle-build.log | head -60 || echo "(none)"
+          echo ""
+          echo "======== LAST 150 LINES ========"
+          tail -150 /tmp/gradle-build.log
+
+      - name: Post error summary to PR
+        if: failure()
+        run: |
+          python3 << 'PYEOF'
+          import json, urllib.request, subprocess, os
+
+          def run(cmd):
+              try:
+                  r = subprocess.run(cmd, shell=True, capture_output=True, text=True)
+                  return r.stdout.strip() or "(empty)"
+              except:
+                  return "(error running command)"
+
+          first   = run("head -50 /tmp/gradle-build.log")
+          kotlin  = run("grep '^e: ' /tmp/gradle-build.log | head -40") or "(none)"
+          wrong   = run("grep -A 15 'What went wrong' /tmp/gradle-build.log | head -80") or "(none)"
+          caused  = run("grep -A 8 'Caused by:' /tmp/gradle-build.log | head -60") or "(none)"
+          last    = run("tail -80 /tmp/gradle-build.log")
+          aar     = run("grep -A 4 'minAgpVersion\\|requires libraries\\|checkRelease\\|minCompileSdk' /tmp/gradle-build.log | head -30") or "(none)"
+
+          body = f"""## CI Build Failure
+
+          **First 50 lines:**
+          ```
+          {first}
+          ```
+
+          **Kotlin errors (`e:`):**
+          ```
+          {kotlin}
+          ```
+
+          **What went wrong:**
+          ```
+          {wrong}
+          ```
+
+          **Caused by:**
+          ```
+          {caused}
+          ```
+
+          **AAR metadata errors:**
+          ```
+          {aar}
+          ```
+
+          **Last 80 lines:**
+          ```
+          {last}
+          ```
+          """
+
+          token = os.environ.get("GH_TOKEN", "")
+          if not token:
+              print("No GH_TOKEN, skipping comment")
+              exit(0)
+
+          data = json.dumps({"body": body}).encode()
+          req = urllib.request.Request(
+              "https://api.github.com/repos/Rranu666/kinddate/issues/1/comments",
+              data=data,
+              headers={
+                  "Authorization": f"Bearer {token}",
+                  "Content-Type": "application/json",
+                  "Accept": "application/vnd.github.v3+json"
+              },
+              method="POST"
+          )
+          try:
+              with urllib.request.urlopen(req) as r:
+                  print("Comment posted, status:", r.status)
+          except Exception as e:
+              print("Failed:", e)
+          PYEOF
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload APK
+        if: success()
+        id: upload_apk
+        uses: actions/upload-artifact@v4
+        with:
+          name: kinddate-release-apk
+          path: mobile/android/app/build/outputs/apk/release/app-release.apk
+          retention-days: 30
+
+      - name: Post success comment with download instructions
+        if: success()
+        run: |
+          python3 << 'PYEOF'
+          import json, urllib.request, os
+
+          run_id  = os.environ.get("GITHUB_RUN_ID", "")
+          token   = os.environ.get("GH_TOKEN", "")
+          if not token:
+              print("No GH_TOKEN, skipping comment")
+              exit(0)
+
+          body = f"""## APK Build Succeeded
+
+**Download your APK:**
+1. Go to https://github.com/Rranu666/kinddate/actions/runs/{run_id}
+2. Scroll to **Artifacts** at the bottom → click **kinddate-release-apk** to download
+3. Unzip the file — you'll find `app-release.apk`
+4. Transfer the APK to your Android phone and install it
+   *(Settings → Install unknown apps → allow your file manager)*
+"""
+
+          data = json.dumps({"body": body}).encode()
+          req = urllib.request.Request(
+              "https://api.github.com/repos/Rranu666/kinddate/issues/1/comments",
+              data=data,
+              headers={
+                  "Authorization": f"Bearer {token}",
+                  "Content-Type": "application/json",
+                  "Accept": "application/vnd.github.v3+json"
+              },
+              method="POST"
+          )
+          try:
+              with urllib.request.urlopen(req) as r:
+                  print("Success comment posted, status:", r.status)
+          except Exception as e:
+              print("Failed:", e)
+          PYEOF
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload build log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gradle-build-log
+          path: /tmp/gradle-build.log
+          retention-days: 7

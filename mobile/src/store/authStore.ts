@@ -39,16 +39,20 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
   initialize: async () => {
     set({ loading: true });
 
-    // Get current session
-    const { data: { session } } = await supabase.auth.getSession();
+    try {
+      // Get current session
+      const { data: { session } } = await supabase.auth.getSession();
 
-    if (session?.user) {
-      set({ userId: session.user.id });
-      const { data } = await getProfile(session.user.id);
-      if (data) set({ user: data as Profile });
+      if (session?.user) {
+        set({ userId: session.user.id });
+        const { data } = await getProfile(session.user.id);
+        if (data) set({ user: data as Profile });
+      }
+    } catch (e) {
+      console.warn('[authStore] initialize error:', e);
+    } finally {
+      set({ loading: false, initialized: true });
     }
-
-    set({ loading: false, initialized: true });
 
     // Listen for auth changes
     supabase.auth.onAuthStateChange(async (event, session) => {

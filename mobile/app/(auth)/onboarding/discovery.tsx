@@ -14,6 +14,9 @@ import { router } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { API_BASE_URL } from '../../../src/lib/constants';
 import { updateProfile } from '../../../src/lib/supabase';
+
+const ANTHROPIC_API_KEY = process.env.EXPO_PUBLIC_ANTHROPIC_API_KEY ?? '';
+const ARIA_SYSTEM = `You are Aria, an emotionally intelligent relationship guide for KindDate. You are helping a new user understand themselves through the DISCOVERY mode: explore who they are, what they truly want in love, and build a psychological portrait through warm, curious conversation. Ask ONE thoughtful question at a time. Reflect before advising. When you identify insights output them as: <ARIA_INSIGHT>{"type":"attachment_style","value":"Secure","confidence":0.7}</ARIA_INSIGHT>`;
 import { useAuthStore } from '../../../src/store/authStore';
 import { Button } from '../../../src/components/ui/Button';
 import { COLORS, FONTS, FONT_SIZES, SPACING, RADIUS } from '../../../src/lib/constants';
@@ -51,35 +54,53 @@ export default function DiscoveryScreen() {
     setLoading(true);
 
     try {
-      const response = await fetch(`${API_BASE_URL}/.netlify/functions/aria-chat`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          userId,
-          mode: 'DISCOVERY',
-          messages: [...messages, userMsg].map((m) => ({ role: m.role, content: m.content })),
-        }),
-      });
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 30000);
 
-      const data = await response.json();
+      const response = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: {
+          'x-api-key': ANTHROPIC_API_KEY,
+          'anthropic-version': '2023-06-01',
+          'content-type': 'application/json',
+        },
+        body: JSON.stringify({
+          model: 'claude-opus-4-5',
+          max_tokens: 512,
+          system: ARIA_SYSTEM,
+          messages: [...messages, userMsg].slice(-20).map((m) => ({ role: m.role, content: m.content })),
+        }),
+        signal: controller.signal,
+      });
+      clearTimeout(timeout);
+
+      const raw = await response.json();
+      const rawText: string = raw.content?.[0]?.text ?? '';
+      const insightRegex = /<ARIA_INSIGHT>([\s\S]*?)<\/ARIA_INSIGHT>/g;
+      const insights: Array<Record<string, unknown>> = [];
+      let im: RegExpExecArray | null;
+      while ((im = insightRegex.exec(rawText)) !== null) {
+        try { insights.push(JSON.parse(im[1])); } catch { /* skip */ }
+      }
+      const cleanText = rawText.replace(/<ARIA_INSIGHT>[\s\S]*?<\/ARIA_INSIGHT>/g, '').trim();
+
       const ariaMsg: AriaMessage = {
         id: (Date.now() + 1).toString(),
         role: 'assistant',
-        content: data.reply ?? "I'm here with you. Tell me more.",
+        content: cleanText || "I'm here with you. Tell me more.",
         created_at: new Date().toISOString(),
       };
 
       setMessages((prev) => [...prev, ariaMsg]);
       setTurnCount((c) => c + 1);
 
-      // Save any insights extracted
-      if (data.insights?.length && userId) {
-        await fetch(`${API_BASE_URL}/.netlify/functions/aria-save-profile`, {
+      if (insights.length && userId) {
+        fetch(`${API_BASE_URL}/.netlify/functions/aria-save-profile`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ userId, insights: data.insights }),
-        });
-        await refreshProfile();
+          body: JSON.stringify({ userId, insights }),
+        }).catch(() => {});
+        refreshProfile().catch(() => {});
       }
     } catch {
       setMessages((prev) => [
@@ -87,7 +108,7 @@ export default function DiscoveryScreen() {
         {
           id: (Date.now() + 1).toString(),
           role: 'assistant',
-          content: "I'm having trouble connecting right now. Please continue when you're ready.",
+          content: "I'm having trouble connecting right now. Please try again.",
           created_at: new Date().toISOString(),
         },
       ]);

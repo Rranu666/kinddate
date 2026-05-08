@@ -1,0 +1,130 @@
+name: Build iOS IPA
+
+on:
+  push:
+    branches:
+      - claude/create-mobile-app-CPYLh
+    paths:
+      - 'mobile/**'
+      - '.github/workflows/**'
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: EAS Build iOS IPA
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: claude/create-mobile-app-CPYLh
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install JS dependencies
+        working-directory: mobile
+        run: npm install --legacy-peer-deps
+
+      - name: Install EAS CLI
+        run: npm install -g eas-cli@latest
+
+      - name: Set Anthropic API key as EAS secret (idempotent)
+        working-directory: mobile
+        run: |
+          eas secret:create \
+            --scope project \
+            --name EXPO_PUBLIC_ANTHROPIC_API_KEY \
+            --value "${{ secrets.ANTHROPIC_API_KEY }}" \
+            --force \
+          || echo "Secret already set or update skipped"
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+
+      - name: Build iOS IPA via EAS
+        working-directory: mobile
+        run: |
+          eas build \
+            --platform ios \
+            --profile preview \
+            --non-interactive \
+            --wait \
+            --json > /tmp/eas-build-output.json 2>&1 || true
+          cat /tmp/eas-build-output.json
+          # Extract artifact URL from JSON output
+          ARTIFACT_URL=$(python3 -c "
+          import json, sys
+          try:
+              data = json.load(open('/tmp/eas-build-output.json'))
+              builds = data if isinstance(data, list) else [data]
+              for b in builds:
+                  url = b.get('artifacts', {}).get('buildUrl') or b.get('buildUrl', '')
+                  if url:
+                      print(url)
+                      break
+          except:
+              pass
+          " 2>/dev/null || echo "")
+          if [ -n "$ARTIFACT_URL" ]; then
+            echo "IPA_URL=$ARTIFACT_URL" >> $GITHUB_ENV
+            echo "Build artifact: $ARTIFACT_URL"
+          fi
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+
+      - name: Download IPA artifact
+        if: env.IPA_URL != ''
+        run: |
+          curl -L -o /tmp/kinddate.ipa "${{ env.IPA_URL }}"
+          echo "Downloaded IPA: $(du -sh /tmp/kinddate.ipa)"
+
+      - name: Upload IPA
+        if: env.IPA_URL != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: kinddate-ios-ipa
+          path: /tmp/kinddate.ipa
+          retention-days: 30
+
+      - name: Post build URL as comment
+        if: always()
+        run: |
+          python3 << 'PYEOF'
+          import json, urllib.request, os
+
+          ipa_url = os.environ.get("IPA_URL", "")
+          token   = os.environ.get("GH_TOKEN", "")
+          if not token:
+              print("No GH_TOKEN, skipping comment")
+              exit(0)
+
+          if ipa_url:
+              body = f"## iOS IPA Build Complete\n\nDownload the IPA: {ipa_url}\n\nInstall via [Apple Configurator 2](https://support.apple.com/en-us/102663) or [AltStore](https://altstore.io)."
+          else:
+              body = "## iOS IPA Build\n\nBuild submitted to EAS. Check https://expo.dev for status and download link."
+
+          data = json.dumps({"body": body}).encode()
+          req = urllib.request.Request(
+              "https://api.github.com/repos/Rranu666/kinddate/issues/1/comments",
+              data=data,
+              headers={
+                  "Authorization": f"Bearer {token}",
+                  "Content-Type": "application/json",
+                  "Accept": "application/vnd.github.v3+json"
+              },
+              method="POST"
+          )
+          try:
+              with urllib.request.urlopen(req) as r:
+                  print("Comment posted, status:", r.status)
+          except Exception as e:
+              print("Failed to post comment:", e)
+          PYEOF
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

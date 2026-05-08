@@ -1,0 +1,78 @@
+diff --git a/node_modules/expo-notifications/android/build.gradle b/node_modules/expo-notifications/android/build.gradle
+index a2f8797..d370be2 100644
+--- a/node_modules/expo-notifications/android/build.gradle
++++ b/node_modules/expo-notifications/android/build.gradle
+@@ -1,9 +1,14 @@
+ plugins {
+   id 'com.android.library'
+   id 'kotlin-parcelize'
+-  id 'expo-module-gradle-plugin'
+ }
+ 
++def expoModulesCorePlugin = new File(project(":expo-modules-core").projectDir.absolutePath, "ExpoModulesCorePlugin.gradle")
++apply from: expoModulesCorePlugin
++applyKotlinExpoModulesCorePlugin()
++useDefaultAndroidSdkVersions()
++useCoreDependencies()
++
+ group = 'host.exp.exponent'
+ version = '55.0.18'
+ 
+@@ -48,3 +53,9 @@ dependencies {
+     androidTestImplementation project(':expo-modules-test-core')
+   }
+ }
++
++// firebase-messaging:25.0.1 is compiled with Kotlin 2.x (K2).
++// Suppress the "incompatible metadata version" error when compiling with Kotlin 1.9.24.
++tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
++    kotlinOptions.freeCompilerArgs += ["-Xskip-metadata-version-check"]
++}
+diff --git a/node_modules/expo-notifications/android/src/main/java/expo/modules/notifications/Utils.kt b/node_modules/expo-notifications/android/src/main/java/expo/modules/notifications/Utils.kt
+index f305a3d..73df5b9 100644
+--- a/node_modules/expo-notifications/android/src/main/java/expo/modules/notifications/Utils.kt
++++ b/node_modules/expo-notifications/android/src/main/java/expo/modules/notifications/Utils.kt
+@@ -3,7 +3,7 @@ package expo.modules.notifications
+ import android.os.Bundle
+ import android.os.Handler
+ import android.os.ResultReceiver
+-import expo.modules.kotlin.types.JSTypeConverterProvider
++import expo.modules.kotlin.types.JSTypeConverter as JSTypeConverterProvider
+ import org.json.JSONArray
+ import org.json.JSONException
+ import org.json.JSONObject
+diff --git a/node_modules/expo-notifications/android/src/main/java/expo/modules/notifications/notifications/channels/NotificationChannelManagerModule.kt b/node_modules/expo-notifications/android/src/main/java/expo/modules/notifications/notifications/channels/NotificationChannelManagerModule.kt
+index 4c6eb52..f4e7f1d 100644
+--- a/node_modules/expo-notifications/android/src/main/java/expo/modules/notifications/notifications/channels/NotificationChannelManagerModule.kt
++++ b/node_modules/expo-notifications/android/src/main/java/expo/modules/notifications/notifications/channels/NotificationChannelManagerModule.kt
+@@ -2,6 +2,7 @@ package expo.modules.notifications.notifications.channels
+ 
+ import android.os.Build
+ import android.os.Bundle
++import android.util.Log
+ import androidx.annotation.RequiresApi
+ import expo.modules.core.arguments.ReadableArguments
+ import expo.modules.kotlin.modules.Module
+@@ -45,7 +46,8 @@ open class NotificationChannelManagerModule : Module(), NotificationsChannelProv
+     AsyncFunction("setNotificationChannelAsync") { channelId: String, channelOptions: ReadableArguments ->
+       if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+         if (!channelManager.customSoundExists(channelOptions)) {
+-          appContext.jsLogger?.error(
++          Log.e(
++            "expo-notifications",
+             "expo-notifications: Custom sound '${channelOptions.getString("sound", null)}' not found in native app. " +
+               "Make sure the sound file (e.g. 'custom_sound.wav') is included in the expo-notifications config plugin sounds array in app config."
+           )
+diff --git a/node_modules/expo-notifications/android/src/main/java/expo/modules/notifications/service/NotificationsService.kt b/node_modules/expo-notifications/android/src/main/java/expo/modules/notifications/service/NotificationsService.kt
+index 74554be..4553d3a 100644
+--- a/node_modules/expo-notifications/android/src/main/java/expo/modules/notifications/service/NotificationsService.kt
++++ b/node_modules/expo-notifications/android/src/main/java/expo/modules/notifications/service/NotificationsService.kt
+@@ -504,7 +504,7 @@ open class NotificationsService : BroadcastReceiver() {
+       val textResponse = intent?.let { RemoteInput.getResultsFromIntent(it) }?.getString(USER_TEXT_RESPONSE_KEY)
+       val isTextInputResponse = textResponse != null && action is TextInputNotificationAction
+       val backgroundAction = if (isTextInputResponse) {
+-        TextInputNotificationAction(action.identifier, action.title, false, action.placeholder)
++        TextInputNotificationAction(action.identifier, action.title, false, (action as TextInputNotificationAction).placeholder)
+       } else {
+         NotificationAction(action.identifier, action.title, false)
+       }

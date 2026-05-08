@@ -1,0 +1,55 @@
+diff --git a/node_modules/expo-modules-core/android/ExpoModulesCorePlugin.gradle b/node_modules/expo-modules-core/android/ExpoModulesCorePlugin.gradle
+index 4ec4514..29f185b 100644
+--- a/node_modules/expo-modules-core/android/ExpoModulesCorePlugin.gradle
++++ b/node_modules/expo-modules-core/android/ExpoModulesCorePlugin.gradle
+@@ -76,32 +76,10 @@ ext.useDefaultAndroidSdkVersions = {
+ }
+ 
+ ext.useExpoPublishing = {
+-  if (!project.plugins.hasPlugin('maven-publish')) {
+-    apply plugin: 'maven-publish'
+-  }
+-
+-  project.android {
+-    publishing {
+-      singleVariant("release") {
+-        withSourcesJar()
+-      }
+-    }
+-  }
+-
+-  project.afterEvaluate {
+-    publishing {
+-      publications {
+-        release(MavenPublication) {
+-          from components.release
+-        }
+-      }
+-      repositories {
+-        maven {
+-          url = mavenLocal().url
+-        }
+-      }
+-    }
+-  }
++  // No-op: maven-publish is only needed when releasing expo modules to Maven.
++  // Disabled to avoid Gradle 8.x / AGP 8.5 SoftwareComponents API incompatibility
++  // when building apps. The singleVariant + afterEvaluate publishing block causes
++  // "Could not get unknown property 'release'" on Gradle 8.8+.
+ }
+ 
+ ext.useCoreDependencies = {
+diff --git a/node_modules/expo-modules-core/android/build.gradle b/node_modules/expo-modules-core/android/build.gradle
+index 05c45a6..de4c891 100644
+--- a/node_modules/expo-modules-core/android/build.gradle
++++ b/node_modules/expo-modules-core/android/build.gradle
+@@ -248,3 +248,9 @@ if (shouldTurnWarningsIntoErrors) {
+     compilerOptions.allWarningsAsErrors = true
+   }
+ }
++
++// androidx.compose.foundation:1.7.6 is compiled with Kotlin 2.x (K2).
++// Suppress the "incompatible metadata version" error when compiling with Kotlin 1.9.24.
++tasks.withType(KotlinCompile).configureEach {
++    kotlinOptions.freeCompilerArgs += ["-Xskip-metadata-version-check"]
++}
