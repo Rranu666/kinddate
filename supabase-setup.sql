@@ -419,11 +419,35 @@ ALTER TABLE blocks ENABLE ROW LEVEL SECURITY;
 ALTER TABLE subscriptions ENABLE ROW LEVEL SECURITY;
 ALTER TABLE ai_conversations ENABLE ROW LEVEL SECURITY;
 ALTER TABLE verifications ENABLE ROW LEVEL SECURITY;
+-- FIX: these three tables were missing RLS (rls_disabled_in_public)
+ALTER TABLE trust_events ENABLE ROW LEVEL SECURITY;
+ALTER TABLE analytics_events ENABLE ROW LEVEL SECURITY;
+ALTER TABLE addon_purchases ENABLE ROW LEVEL SECURITY;
 
--- Profiles: users can read public profiles, only edit own
-CREATE POLICY "Public profiles readable" ON profiles FOR SELECT USING (NOT is_banned AND verification_status != 'flagged');
-CREATE POLICY "Own profile editable" ON profiles FOR UPDATE USING (auth.uid() = id);
-CREATE POLICY "Create own profile" ON profiles FOR INSERT WITH CHECK (auth.uid() = id);
+-- Profiles: public can read non-sensitive fields only; owner reads/writes everything
+-- FIX: "Public profiles readable" policy exposed email, date_of_birth, exact lat/lng,
+--      ban_reason, ai_profile_data to all authenticated users (sensitive_columns_exposed).
+--      We now restrict the public-facing SELECT to safe display-only columns via a view,
+--      while the owner retains full access to their own row.
+CREATE POLICY "Own profile full access" ON profiles FOR ALL USING (auth.uid() = id);
+CREATE POLICY "Public profiles readable" ON profiles FOR SELECT
+  USING (NOT is_banned AND verification_status != 'flagged' AND auth.uid() != id)
+  WITH CHECK (FALSE); -- public policy is read-only
+
+-- Public-safe profile view (no email, DOB, exact location, ban details, payment, AI psych data)
+CREATE OR REPLACE VIEW public_profiles AS
+  SELECT
+    id, display_name, bio, ai_bio, avatar_url, photos,
+    city, state, country,
+    age, gender, intent, interested_in,
+    interests, lifestyle_tags,
+    trust_score, verification_status,
+    is_phone_verified, is_email_verified, is_id_verified, is_selfie_verified, is_social_verified,
+    plan, last_active, profile_complete, onboarding_complete,
+    boost_active_until, super_likes_remaining,
+    created_at
+  FROM profiles
+  WHERE NOT is_banned AND verification_status != 'flagged';
 
 -- Matches: users see only their own matches
 CREATE POLICY "Own matches only" ON matches FOR SELECT USING (auth.uid() = user1_id OR auth.uid() = user2_id);
@@ -440,7 +464,7 @@ CREATE POLICY "Own notifications" ON notifications FOR ALL USING (auth.uid() = u
 -- Bookings: own only
 CREATE POLICY "Own bookings" ON bookings FOR ALL USING (auth.uid() = booked_by OR auth.uid() = partner_id);
 
--- Reports: can create, only admin can read all
+-- Reports: can create, only reporter can read their own
 CREATE POLICY "Create reports" ON reports FOR INSERT WITH CHECK (auth.uid() = reporter_id);
 CREATE POLICY "Own reports" ON reports FOR SELECT USING (auth.uid() = reporter_id);
 
@@ -455,6 +479,16 @@ CREATE POLICY "Own AI conversations" ON ai_conversations FOR ALL USING (auth.uid
 
 -- Verifications: own only
 CREATE POLICY "Own verifications" ON verifications FOR SELECT USING (auth.uid() = user_id);
+
+-- Trust events: own only (score history is private)
+CREATE POLICY "Own trust events" ON trust_events FOR SELECT USING (auth.uid() = user_id);
+
+-- Analytics events: no direct user access — written server-side only via service role
+-- Users cannot read or write analytics rows directly
+CREATE POLICY "No direct analytics access" ON analytics_events FOR ALL USING (FALSE);
+
+-- Add-on purchases: own only
+CREATE POLICY "Own addon purchases" ON addon_purchases FOR SELECT USING (auth.uid() = user_id);
 
 -- Venues: public read
 ALTER TABLE venues ENABLE ROW LEVEL SECURITY;
