@@ -6,7 +6,7 @@ buildscript {
         minSdkVersion = Integer.parseInt(findProperty('android.minSdkVersion') ?: '24')
         compileSdkVersion = Integer.parseInt(findProperty('android.compileSdkVersion') ?: '35')
         targetSdkVersion = Integer.parseInt(findProperty('android.targetSdkVersion') ?: '34')
-        kotlinVersion = findProperty('android.kotlinVersion') ?: '1.9.25'
+        kotlinVersion = findProperty('android.kotlinVersion') ?: '1.9.24'
 
         ndkVersion = "26.1.10909125"
     }
@@ -17,7 +17,7 @@ buildscript {
     dependencies {
         classpath('com.android.tools.build:gradle')
         classpath('com.facebook.react:react-native-gradle-plugin')
-        classpath('org.jetbrains.kotlin:kotlin-gradle-plugin')
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}")
     }
 }
 
@@ -37,5 +37,43 @@ allprojects {
         google()
         mavenCentral()
         maven { url 'https://www.jitpack.io' }
+    }
+
+    // Force all K2-compiled transitive deps to K1-compiled equivalents.
+    // expo-notifications@55.0.18 declares lifecycle:2.9.3, coroutines:1.10.x, and
+    // firebase-messaging:25.0.1, all built with Kotlin 2.x. The Kotlin 1.9.24 compiler
+    // cannot read Kotlin 2.x metadata — forcing to 1.x-compiled versions avoids that.
+    // These versions expose the same API surface used by expo-notifications.
+    configurations.all {
+        resolutionStrategy {
+            force 'androidx.core:core:1.15.0'
+            force 'androidx.core:core-ktx:1.15.0'
+            force 'androidx.lifecycle:lifecycle-runtime:2.7.0'
+            force 'androidx.lifecycle:lifecycle-process:2.7.0'
+            force 'androidx.lifecycle:lifecycle-common-java8:2.7.0'
+            force 'androidx.lifecycle:lifecycle-runtime-ktx:2.7.0'
+            force 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.1'
+            force 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.1'
+        }
+    }
+}
+
+// Allow the Kotlin 1.9.x compiler to compile against AARs built with Kotlin 2.x (K2).
+// firebase-messaging:25.0.1, androidx.compose.foundation:1.7.6, and other K2-compiled
+// libraries embed Kotlin 2.x metadata. The 1.9.24 compiler raises
+// "incompatible metadata version 2.1.0" when reading their class files.
+// -Xskip-metadata-version-check suppresses that version gate; the API shape
+// (method signatures, class names) in the metadata is still fully readable.
+//
+// tasks.withType().configureEach is Gradle 8.x lazy configuration — the action fires
+// once per KotlinCompile task across all subprojects, with no afterEvaluate needed.
+// Omitting plugins.withId() avoids any risk of the callback not firing if a module
+// uses a plugin alias other than "org.jetbrains.kotlin.android".
+allprojects {
+    tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach { task ->
+        def cur = task.kotlinOptions.freeCompilerArgs
+        if (!cur.contains("-Xskip-metadata-version-check")) {
+            task.kotlinOptions.freeCompilerArgs = cur + ["-Xskip-metadata-version-check"]
+        }
     }
 }

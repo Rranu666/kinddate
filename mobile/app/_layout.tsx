@@ -36,10 +36,6 @@ const queryClient = new QueryClient({
 });
 
 function RootLayoutNav() {
-  const { initialized, loading, userId } = useAuthStore();
-
-  if (!initialized || loading) return null;
-
   return (
     <Stack screenOptions={{ headerShown: false }}>
       <Stack.Screen name="index" />

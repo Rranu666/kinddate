@@ -31,7 +31,7 @@ function ConversationRow({ match }: { match: Match }) {
     >
       <View style={styles.avatarWrapper}>
         <Avatar uri={profile.avatar_url} name={profile.display_name} size={52} verified={profile.is_verified} />
-        <View style={[styles.onlineDot, { backgroundColor: COLORS.sage }]} />
+        {/* online dot removed — real-time presence not yet implemented */}
       </View>
 
       <View style={styles.content}>
@@ -123,16 +123,6 @@ const styles = StyleSheet.create({
   },
   rowUnread: { backgroundColor: COLORS.roseFaint },
   avatarWrapper: { position: 'relative' },
-  onlineDot: {
-    position: 'absolute',
-    bottom: 1,
-    right: 1,
-    width: 12,
-    height: 12,
-    borderRadius: 6,
-    borderWidth: 2,
-    borderColor: COLORS.white,
-  },
   content: { flex: 1, gap: 3 },
   topRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
   name: { fontFamily: FONTS.sansMedium, fontSize: FONT_SIZES.base, color: COLORS.textPrimary },

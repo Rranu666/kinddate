@@ -29,7 +29,7 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#FAF6F0"
+        "backgroundColor": "#D05D5A"
       },
       "package": "com.kcf.kinddate",
       "versionCode": 1,

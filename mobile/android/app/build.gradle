@@ -151,6 +151,18 @@ android {
 }
 
 dependencies {
+    // Force androidx.core to a version that is compatible with AGP 8.6.0.
+    // expo-notifications pulls in core:1.17.0 which was built with AGP 8.9.1 and
+    // embeds a minimum-AGP requirement of 8.9.1 in its AAR metadata.  Forcing
+    // 1.15.0 keeps all core features needed by Expo whilst passing
+    // checkReleaseAarMetadata with our AGP 8.6.0 / React-Native 0.76 toolchain.
+    configurations.all {
+        resolutionStrategy {
+            force 'androidx.core:core:1.15.0'
+            force 'androidx.core:core-ktx:1.15.0'
+        }
+    }
+
     // The version of react-native is set by the React Native Gradle Plugin
     implementation("com.facebook.react:react-android")
 
