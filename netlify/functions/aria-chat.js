@@ -2,6 +2,36 @@
 // Netlify Function → calls Anthropic Claude API
 // Set ANTHROPIC_API_KEY in Netlify environment variables
 
+// Recursively remove every cache_control key from any object/array structure.
+// Anthropic rejects requests where a cache_control is set on an empty text block;
+// this strips the property entirely at every nesting level so it can never reach the API.
+function deepStrip(val) {
+  if (Array.isArray(val)) return val.map(deepStrip);
+  if (val !== null && typeof val === 'object') {
+    const out = {};
+    for (const [k, v] of Object.entries(val)) {
+      if (k !== 'cache_control') out[k] = deepStrip(v);
+    }
+    return out;
+  }
+  return val;
+}
+
+// Flatten any content format (string | ContentBlock[] | single block) to a plain trimmed string.
+function flattenContent(content) {
+  if (typeof content === 'string') return content.trim();
+  if (Array.isArray(content)) {
+    return content
+      .filter(b => b && b.type === 'text' && b.text && String(b.text).trim())
+      .map(b => String(b.text).trim())
+      .join('\n\n');
+  }
+  if (content && typeof content === 'object') {
+    if (typeof content.text === 'string') return content.text.trim();
+  }
+  return '';
+}
+
 exports.handler = async (event) => {
   const headers = {
     'Access-Control-Allow-Origin': '*',
@@ -23,44 +53,42 @@ exports.handler = async (event) => {
   const { messages, mode = 'DISCOVERY' } = body;
   if (!messages || !Array.isArray(messages)) return { statusCode: 400, headers, body: JSON.stringify({ error: 'messages array required' }) };
 
-  // Normalize content to a plain string — strips cache_control and flattens content block arrays.
-  // Anthropic rejects any empty text block that has cache_control set, and this can arrive from
-  // old localStorage sessions or automatic SDK transforms.
-  function normalizeContent(content) {
-    if (typeof content === 'string') return content.trim();
-    if (Array.isArray(content)) {
-      return content
-        .filter(b => b && b.type === 'text' && typeof b.text === 'string' && b.text.trim() !== '')
-        .map(b => b.text.trim())
-        .join('\n\n');
-    }
-    if (content && typeof content === 'object' && typeof content.text === 'string') {
-      return content.text.trim();
-    }
-    return '';
-  }
-
-  // FIX: normalize + remove empty content (prevents cache_control-on-empty-block 400 errors)
-  const sanitized = messages
+  // 1. Deep-strip cache_control from every incoming message (handles all possible shapes)
+  // 2. Flatten content to a plain non-empty string
+  // 3. Drop anything that ends up empty after flattening
+  const sanitized = deepStrip(messages)
     .filter(m => m && typeof m.role === 'string')
-    .map(m => ({ role: m.role, content: normalizeContent(m.content) }))
+    .map(m => ({ role: m.role, content: flattenContent(m.content) }))
     .filter(m => m.content !== '');
 
   if (sanitized.length === 0) return { statusCode: 400, headers, body: JSON.stringify({ error: 'No valid messages' }) };
 
-  // FIX: merge consecutive same-role messages (Anthropic requires strict alternation)
+  // Merge consecutive same-role messages (Anthropic requires strict user/assistant alternation)
   const merged = [];
   for (const msg of sanitized) {
     const last = merged[merged.length - 1];
-    if (last && last.role === msg.role) { last.content += '\n\n' + msg.content; }
-    else { merged.push({ role: msg.role, content: msg.content }); }
+    if (last && last.role === msg.role) {
+      last.content += '\n\n' + msg.content;
+    } else {
+      merged.push({ role: msg.role, content: msg.content });
+    }
   }
 
-  // FIX: last message must be from user
+  // Last message must be from user
   while (merged.length > 0 && merged[merged.length - 1].role === 'assistant') merged.pop();
   if (merged.length === 0) return { statusCode: 400, headers, body: JSON.stringify({ error: 'No user messages found' }) };
 
-  const SYSTEM = `You are Aria, an emotionally intelligent relationship concierge for KindDate — a guided dating platform built for intentional singles who are tired of the swipe culture. You are trained in attachment theory, the Gottman Method, Nonviolent Communication, IFS, and behavioral science. Current mode: ${mode}. Ask one question at a time. Reflect before advising. Be warm, real, and deeply present.`;
+  const SYSTEM = `You are Aria, an emotionally intelligent relationship concierge for KindDate — a guided dating platform built for intentional singles who are tired of the swipe culture. You are trained in attachment theory, the Gottman Method, Nonviolent Communication, IFS, and behavioral science. Current mode: ${mode}. Ask one question at a time. Reflect before advising. Be warm, real, and deeply present.
+
+When you identify a key insight about the user, include a JSON tag in your response:
+<ARIA_INSIGHT>{"type":"attachment_style","value":"Anxious-Preoccupied","confidence":0.7}</ARIA_INSIGHT>
+Valid types: attachment_style, love_language, readiness_score, core_fear, growth_edge, relationship_pattern`;
+
+  // Final messages to send — plain string content only, no cache_control anywhere
+  const finalMessages = merged.slice(-20).map(m => ({
+    role: m.role,
+    content: m.content, // guaranteed plain string by this point
+  }));
 
   try {
     const response = await fetch('https://api.anthropic.com/v1/messages', {
@@ -74,13 +102,14 @@ exports.handler = async (event) => {
         model: 'claude-sonnet-4-6',
         max_tokens: 1024,
         system: SYSTEM,
-        messages: merged.slice(-20),
+        messages: finalMessages,
       }),
     });
 
     if (!response.ok) {
-      const err = await response.text();
-      return { statusCode: response.status, headers, body: JSON.stringify({ error: err }) };
+      const errText = await response.text();
+      console.error('Anthropic API error:', response.status, errText);
+      return { statusCode: response.status, headers, body: JSON.stringify({ error: errText }) };
     }
 
     const data = await response.json();
@@ -97,6 +126,7 @@ exports.handler = async (event) => {
     return { statusCode: 200, headers, body: JSON.stringify({ reply: cleanText, insights }) };
 
   } catch (err) {
+    console.error('Aria function error:', err.message);
     return { statusCode: 500, headers, body: JSON.stringify({ error: err.message }) };
   }
 };
